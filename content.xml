@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="distances"
+         name="Distances"
+         description="Relocates stations farther from sector center, adds some ressources zones"
+         author="Laryakan"
+         version="100"
+         date="2026-07-12">
+</content>

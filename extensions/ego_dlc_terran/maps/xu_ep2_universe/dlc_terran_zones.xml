@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Distances Mod - Resource Zones Added -->
+<diff>
+  <!-- Disabled until EGOSOFT clear up their zones on Terran DLC, as they are currently overlapping and causing issues with the mod -->
+  <!--
+  <replace sel="/macros/macro[@name='Zone004_Cluster_113_Sector001_macro']/connections/connection[@name='connection_lmx']/offset/position">
+    <position x="-73421.5" y="0" z="-37697.1" />
+  </replace>
+  -->
+</diff>

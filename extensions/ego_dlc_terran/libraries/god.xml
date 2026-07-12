@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Distances Mod - GOD fixed-position scaling -->
+<diff>
+  <replace sel="/god/objects/object[@id='destroyed_gate']/position">
+    <position x="174546" y="-1532.621" z="25510.3" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/objects/object[@id='brennanstriumph_wreck_01']/position">
+    <position x="-176400" y="-278096.438" z="2.16028e-11" />
+  </replace>
+  <replace sel="/god/objects/object[@id='brennanstriumph_wreck_02']/position">
+    <position x="-176400" y="-120517.711" z="2.16028e-11" />
+  </replace>
+  <replace sel="/god/objects/object[@id='brennanstriumph_wreck_03']/position">
+    <position x="21809.8" y="70031.75" z="0" />
+  </replace>
+  <replace sel="/god/objects/object[@id='brennanstriumph_wreck_04']/position">
+    <position x="-176400" y="55000" z="2.16028e-11" />
+  </replace>
+  <replace sel="/god/objects/object[@id='brennanstriumph_wreck_05']/position">
+    <position x="176400" y="-50000" z="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='torus_maze']/position">
+    <position x="104926" y="0" z="38300.1" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_logisticsdock_cluster_104_sector001']/position">
+    <position x="-140587" y="0.0" z="-106547" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_104_sector001']/position">
+    <position x="-35131.7" y="0.0" z="-172866" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_shipyard_cluster_104_sector002']/position">
+    <position x="160249" y="0.0" z="73736.8" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_supportstation_cluster_104_sector002']/position">
+    <position x="-169510" y="0.0" z="-48818.2" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_104_sector002']/position">
+    <position x="-32136.6" y="0.0" z="-20076.1" pitch="0" roll="0" yaw="-74.31804" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_wharf_cluster_101_sector001']/position">
+    <position x="114504" y="0.0" z="36885" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_supplybase_cluster_101_sector001']/position">
+    <position x="176291" y="0.0" z="6211.79" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_101_sector001']/position">
+    <position x="27864" y="0.0" z="-73998" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_102_sector001']/position">
+    <position x="-84600" y="-26900.0" z="1.03605e-11" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_106_sector001']/position">
+    <position x="-25590" y="0.0" z="-18060" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defenceplatform_cluster_100_sector001']/position">
+    <position x="-9806.34" y="0.0" z="-83860" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_equipmentdock_cluster_107_sector001']/position">
+    <position x="162309" y="0.0" z="-69084.9" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_107_sector001']/position">
+    <position x="115226" y="0.0" z="133566" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_supplybase_cluster_108_sector001']/position">
+    <position x="-163969" y="0.0" z="-65047.6" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_108_sector001']/position">
+    <position x="-113640" y="0.0" z="-29400" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_108_sector003']/position">
+    <position x="-18600" y="0" z="126000" pitch="0" roll="0" yaw="160" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_108_sector002']/position">
+    <position x="-56640" y="0.0" z="103290" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_109_sector001']/position">
+    <position x="64860" y="0.0" z="-125025" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_logisticsdock_cluster_110_sector001']/position">
+    <position x="-80103" y="0.0" z="29931" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_110_sector001']/position">
+    <position x="-86040" y="0.0" z="-23280" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_111_sector001']/position">
+    <position x="134331" y="0.0" z="27003" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='ter_defence_cluster_116_sector001']/position">
+    <position x="134331" y="0.0" z="27003" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_scienceHQ_cluster_113_sector001']/position">
+    <position x="110067" y="0.0" z="4821" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_defence_cluster_113_sector001']/position">
+    <position x="-33570" y="0.0" z="-29100" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_equipmentdock_zone001_cluster_113_sector001']/position">
+    <position x="-55680" y="0.0" z="-15129" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='x4ep1_gamestart_scientist_hq_coh']/position">
+    <position x="-174455" y="-1100" z="-26126" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_defence_cluster_114_sector001']/position">
+    <position x="27882" y="0.0" z="-15978" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_tradestation_cluster_114_sector001']/position">
+    <position x="49200" y="0.0" z="123720" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_processing']/position">
+    <position x="-14388.5" y="0" z="-175812" pitch="0" roll="0" yaw="50" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_shipyard_cluster_115_sector001']/position">
+    <position x="60836.8" y="0.0" z="-165577" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_wharf_cluster_115_sector001']/position">
+    <position x="-141792" y="0.0" z="-104148" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='pio_defence_cluster_115_sector001']/position">
+    <position x="141228" y="0" z="-105696" pitch="0" roll="0" yaw="290" />
+  </replace>
+  <replace sel="/god/stations/station[@id='shipyard_terran_01']/position">
+    <position x="136686" y="0" z="111507" pitch="0" yaw="0" />
+  </replace>
+</diff>

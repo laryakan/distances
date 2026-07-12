@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Distances Mod - GOD fixed-position scaling -->
+<diff>
+  <replace sel="/god/objects/object[@id='khaak_wreck_cluster_704']/position">
+    <position x="93459" y="-804" z="-149607" pitch="-33" roll="4" yaw="49" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_tradestation_cluster_701']/position">
+    <position x="150000" y="0" z="-15000" pitch="0" roll="0" yaw="20" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_energy_array']/position">
+    <position x="-143543" y="0" z="-102530" pitch="0" roll="0" yaw="305" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_wharf_cluster_702']/position">
+    <position x="0" y="0" z="0" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_hydro_processing_plant']/position">
+    <position x="-72388.3" y="0" z="-160863" pitch="0" roll="0" yaw="35" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_compound_refinery']/position">
+    <position x="-144513" y="0" z="101159" pitch="0" roll="0" yaw="165" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_tradestation_cluster_703']/position">
+    <position x="97849.1" y="0" z="146774" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_shipyard_cluster_703']/position">
+    <position x="-144513" y="0" z="-101159" pitch="0" roll="0" yaw="40" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_advanced_tech_complex']/position">
+    <position x="175962" y="0" z="-12420.9" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='kao_produce_facility']/position">
+    <position x="-130034" y="0" z="119198" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='arg_tradestation_cluster_704']/position">
+    <position x="94125.2" y="0" z="-149189" pitch="0" roll="0" yaw="330" />
+  </replace>
+  <replace sel="/god/stations/station[@id='arg_defence_cluster_704_sector001_01']/position">
+    <position x="-155733" y="0" z="82850.1" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='sca_piratestation_cluster_705']/position">
+    <position x="171603" y="-3000" z="40857.9" pitch="0" roll="0" yaw="35" />
+  </replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_708_sector001_01']/position">
+    <position x="-175445" y="0" z="18330.1" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_seek_and_destroy']/objects/object[@id='monument_paranid']/position">
+    <position x="174546" y="-1532.621" z="25510.3" pitch="0" roll="0" yaw="90" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_seek_and_destroy']/stations/station[@id='scenario_seek_and_destroy_factory']/position">
+    <position x="-78336.5" y="500" z="-22308.6" pitch="0" roll="0" yaw="135" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_mining_7']/stations/station[@id='scenario_mining_7_funanori_station']/position">
+    <position x="100903" y="-5000" z="-144691" pitch="0" roll="0" yaw="60" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_1']/stations/station[@id='arg_defence_cluster001_001']/position">
+    <position x="-24801.5" y="0" z="174648" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_1']/stations/station[@id='par_defence_cluster001_001']/position">
+    <position x="78888.5" y="0" z="-157777" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_1']/stations/station[@id='arg_defence_cluster002_001']/position">
+    <position x="78888.5" y="0" z="157777" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_2']/stations/station[@id='par_defence_scenario_fleet_battle_2_cluster002_001']/position">
+    <position x="135898" y="0" z="112467" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_2']/stations/station[@id='par_defence_scenario_fleet_battle_2_cluster002_002']/position">
+    <position x="9887.13" y="0" z="176123" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_2']/stations/station[@id='par_palace_scenario_fleet_battle_2_cluster002_001']/position">
+    <position x="114900" y="0" z="117000" pitch="0" roll="0" yaw="210" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_2']/stations/station[@id='par_mining_outpost_cluster001_001']/position">
+    <position x="-147441" y="0" z="-96841.2" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_2']/stations/station[@id='par_refinery_cluster001_001']/position">
+    <position x="-27000" y="0" z="60000" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_3']/stations/station[@id='par_mining_outpost_cluster001_001']/position">
+    <position x="-147441" y="0" z="-96841.2" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_fleet_battle_3']/stations/station[@id='par_refinery_cluster001_001']/position">
+    <position x="-27000" y="0" z="60000" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_weaken_fleet']/stations/station[@id='hol_defence_scenario_weaken_fleet_001']/position">
+    <position x="83299.9" y="0" z="-155493" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_weaken_station']/stations/station[@id='xen_defence_scenario_weaken_station_001']/position">
+    <position x="122250" y="0" z="127168" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_waveattack_antigone']/stations/station[@id='scenario_waveattack_antigone_station']/position">
+    <position x="-8192.15" y="2078" z="-176210" pitch="0" roll="0" yaw="60" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_protect_object']/stations/station[@id='usc_defence_scenario_protect_object_station_001']/position">
+    <position x="-171133" y="0" z="-42783.3" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_m0_boss_battle']/stations/station[@id='xen_shipyard_scenario_m0_boss_battle_cluster_001_001']/position">
+    <position x="-69487.4" y="0" z="-162137" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_m0_boss_battle']/stations/station[@id='xen_wharf_scenario_m0_boss_battle_cluster_001_001']/position">
+    <position x="-165419" y="0" z="-61266.3" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_m0_boss_battle']/stations/station[@id='xen_defence_scenario_m0_boss_battle_cluster_001_001']/position">
+    <position x="107553" y="0" z="139819" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_m0_boss_battle']/stations/station[@id='xen_defence_scenario_m0_boss_battle_cluster_002_001']/position">
+    <position x="33000" y="0" z="-37500" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_dragonfyre']/stations/station[@id='scenario_dragonfyre_orbital_support']/position">
+    <position x="169823" y="0" z="-47718.2" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_dragonfyre']/stations/station[@id='scenario_dragonfyre_orbital_defence_001']/position">
+    <position x="-35196" y="0" z="-59457" pitch="0" roll="0" yaw="165" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_dragonfyre']/stations/station[@id='scenario_dragonfyre_orbital_defence_002']/position">
+    <position x="-81760.1" y="0" z="156308" pitch="0" roll="0" yaw="42" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_dragonfyre']/stations/station[@id='scenario_dragonfyre_orbital_defence_003']/position">
+    <position x="-158260" y="0" z="-77915.7" pitch="0" roll="0" yaw="235" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_khaak_boss_battle']/stations/station[@id='scenario_khaak_battle_shipyard']/position">
+    <position x="1673.95" y="0" z="-176392" pitch="0" roll="0" yaw="235" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_khaak_boss_battle']/stations/station[@id='scenario_khaak_battle_wharf']/position">
+    <position x="133388" y="0" z="-115432" pitch="0" roll="0" yaw="35" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_khaak_boss_battle']/stations/station[@id='scenario_khaak_battle_tradestation']/position">
+    <position x="5724.26" y="0" z="176307" pitch="0" roll="0" yaw="140" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_khaak_boss_battle']/stations/station[@id='scenario_khaak_battle_microchips']/position">
+    <position x="175553" y="12000" z="17267.5" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/gamestart[@ref='scenario_khaak_boss_battle']/stations/station[@id='scenario_khaak_battle_quantumtubes']/position">
+    <position x="-108717" y="-2500" z="138916" pitch="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_1to4_energy_001']/position">
+    <position x="-165017" y="0" z="62339.9" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_1to4_energy_002']/position">
+    <position x="108299" y="0" z="139242" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_1to4_wheat_001']/position">
+    <position x="161689" y="0" z="70523.9" pitch="0" roll="0" yaw="185" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_1to4_wheat_002']/position">
+    <position x="176202" y="0" z="-8346.43" pitch="0" roll="0" yaw="230" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_1to4_flowerfarm_001']/position">
+    <position x="153485" y="0" z="-86945" pitch="0" roll="0" yaw="70" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_1to4_ore_refinery_001']/position">
+    <position x="-63139.9" y="0" z="164713" pitch="0" roll="0" yaw="35" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_1to4_ore_refinery_002']/position">
+    <position x="57550.2" y="0" z="-166748" pitch="0" roll="0" yaw="65" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_1to4_silicon_refinery_001']/position">
+    <position x="104734" y="0" z="-141943" pitch="0" roll="0" yaw="110" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_4_funanori_station']/position">
+    <position x="100903" y="-5000" z="-144691" pitch="0" roll="0" yaw="42" />
+  </replace>
+  <replace sel="/god/stations/station[@id='scenario_mining_3_funanori_station']/position">
+    <position x="100903" y="-5000" z="-144691" pitch="0" roll="0" yaw="42" />
+  </replace>
+</diff>
