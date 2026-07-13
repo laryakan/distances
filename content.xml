@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<content id="distances"
+<content id="ws_3764127388"
          name="Distances"
          description="Relocates stations farther from sector center, adds some ressources zones"
          author="Laryakan"
          version="100"
-         date="2026-07-12">
+         date="2026-07-13"
+         sync="false"
+         lastupdate="1783960684">
 </content>
