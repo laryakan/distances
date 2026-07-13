@@ -9,7 +9,7 @@ Sector are modified, and such, do not impact additional sectors added by EGOSOFT
 
 In order to function, it requires a new game.
 
-## Using the tools
+## Using the tools (not needed to use the mod the regular way)
 
 ### 1) Prepare `_default` from extracted game files
 
@@ -84,5 +84,5 @@ You are free to use, modify and redistribute any code or assets of mine which is
 A link to my github is provided below. A little mention is all I ask.
 
 - github : https://github.com/laryakan/distances
-- nexus : https://www.nexusmods.com/x4foundations/mods/<incoming>
+- nexus : https://www.nexusmods.com/x4foundations/mods/2232
 - nexus user : https://next.nexusmods.com/profile/Laryakan
