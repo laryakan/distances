@@ -502,13 +502,4 @@
   <replace sel="/god/stations/station[@id='test_recycling_station']/position">
     <position x="-10157.3" y="-49.417" z="-42334.7" pitch="0" roll="0" yaw="-60" />
   </replace>
-  <replace sel="/god/gamestart[@ref='x4ep1_gamestart_tutorial1']/stations/station[@id='shipyard_argon_01']/position">
-    <position x="136686" y="0" z="111507" pitch="0" yaw="0" />
-  </replace>
-  <replace sel="/god/gamestart[@ref='x4ep1_gamestart_workshop']/stations/station[@id='architect_station']/position">
-    <position x="-144113" y="0" z="-101727" pitch="0" yaw="0" />
-  </replace>
-  <replace sel="/god/gamestart[@ref='x4ep1_gamestart_workshop']/stations/station[@id='x4ep1_gamestart_workshop_hq']/position">
-    <position x="-41167" y="0" z="171529" pitch="0" roll="0" yaw="0" />
-  </replace>
 </diff>

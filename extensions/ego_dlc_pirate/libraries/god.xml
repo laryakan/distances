@@ -4,12 +4,6 @@
   <replace sel="/god/objects/object[@id='S3_anomaly_01']/position">
     <position x="-95200.7" y="0" z="-148505" />
   </replace>
-  <replace sel="/god/objects/object[@id='story_race_finishline']/position">
-    <position x="102879" y="0" z="-143293" />
-  </replace>
-  <replace sel="/god/stations/station[@id='story_prison_station_id']/position">
-    <position x="174546" y="-1532.621" z="25510.3" pitch="0" roll="0" yaw="90" />
-  </replace>
   <replace sel="/god/stations/station[@id='monument_s3station']/position">
     <position x="1.65327e-14" y="0" z="270" pitch="0" yaw="0" />
   </replace>
@@ -36,9 +30,6 @@
   </replace>
   <replace sel="/god/stations/station[@id='loanshark_defence_03']/position">
     <position x="-13608.7" y="903.813" z="1.66659e-12" pitch="0" yaw="0" />
-  </replace>
-  <replace sel="/god/stations/station[@id='Story_ScrapyardStation']/position">
-    <position x="0" y="0" z="0" pitch="0" roll="0" yaw="45" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_alliance_toa']/position">
     <position x="-176400" y="32990.395" z="2.16028e-11" pitch="0" yaw="0" />
