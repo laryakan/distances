@@ -62,6 +62,8 @@ The script generates diffs for base game and input extensions in:
 
 It includes DLC naming special-cases internally (Split=`dlc4`, Timelines=`dlc7`), also supports community mods that use plain `sectors.xml` / `zones.xml`, and skips the `Distances` extension itself when scanning input extensions.
 
+Commented-out XML blocks in `sectors.xml`, `zones.xml` and related map inputs are ignored during generation.
+
 ## Hazard Exclusions
 
 Some hazardous sectors are excluded on purpose to avoid unsafe station placement (for example Tide/radiation sectors).

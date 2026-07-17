@@ -41,6 +41,6 @@
     <position x="171603" y="-3000" z="40857.9" pitch="0" roll="0" yaw="35" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_708_sector001_01']/position">
-    <position x="-175445" y="0" z="18330.1" pitch="0" yaw="0" />
+    <position x="-175445" y="0" z="18330.1" pitch="0" roll="0" />
   </replace>
 </diff>

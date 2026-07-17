@@ -71,9 +71,10 @@ EXCLUDE_SECTORS=(
     "[Cc]luster_500_[Ss]ector001_macro" # Avarice
     "[Cc]luster_500_[Ss]ector002_macro" # Avarice
     "[Cc]luster_500_[Ss]ector003_macro" # Avarice
+    "[Cc]luster_113_[Ss]ector001_macro" # There is an overlapping here, (Terran DLC)
 )
 # Exclude story, tutorial and scenario-only content from god.xml because it is not part of the open world.
-EXCLUDE_NON_OPEN_WORLD_REGEX='story|tutorial|scenario'
+EXCLUDE_NON_OPEN_WORLD_REGEX='story|tutorial|scenario|gamestart'
 
 echo "Generating with factor $FACTOR..."
 echo "Using input directory: $INPUT_DIR"
@@ -167,14 +168,40 @@ process_sectors_file() {
     # Those zones must not have their sector offsets changed.
     if [[ -n "$zones_file" && -f "$zones_file" ]]; then
         protected_zones=$(awk '
-        /<macro name="[^"]*" class="zone">/ {
-            match($0, /name="([^"]*)"/, arr)
+        function strip_comments(raw, out, start, rest, finish) {
+            out = raw
+            while (1) {
+                if (in_comment) {
+                    finish = index(out, "-->")
+                    if (finish == 0) return ""
+                    out = substr(out, finish + 3)
+                    in_comment = 0
+                }
+                start = index(out, "<!--")
+                if (start == 0) break
+                rest = substr(out, start + 4)
+                finish = index(rest, "-->")
+                if (finish == 0) {
+                    out = substr(out, 1, start - 1)
+                    in_comment = 1
+                    break
+                }
+                out = substr(out, 1, start - 1) substr(rest, finish + 3)
+            }
+            return out
+        }
+        {
+            line = strip_comments($0)
+            if (line == "") next
+        }
+        line ~ /<macro name="[^"]*" class="zone">/ {
+            match(line, /name="([^"]*)"/, arr)
             current_zone = arr[1]
             if (index(current_zone, "SHCon") > 0) protected[current_zone] = 1
         }
-        /<connection / && current_zone {
+        line ~ /<connection / && current_zone {
             # Gate zones must stay fixed to avoid highway/gate desync.
-            if (index($0, "ref=\"gates\"") > 0) protected[current_zone] = 1
+            if (index(line, "ref=\"gates\"") > 0) protected[current_zone] = 1
         }
         END {
             first = 1
@@ -187,13 +214,39 @@ process_sectors_file() {
         ' "$zones_file")
 
         resource_zones=$(awk '
-        /<macro name="[^"]*" class="zone">/ {
-            match($0, /name="([^"]*)"/, arr)
+        function strip_comments(raw, out, start, rest, finish) {
+            out = raw
+            while (1) {
+                if (in_comment) {
+                    finish = index(out, "-->")
+                    if (finish == 0) return ""
+                    out = substr(out, finish + 3)
+                    in_comment = 0
+                }
+                start = index(out, "<!--")
+                if (start == 0) break
+                rest = substr(out, start + 4)
+                finish = index(rest, "-->")
+                if (finish == 0) {
+                    out = substr(out, 1, start - 1)
+                    in_comment = 1
+                    break
+                }
+                out = substr(out, 1, start - 1) substr(rest, finish + 3)
+            }
+            return out
+        }
+        {
+            xml_line = strip_comments($0)
+            if (xml_line == "") next
+        }
+        xml_line ~ /<macro name="[^"]*" class="zone">/ {
+            match(xml_line, /name="([^"]*)"/, arr)
             current_zone = arr[1]
             is_resource = 0
         }
-        /<connection / && current_zone {
-            line = tolower($0)
+        xml_line ~ /<connection / && current_zone {
+            line = tolower(xml_line)
             is_travel = 0
             if (index(line, "ref=\"gates\"") > 0) is_travel = 1
             if (index(line, "highway") > 0) is_travel = 1
@@ -216,8 +269,8 @@ process_sectors_file() {
             if (index(line, "fog") > 0) is_resource = 1
             if (index(line, "debris") > 0) is_resource = 1
         }
-        /<macro ref="[^"]*"/ && current_zone {
-            line = tolower($0)
+        xml_line ~ /<macro ref="[^"]*"/ && current_zone {
+            line = tolower(xml_line)
             if (index(line, "asteroid") > 0) is_resource = 1
             if (index(line, "ore") > 0) is_resource = 1
             if (index(line, "silicon") > 0) is_resource = 1
@@ -231,7 +284,7 @@ process_sectors_file() {
             if (index(line, "fog") > 0) is_resource = 1
             if (index(line, "debris") > 0) is_resource = 1
         }
-        /<\/macro>/ && current_zone {
+        xml_line ~ /<\/macro>/ && current_zone {
             if (is_resource) resource[current_zone] = 1
             current_zone = ""
         }
@@ -246,8 +299,34 @@ process_sectors_file() {
         ' "$zones_file")
 
         zone_macros=$(awk '
-        /<macro name="[^"]*" class="zone">/ {
-            match($0, /name="([^"]*)"/, arr)
+        function strip_comments(raw, out, start, rest, finish) {
+            out = raw
+            while (1) {
+                if (in_comment) {
+                    finish = index(out, "-->")
+                    if (finish == 0) return ""
+                    out = substr(out, finish + 3)
+                    in_comment = 0
+                }
+                start = index(out, "<!--")
+                if (start == 0) break
+                rest = substr(out, start + 4)
+                finish = index(rest, "-->")
+                if (finish == 0) {
+                    out = substr(out, 1, start - 1)
+                    in_comment = 1
+                    break
+                }
+                out = substr(out, 1, start - 1) substr(rest, finish + 3)
+            }
+            return out
+        }
+        {
+            line = strip_comments($0)
+            if (line == "") next
+        }
+        line ~ /<macro name="[^"]*" class="zone">/ {
+            match(line, /name="([^"]*)"/, arr)
             zones[arr[1]] = 1
         }
         END {
@@ -268,6 +347,28 @@ process_sectors_file() {
         
         # Extract all position lines with their context
         awk -v exclude="$exclude_pattern" -v protected="$protected_zones" -v resources="$resource_zones" -v zonemacros="$zone_macros" '
+        function strip_comments(raw, out, start, rest, finish) {
+            out = raw
+            while (1) {
+                if (in_comment) {
+                    finish = index(out, "-->")
+                    if (finish == 0) return ""
+                    out = substr(out, finish + 3)
+                    in_comment = 0
+                }
+                start = index(out, "<!--")
+                if (start == 0) break
+                rest = substr(out, start + 4)
+                finish = index(rest, "-->")
+                if (finish == 0) {
+                    out = substr(out, 1, start - 1)
+                    in_comment = 1
+                    break
+                }
+                out = substr(out, 1, start - 1) substr(rest, finish + 3)
+            }
+            return out
+        }
         BEGIN {
             current_macro = ""
             current_connection = ""
@@ -295,40 +396,46 @@ process_sectors_file() {
             }
         }
         FNR == NR {
-            if ($0 ~ /<macro name="[^"]*" class="sector">/) {
-                match($0, /name="([^"]*)"/, s_arr)
+            line = strip_comments($0)
+            if (line == "") next
+            if (line ~ /<macro name="[^"]*" class="sector">/) {
+                match(line, /name="([^"]*)"/, s_arr)
                 sector_macro = s_arr[1]
             }
-            if (sector_macro != "" && $0 ~ /<connection /) {
-                if (index($0, "Highway") > 0 || index($0, "ref=\"zonehighways\"") > 0) {
+            if (sector_macro != "" && line ~ /<connection /) {
+                if (index(line, "Highway") > 0 || index(line, "ref=\"zonehighways\"") > 0) {
                     highway_sector[sector_macro] = 1
                 }
             }
             next
         }
-        /<macro name="[^"]*" class="sector">/ {
-            match($0, /name="([^"]*)"/, arr)
+        {
+            line = strip_comments($0)
+            if (line == "") next
+        }
+        line ~ /<macro name="[^"]*" class="sector">/ {
+            match(line, /name="([^"]*)"/, arr)
             current_macro = arr[1]
         }
-        /<connection name="([^"]*)"/ {
-            match($0, /name="([^"]*)"/, arr)
+        line ~ /<connection name="([^"]*)"/ {
+            match(line, /name="([^"]*)"/, arr)
             current_connection = arr[1]
             current_zone_ref = ""
             pending_x = ""
             pending_y = ""
             pending_z = ""
         }
-        /<position x=/ && current_macro && current_connection {
-            match($0, /x="([^"]*)"/, x_arr)
-            match($0, /y="([^"]*)"/, y_arr)
-            match($0, /z="([^"]*)"/, z_arr)
+        line ~ /<position x=/ && current_macro && current_connection {
+            match(line, /x="([^"]*)"/, x_arr)
+            match(line, /y="([^"]*)"/, y_arr)
+            match(line, /z="([^"]*)"/, z_arr)
 
             pending_x = x_arr[1]
             pending_y = y_arr[1]
             pending_z = z_arr[1]
         }
-        /<macro ref="[^"]*" connection="sector"/ && current_macro && current_connection {
-            match($0, /ref="([^"]*)"/, ref_arr)
+        line ~ /<macro ref="[^"]*" connection="sector"/ && current_macro && current_connection {
+            match(line, /ref="([^"]*)"/, ref_arr)
             current_zone_ref = ref_arr[1]
 
             # Skip if sector macro is in exclude list.
@@ -425,22 +532,48 @@ process_zones_file() {
         
         # Extract zone macro connection positions from actual zones.xml structure.
         awk -v factor="$FACTOR" -v maxr="$MAX_SECTOR_RADIUS" -v margin="$CLAMP_MARGIN" '
+        function strip_comments(raw, out, start, rest, finish) {
+            out = raw
+            while (1) {
+                if (in_comment) {
+                    finish = index(out, "-->")
+                    if (finish == 0) return ""
+                    out = substr(out, finish + 3)
+                    in_comment = 0
+                }
+                start = index(out, "<!--")
+                if (start == 0) break
+                rest = substr(out, start + 4)
+                finish = index(rest, "-->")
+                if (finish == 0) {
+                    out = substr(out, 1, start - 1)
+                    in_comment = 1
+                    break
+                }
+                out = substr(out, 1, start - 1) substr(rest, finish + 3)
+            }
+            return out
+        }
         BEGIN {
             current_macro = ""
             current_conn_name = ""
             current_conn_ref = ""
         }
-        /<macro name="[^"]*" class="zone">/ {
-            match($0, /name="([^"]*)"/, arr)
+        {
+            line = strip_comments($0)
+            if (line == "") next
+        }
+        line ~ /<macro name="[^"]*" class="zone">/ {
+            match(line, /name="([^"]*)"/, arr)
             current_macro = arr[1]
         }
-        /<connection / {
+        line ~ /<connection / {
             current_conn_name = ""
             current_conn_ref = ""
-            if (match($0, /name="([^"]*)"/, n_arr)) current_conn_name = n_arr[1]
-            if (match($0, /ref="([^"]*)"/, r_arr)) current_conn_ref = r_arr[1]
+            if (match(line, /name="([^"]*)"/, n_arr)) current_conn_name = n_arr[1]
+            if (match(line, /ref="([^"]*)"/, r_arr)) current_conn_ref = r_arr[1]
         }
-        /<position x=/ && current_macro {
+        line ~ /<position x=/ && current_macro {
             # Ignore gate-only SHCon zone macros to avoid touching critical travel links.
             if (index(current_macro, "SHCon") > 0) next
 
@@ -453,9 +586,9 @@ process_zones_file() {
             if (index(current_conn_name, "Gate") > 0) next
             if (index(current_conn_ref, "gate") > 0) next
 
-            match($0, /x="([^"]*)"/, x_arr)
-            match($0, /y="([^"]*)"/, y_arr)
-            match($0, /z="([^"]*)"/, z_arr)
+            match(line, /x="([^"]*)"/, x_arr)
+            match(line, /y="([^"]*)"/, y_arr)
+            match(line, /z="([^"]*)"/, z_arr)
 
             x = x_arr[1]
             y = y_arr[1]
@@ -508,6 +641,28 @@ process_god_file() {
         echo '<diff>'
 
         awk -v exclude="$exclude_pattern" -v exclude_keywords="$EXCLUDE_NON_OPEN_WORLD_REGEX" -v sectors_file="$sectors_file" -v zones_file="$zones_file" '
+        function strip_comments(raw, out, start, rest, finish) {
+            out = raw
+            while (1) {
+                if (in_comment) {
+                    finish = index(out, "-->")
+                    if (finish == 0) return ""
+                    out = substr(out, finish + 3)
+                    in_comment = 0
+                }
+                start = index(out, "<!--")
+                if (start == 0) break
+                rest = substr(out, start + 4)
+                finish = index(rest, "-->")
+                if (finish == 0) {
+                    out = substr(out, 1, start - 1)
+                    in_comment = 1
+                    break
+                }
+                out = substr(out, 1, start - 1) substr(rest, finish + 3)
+            }
+            return out
+        }
         BEGIN {
             current_sector = ""
             current_connection = ""
@@ -523,39 +678,43 @@ process_god_file() {
             current_location_macro = ""
         }
         FILENAME == zones_file {
-            if ($0 ~ /<macro name="[^"]*" class="zone">/) {
-                match($0, /name="([^"]*)"/, arr)
+            line = strip_comments($0)
+            if (line == "") next
+            if (line ~ /<macro name="[^"]*" class="zone">/) {
+                match(line, /name="([^"]*)"/, arr)
                 current_zone = tolower(arr[1])
                 if (index(current_zone, "shcon") > 0) protected_zone[current_zone] = 1
             }
-            if ($0 ~ /<connection / && current_zone != "") {
-                if (index($0, "ref=\"gates\"") > 0) protected_zone[current_zone] = 1
+            if (line ~ /<connection / && current_zone != "") {
+                if (index(line, "ref=\"gates\"") > 0) protected_zone[current_zone] = 1
             }
-            if ($0 ~ /<\/macro>/ && current_zone != "") {
+            if (line ~ /<\/macro>/ && current_zone != "") {
                 current_zone = ""
             }
             next
         }
         FILENAME == sectors_file {
-            if ($0 ~ /<macro name="[^"]*" class="sector">/) {
-                match($0, /name="([^"]*)"/, arr)
+            line = strip_comments($0)
+            if (line == "") next
+            if (line ~ /<macro name="[^"]*" class="sector">/) {
+                match(line, /name="([^"]*)"/, arr)
                 current_sector = tolower(arr[1])
             }
-            if (current_sector != "" && $0 ~ /<connection /) {
-                if (index($0, "Highway") > 0 || index($0, "ref=\"zonehighways\"") > 0) {
+            if (current_sector != "" && line ~ /<connection /) {
+                if (index(line, "Highway") > 0 || index(line, "ref=\"zonehighways\"") > 0) {
                     highway_sector[current_sector] = 1
                 }
                 current_connection = ""
                 pending_x = ""
                 pending_z = ""
-                if (match($0, /name="([^"]*)"/, conn_arr)) current_connection = conn_arr[1]
+                if (match(line, /name="([^"]*)"/, conn_arr)) current_connection = conn_arr[1]
             }
-            if (current_sector != "" && current_connection != "" && $0 ~ /<position x=/) {
-                if (match($0, /x="([^"]*)"/, x_arr)) pending_x = x_arr[1]
-                if (match($0, /z="([^"]*)"/, z_arr)) pending_z = z_arr[1]
+            if (current_sector != "" && current_connection != "" && line ~ /<position x=/) {
+                if (match(line, /x="([^"]*)"/, x_arr)) pending_x = x_arr[1]
+                if (match(line, /z="([^"]*)"/, z_arr)) pending_z = z_arr[1]
             }
-            if (current_sector != "" && current_connection != "" && $0 ~ /<macro ref="[^"]*" connection="sector"/) {
-                if (match($0, /ref="([^"]*)"/, ref_arr)) {
+            if (current_sector != "" && current_connection != "" && line ~ /<macro ref="[^"]*" connection="sector"/) {
+                if (match(line, /ref="([^"]*)"/, ref_arr)) {
                     zone_name = tolower(ref_arr[1])
                     zone_parent[zone_name] = current_sector
                     zone_offset_x[zone_name] = pending_x
@@ -564,57 +723,61 @@ process_god_file() {
             }
             next
         }
-        /<gamestart ref="[^"]*"/ {
-            in_gamestart = 1
-            if (match($0, /ref="([^"]*)"/, arr)) gamestart_ref = arr[1]
+        {
+            line = strip_comments($0)
+            if (line == "") next
         }
-        /<\/gamestart>/ {
+        line ~ /<gamestart ref="[^"]*"/ {
+            in_gamestart = 1
+            if (match(line, /ref="([^"]*)"/, arr)) gamestart_ref = arr[1]
+        }
+        line ~ /<\/gamestart>/ {
             in_gamestart = 0
             gamestart_ref = ""
             section = ""
             current_station = ""
             current_object = ""
         }
-        /<stations>/ { section = "stations" }
-        /<\/stations>/ {
+        line ~ /<stations>/ { section = "stations" }
+        line ~ /<\/stations>/ {
             if (section == "stations") {
                 section = ""
                 current_station = ""
                 current_location_macro = ""
             }
         }
-        /<objects>/ { section = "objects" }
-        /<\/objects>/ {
+        line ~ /<objects>/ { section = "objects" }
+        line ~ /<\/objects>/ {
             if (section == "objects") {
                 section = ""
                 current_object = ""
                 current_location_macro = ""
             }
         }
-        /<station id="[^"]*"/ {
-            if (match($0, /id="([^"]*)"/, arr)) current_station = arr[1]
+        line ~ /<station id="[^"]*"/ {
+            if (match(line, /id="([^"]*)"/, arr)) current_station = arr[1]
             current_location_macro = ""
         }
-        /<\/station>/ {
+        line ~ /<\/station>/ {
             current_station = ""
             current_location_class = ""
             current_location_macro = ""
         }
-        /<object id="[^"]*"/ {
-            if (match($0, /id="([^"]*)"/, arr)) current_object = arr[1]
+        line ~ /<object id="[^"]*"/ {
+            if (match(line, /id="([^"]*)"/, arr)) current_object = arr[1]
             current_location_class = ""
             current_location_macro = ""
         }
-        /<\/object>/ {
+        line ~ /<\/object>/ {
             current_object = ""
             current_location_class = ""
             current_location_macro = ""
         }
-        /<location class="(zone|sector)"/ {
-            if (match($0, /class="([^"]*)"/, c_arr)) current_location_class = c_arr[1]
-            if (match($0, /macro="([^"]*)"/, l_arr)) current_location_macro = l_arr[1]
+        line ~ /<location class="(zone|sector)"/ {
+            if (match(line, /class="([^"]*)"/, c_arr)) current_location_class = c_arr[1]
+            if (match(line, /macro="([^"]*)"/, l_arr)) current_location_macro = l_arr[1]
         }
-        /<position x=/ {
+        line ~ /<position x=/ {
             x = ""
             y = ""
             z = ""
@@ -629,18 +792,18 @@ process_god_file() {
             if (current_object != "" && tolower(current_object) ~ exclude_keywords) next
             if (current_location_macro != "" && tolower(current_location_macro) ~ exclude_keywords) next
 
-            if (match($0, /x="([^"]*)"/, ax)) x = ax[1]
-            if (match($0, /y="([^"]*)"/, ay)) y = ay[1]
-            if (match($0, /z="([^"]*)"/, az)) z = az[1]
+            if (match(line, /x="([^"]*)"/, ax)) x = ax[1]
+            if (match(line, /y="([^"]*)"/, ay)) y = ay[1]
+            if (match(line, /z="([^"]*)"/, az)) z = az[1]
             if (x == "" || z == "") next
 
             # Skip entries that are not plain numeric coordinates.
             if (x !~ /^[-+]?[0-9]*\.?[0-9]+$/) next
             if (z !~ /^[-+]?[0-9]*\.?[0-9]+$/) next
 
-            if (match($0, /yaw="([^"]*)"/, aw)) yaw = aw[1]
-            if (match($0, /pitch="([^"]*)"/, ap)) pitch = ap[1]
-            if (match($0, /roll="([^"]*)"/, ar)) roll = ar[1]
+            if (match(line, /yaw="([^"]*)"/, aw)) yaw = aw[1]
+            if (match(line, /pitch="([^"]*)"/, ap)) pitch = ap[1]
+            if (match(line, /roll="([^"]*)"/, ar)) roll = ar[1]
 
             sel = ""
             if (current_station != "") {
