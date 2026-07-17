@@ -38,6 +38,14 @@ bash generate.sh 3.0
 
 You can also run without argument to choose interactively.
 
+By default, the generator reads input files from `./_default`.
+
+You can also override the source data directory with `INPUT_DIR`, for example to process extracted files or sibling extensions without copying them into `_default` first:
+
+```bash
+INPUT_DIR=/path/to/x4-or-mod-root bash generate.sh 3.0
+```
+
 ### 3) Enable in X4
 
 1. Start X4
@@ -46,30 +54,47 @@ You can also run without argument to choose interactively.
 
 ## What gets generated
 
-The script generates diffs for base game and installed DLC in:
+The script generates diffs for base game and input extensions in:
 
 - `maps/xu_ep2_universe/*.xml`
 - `libraries/god.xml`
-- `extensions/ego_dlc_*/...`
+- `extensions/<extension_name>/...`
 
-It includes DLC naming special-cases internally (Split=`dlc4`, Timelines=`dlc7`).
+It includes DLC naming special-cases internally (Split=`dlc4`, Timelines=`dlc7`), also supports community mods that use plain `sectors.xml` / `zones.xml`, and skips the `Distances` extension itself when scanning input extensions.
 
 ## Hazard Exclusions
 
 Some hazardous sectors are excluded on purpose to avoid unsafe station placement (for example Tide/radiation sectors).
 
+Story, tutorial and scenario-only content found in `god.xml` is also excluded automatically because it is not part of the open world.
+
 You can adjust this in `generate.sh` via `EXCLUDE_SECTORS`.
+
+## Travel Network Safeguards
+
+To keep gates, highways and travel links functional, the generator intentionally preserves some travel-critical zones:
+
+- gate zones
+- highway entry/exit zones
+- related protected travel zones
+
+Those zones are not moved in the same way as regular open-world zones.
+
+For fixed GOD placements (`god.xml` entries with explicit `<position ... />`), the generator still compensates for protected highway/gate zones so stations do not stay artificially close to the original travel network layout.
+
+Procedural GOD placements that only define location rules without explicit coordinates remain driven by the game and may stay closer to protected travel zones.
 
 ## Update Workflow (after patch/new extraction)
 
 1. Re-run `extract_default.sh` from extracted root
-2. Replace `extensions/Distances/_default`
+2. Refresh `extensions/Distances/_default` or point `INPUT_DIR` to the updated source directory
 3. Re-run `generate.sh`
 
 ## Notes
 
 - This mod only generates map/GOD diffs
 - No AI/jobs overhaul
+- Some procedural station placements may remain closer to highways or gates by design, to preserve stable travel topology
 
 # Requirements ?
 - NONE

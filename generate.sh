@@ -5,6 +5,7 @@
 #
 # Usage:
 #   ./generate.sh [factor]
+#   INPUT_DIR=/path/to/input ./generate.sh [factor]
 #
 # Examples:
 #   ./generate.sh           # Interactive prompt
@@ -14,9 +15,18 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VANILLA_SECTORS="${SCRIPT_DIR}/_default/maps/xu_ep2_universe/sectors.xml"
-VANILLA_ZONES="${SCRIPT_DIR}/_default/maps/xu_ep2_universe/zones.xml"
-VANILLA_GOD="${SCRIPT_DIR}/_default/libraries/god.xml"
+DEFAULT_INPUT_DIR="${SCRIPT_DIR}/_default"
+INPUT_DIR="${INPUT_DIR:-$DEFAULT_INPUT_DIR}"
+
+if [[ ! -d "$INPUT_DIR" ]]; then
+    echo "Error: Invalid INPUT_DIR '$INPUT_DIR'" >&2
+    exit 1
+fi
+
+INPUT_DIR="$(cd "$INPUT_DIR" && pwd)"
+VANILLA_SECTORS="${INPUT_DIR}/maps/xu_ep2_universe/sectors.xml"
+VANILLA_ZONES="${INPUT_DIR}/maps/xu_ep2_universe/zones.xml"
+VANILLA_GOD="${INPUT_DIR}/libraries/god.xml"
 OUTPUT_SECTORS="${SCRIPT_DIR}/maps/xu_ep2_universe/sectors.xml"
 OUTPUT_ZONES="${SCRIPT_DIR}/maps/xu_ep2_universe/zones.xml"
 OUTPUT_GOD="${SCRIPT_DIR}/libraries/god.xml"
@@ -44,13 +54,13 @@ if ! [[ "$FACTOR" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
 fi
 
 if [[ ! -f "$VANILLA_SECTORS" ]]; then
-    echo "Error: Vanilla file not found: $VANILLA_SECTORS" >&2
-    echo "Please run: cd /path/to/X4 && bash extensions/Distances/extract_default.sh" >&2
+    echo "Error: Input sectors file not found: $VANILLA_SECTORS" >&2
+    echo "Provide INPUT_DIR or generate ${DEFAULT_INPUT_DIR} with: cd /path/to/X4 && bash extensions/Distances/extract_default.sh" >&2
     exit 1
 fi
 
 if [[ ! -f "$VANILLA_ZONES" ]]; then
-    echo "Warning: zones.xml not found: $VANILLA_ZONES" >&2
+    echo "Warning: input zones.xml not found: $VANILLA_ZONES" >&2
 fi
 
 # Hazard sectors to exclude from modifications.
@@ -62,8 +72,11 @@ EXCLUDE_SECTORS=(
     "[Cc]luster_500_[Ss]ector002_macro" # Avarice
     "[Cc]luster_500_[Ss]ector003_macro" # Avarice
 )
+# Exclude story, tutorial and scenario-only content from god.xml because it is not part of the open world.
+EXCLUDE_NON_OPEN_WORLD_REGEX='story|tutorial|scenario'
 
 echo "Generating with factor $FACTOR..."
+echo "Using input directory: $INPUT_DIR"
 echo "Excluding hazard sectors..."
 echo ""
 
@@ -71,8 +84,8 @@ echo ""
 echo "Cleaning up old generated files..."
 rm -f "${SCRIPT_DIR}/maps/xu_ep2_universe"/*.xml 2>/dev/null || true
 rm -f "${SCRIPT_DIR}/libraries/god.xml" 2>/dev/null || true
-find "${SCRIPT_DIR}/extensions"/ego_dlc_*/maps/xu_ep2_universe -name "*.xml" -type f -delete 2>/dev/null || true
-find "${SCRIPT_DIR}/extensions"/ego_dlc_*/libraries -name "god.xml" -type f -delete 2>/dev/null || true
+find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/maps/xu_ep2_universe/*.xml" -type f -delete 2>/dev/null || true
+find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/libraries/god.xml" -type f -delete 2>/dev/null || true
 echo ""
 
 # Build exclusion pattern
@@ -484,20 +497,72 @@ process_zones_file() {
 process_god_file() {
     local input_file="$1"
     local output_file="$2"
+    local sectors_file="${3:-}"
+    local zones_file="${4:-}"
+    local sectors_scan="${sectors_file:-/dev/null}"
+    local zones_scan="${zones_file:-/dev/null}"
 
     {
         echo '<?xml version="1.0" encoding="utf-8"?>'
         echo '<!-- Distances Mod - GOD fixed-position scaling -->'
         echo '<diff>'
 
-        awk -v exclude="$exclude_pattern" '
+        awk -v exclude="$exclude_pattern" -v exclude_keywords="$EXCLUDE_NON_OPEN_WORLD_REGEX" -v sectors_file="$sectors_file" -v zones_file="$zones_file" '
         BEGIN {
+            current_sector = ""
+            current_connection = ""
+            pending_x = ""
+            pending_z = ""
+            current_zone = ""
             in_gamestart = 0
             gamestart_ref = ""
             section = ""
             current_station = ""
             current_object = ""
+            current_location_class = ""
             current_location_macro = ""
+        }
+        FILENAME == zones_file {
+            if ($0 ~ /<macro name="[^"]*" class="zone">/) {
+                match($0, /name="([^"]*)"/, arr)
+                current_zone = tolower(arr[1])
+                if (index(current_zone, "shcon") > 0) protected_zone[current_zone] = 1
+            }
+            if ($0 ~ /<connection / && current_zone != "") {
+                if (index($0, "ref=\"gates\"") > 0) protected_zone[current_zone] = 1
+            }
+            if ($0 ~ /<\/macro>/ && current_zone != "") {
+                current_zone = ""
+            }
+            next
+        }
+        FILENAME == sectors_file {
+            if ($0 ~ /<macro name="[^"]*" class="sector">/) {
+                match($0, /name="([^"]*)"/, arr)
+                current_sector = tolower(arr[1])
+            }
+            if (current_sector != "" && $0 ~ /<connection /) {
+                if (index($0, "Highway") > 0 || index($0, "ref=\"zonehighways\"") > 0) {
+                    highway_sector[current_sector] = 1
+                }
+                current_connection = ""
+                pending_x = ""
+                pending_z = ""
+                if (match($0, /name="([^"]*)"/, conn_arr)) current_connection = conn_arr[1]
+            }
+            if (current_sector != "" && current_connection != "" && $0 ~ /<position x=/) {
+                if (match($0, /x="([^"]*)"/, x_arr)) pending_x = x_arr[1]
+                if (match($0, /z="([^"]*)"/, z_arr)) pending_z = z_arr[1]
+            }
+            if (current_sector != "" && current_connection != "" && $0 ~ /<macro ref="[^"]*" connection="sector"/) {
+                if (match($0, /ref="([^"]*)"/, ref_arr)) {
+                    zone_name = tolower(ref_arr[1])
+                    zone_parent[zone_name] = current_sector
+                    zone_offset_x[zone_name] = pending_x
+                    zone_offset_z[zone_name] = pending_z
+                }
+            }
+            next
         }
         /<gamestart ref="[^"]*"/ {
             in_gamestart = 1
@@ -532,17 +597,21 @@ process_god_file() {
         }
         /<\/station>/ {
             current_station = ""
+            current_location_class = ""
             current_location_macro = ""
         }
         /<object id="[^"]*"/ {
             if (match($0, /id="([^"]*)"/, arr)) current_object = arr[1]
+            current_location_class = ""
             current_location_macro = ""
         }
         /<\/object>/ {
             current_object = ""
+            current_location_class = ""
             current_location_macro = ""
         }
         /<location class="(zone|sector)"/ {
+            if (match($0, /class="([^"]*)"/, c_arr)) current_location_class = c_arr[1]
             if (match($0, /macro="([^"]*)"/, l_arr)) current_location_macro = l_arr[1]
         }
         /<position x=/ {
@@ -555,6 +624,10 @@ process_god_file() {
 
             # Keep same exclusion behavior as sector/zones processing.
             if (exclude != "" && current_location_macro != "" && match(current_location_macro, exclude)) next
+            if (gamestart_ref != "" && tolower(gamestart_ref) ~ exclude_keywords) next
+            if (current_station != "" && tolower(current_station) ~ exclude_keywords) next
+            if (current_object != "" && tolower(current_object) ~ exclude_keywords) next
+            if (current_location_macro != "" && tolower(current_location_macro) ~ exclude_keywords) next
 
             if (match($0, /x="([^"]*)"/, ax)) x = ax[1]
             if (match($0, /y="([^"]*)"/, ay)) y = ay[1]
@@ -585,15 +658,64 @@ process_god_file() {
             }
 
             if (sel != "") {
-                print sel "\t" x "\t" y "\t" z "\t" yaw "\t" pitch "\t" roll
+                parent_sector = ""
+                has_highway = 0
+                protected = 0
+                offset_x = "0"
+                offset_z = "0"
+
+                location_key = tolower(current_location_macro)
+
+                if (current_location_class == "sector" && location_key in highway_sector) {
+                    has_highway = 1
+                } else if (current_location_class == "zone") {
+                    if (location_key in zone_parent) {
+                        parent_sector = zone_parent[location_key]
+                        if (parent_sector in highway_sector) has_highway = 1
+                    }
+                    if (location_key in protected_zone && location_key in zone_offset_x && location_key in zone_offset_z) {
+                        protected = 1
+                        offset_x = zone_offset_x[location_key]
+                        offset_z = zone_offset_z[location_key]
+                    }
+                }
+
+                yaw_out = (yaw == "" ? "__EMPTY__" : yaw)
+                pitch_out = (pitch == "" ? "__EMPTY__" : pitch)
+                roll_out = (roll == "" ? "__EMPTY__" : roll)
+
+                print sel "\t" x "\t" y "\t" z "\t" yaw_out "\t" pitch_out "\t" roll_out "\t" has_highway "\t" protected "\t" offset_x "\t" offset_z
             }
         }
-        ' "$input_file" | while IFS=$'\t' read -r sel x y z yaw pitch roll; do
-            new_x=$(awk -v v="$x" -v f="$FACTOR" 'BEGIN { print (v * f) }')
-            new_z=$(awk -v v="$z" -v f="$FACTOR" 'BEGIN { print (v * f) }')
+        ' "$sectors_scan" "$zones_scan" "$input_file" | while IFS=$'\t' read -r sel x y z yaw pitch roll has_highway protected offset_x offset_z; do
+            if [[ "$yaw" == "__EMPTY__" ]]; then
+                yaw=""
+            fi
+            if [[ "$pitch" == "__EMPTY__" ]]; then
+                pitch=""
+            fi
+            if [[ "$roll" == "__EMPTY__" ]]; then
+                roll=""
+            fi
 
-            clamped_main=$(clamp_xz "$new_x" "$new_z")
-            IFS='|' read -r new_x new_z _ <<< "$clamped_main"
+            effective_factor="$FACTOR"
+            if [[ "$has_highway" == "1" ]]; then
+                effective_factor=$(echo "$FACTOR * $HIGHWAY_SECTOR_BONUS" | bc)
+            fi
+
+            if [[ "$protected" == "1" ]]; then
+                abs_x=$(awk -v zone="$offset_x" -v local="$x" -v f="$effective_factor" 'BEGIN { print ((zone + local) * f) }')
+                abs_z=$(awk -v zone="$offset_z" -v local="$z" -v f="$effective_factor" 'BEGIN { print ((zone + local) * f) }')
+                clamped_main=$(clamp_xz "$abs_x" "$abs_z")
+                IFS='|' read -r clamped_x clamped_z _ <<< "$clamped_main"
+                new_x=$(awk -v abs="$clamped_x" -v zone="$offset_x" 'BEGIN { print (abs - zone) }')
+                new_z=$(awk -v abs="$clamped_z" -v zone="$offset_z" 'BEGIN { print (abs - zone) }')
+            else
+                new_x=$(awk -v v="$x" -v f="$effective_factor" 'BEGIN { print (v * f) }')
+                new_z=$(awk -v v="$z" -v f="$effective_factor" 'BEGIN { print (v * f) }')
+                clamped_main=$(clamp_xz "$new_x" "$new_z")
+                IFS='|' read -r new_x new_z _ <<< "$clamped_main"
+            fi
 
             y_out="$y"
             if [[ -z "$y_out" ]]; then
@@ -649,7 +771,7 @@ fi
 # Process base game GOD
 if [[ -f "$VANILLA_GOD" ]]; then
     mkdir -p "$(dirname "$OUTPUT_GOD")"
-    process_god_file "$VANILLA_GOD" "$OUTPUT_GOD"
+    process_god_file "$VANILLA_GOD" "$OUTPUT_GOD" "$VANILLA_SECTORS" "$VANILLA_ZONES"
     modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$OUTPUT_GOD")
     total_god_positions_modified=$((total_god_positions_modified + modified))
     echo "✓ Base game GOD: $modified fixed positions"
@@ -658,31 +780,44 @@ else
 fi
 
 echo ""
-echo "Processing DLC extensions..."
+echo "Processing input extensions..."
 echo ""
 
-# Process DLC sectors and zones
-if [[ -d "${SCRIPT_DIR}/_default/extensions" ]]; then
-    for dlc_dir in "${SCRIPT_DIR}"/_default/extensions/ego_dlc_*; do
+# Process extension sectors and zones from input directory.
+if [[ -d "${INPUT_DIR}/extensions" ]]; then
+    for dlc_dir in "${INPUT_DIR}"/extensions/*; do
         if [[ -d "$dlc_dir" ]]; then
             dlc_name=$(basename "$dlc_dir")
-            dlc_prefix=$(get_dlc_map_prefix "$dlc_name")
+            dlc_name_lc=$(printf '%s' "$dlc_name" | tr '[:upper:]' '[:lower:]')
+            if [[ "$dlc_name_lc" == "distances" ]]; then
+                continue
+            fi
 
-            if [[ ! -f "${dlc_dir}/maps/xu_ep2_universe/${dlc_prefix}_sectors.xml" ]]; then
-                detected_file=$(find "${dlc_dir}/maps/xu_ep2_universe" -maxdepth 1 -type f -name "*_sectors.xml" 2>/dev/null | head -n 1)
+            dlc_prefix=$(get_dlc_map_prefix "$dlc_name")
+            map_dir="${dlc_dir}/maps/xu_ep2_universe"
+            sectors_basename="${dlc_prefix}_sectors.xml"
+            zones_basename="${dlc_prefix}_zones.xml"
+
+            if [[ -f "${map_dir}/${sectors_basename}" ]]; then
+                :
+            elif [[ -f "${map_dir}/sectors.xml" ]]; then
+                sectors_basename="sectors.xml"
+                zones_basename="zones.xml"
+            else
+                detected_file=$(find "$map_dir" -maxdepth 1 -type f \( -name "*_sectors.xml" -o -name "sectors.xml" \) 2>/dev/null | head -n 1)
                 if [[ -n "$detected_file" ]]; then
-                    dlc_prefix=$(basename "$detected_file")
-                    dlc_prefix="${dlc_prefix%_sectors.xml}"
+                    sectors_basename=$(basename "$detected_file")
+                    zones_basename="${sectors_basename%sectors.xml}zones.xml"
                 fi
             fi
-            
-            dlc_sectors="${dlc_dir}/maps/xu_ep2_universe/${dlc_prefix}_sectors.xml"
-            dlc_zones="${dlc_dir}/maps/xu_ep2_universe/${dlc_prefix}_zones.xml"
+
+            dlc_sectors="${map_dir}/${sectors_basename}"
+            dlc_zones="${map_dir}/${zones_basename}"
             dlc_god="${dlc_dir}/libraries/god.xml"
             
             if [[ -f "$dlc_sectors" ]]; then
-                dlc_sectors_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${dlc_prefix}_sectors.xml"
-                dlc_zones_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${dlc_prefix}_zones.xml"
+                dlc_sectors_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${sectors_basename}"
+                dlc_zones_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${zones_basename}"
                 dlc_god_output="${SCRIPT_DIR}/extensions/${dlc_name}/libraries/god.xml"
                 
                 mkdir -p "$(dirname "$dlc_sectors_output")"
@@ -707,7 +842,7 @@ if [[ -d "${SCRIPT_DIR}/_default/extensions" ]]; then
                 god_modified=0
                 if [[ -f "$dlc_god" ]]; then
                     mkdir -p "$(dirname "$dlc_god_output")"
-                    process_god_file "$dlc_god" "$dlc_god_output"
+                    process_god_file "$dlc_god" "$dlc_god_output" "$dlc_sectors" "$dlc_zones"
                     god_modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$dlc_god_output")
                     total_god_positions_modified=$((total_god_positions_modified + god_modified))
                 fi
@@ -721,7 +856,7 @@ if [[ -d "${SCRIPT_DIR}/_default/extensions" ]]; then
         fi
     done
 else
-    echo "⚠ No DLC extensions directory found"
+    echo "⚠ No input extensions directory found"
 fi
 
 # Summary
