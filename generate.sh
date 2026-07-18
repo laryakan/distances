@@ -113,16 +113,50 @@ EXTRA_PHASE_B=-0.04
 # Additional distance multiplier for non-travel objects in sectors that contain highways.
 # Helps rebalance "favored" sectors while still leaving gates/highways untouched.
 HIGHWAY_SECTOR_BONUS=1.2
+# Some vanilla/DLC sectors already have zone/gate offsets exceeding MAX_SECTOR_RADIUS
+# (e.g. Hatikvah's Choice I has a vanilla zone at ~237000 and a gate at ~261000).
+# Clamping those to a flat 180000 flattens the whole sector onto a single circle and
+# defeats the purpose of the mod. Instead, the effective per-sector ceiling never goes
+# below the sector's own vanilla extent (with headroom), while an absolute safety
+# ceiling still guards against pathological blow-ups on extreme outlier sectors.
+NATURAL_RADIUS_HEADROOM=1.15
+SAFETY_MAX_RADIUS=2000000
+
+# Given a sector's vanilla natural radius (largest untouched offset found in that
+# sector, 0/empty if unknown), compute the effective clamp ceiling to use for it.
+effective_max_radius() {
+    local natural="${1:-0}"
+
+    awk -v natural="$natural" -v floor="$MAX_SECTOR_RADIUS" -v headroom="$NATURAL_RADIUS_HEADROOM" -v safety="$SAFETY_MAX_RADIUS" '
+    BEGIN {
+        OFMT = "%.6f"
+        eff = floor
+        if (natural + 0 > 0) {
+            candidate = natural * headroom
+            if (candidate > eff) eff = candidate
+        }
+        if (eff > safety) eff = safety
+        print eff
+    }'
+}
 
 # Clamp X/Z to a safe radius from sector center.
 # Optional phase (radians) spreads points tangentially to reduce overlap.
+# Optional 4th arg overrides the clamp ceiling (defaults to MAX_SECTOR_RADIUS).
 clamp_xz() {
     local x="$1"
     local z="$2"
     local phase="${3:-0}"
+    local maxr="${4:-$MAX_SECTOR_RADIUS}"
 
-    awk -v x="$x" -v z="$z" -v maxr="$MAX_SECTOR_RADIUS" -v margin="$CLAMP_MARGIN" -v phase="$phase" '
+    awk -v x="$x" -v z="$z" -v maxr="$maxr" -v margin="$CLAMP_MARGIN" -v phase="$phase" '
     BEGIN {
+        # Force plain decimal formatting: with the dynamic per-sector ceiling,
+        # results can exceed 999999 and awk default (%.6g) would switch to
+        # scientific notation (e.g. "1.04e+06"), which bc cannot parse downstream.
+        CONVFMT = "%.6f"
+        OFMT = "%.6f"
+
         r = sqrt((x * x) + (z * z))
         if (r == 0) {
             print "0|0|0"
@@ -407,6 +441,16 @@ process_sectors_file() {
                     highway_sector[sector_macro] = 1
                 }
             }
+            # Track the sector natural extent (zones + gates + highways) so the
+            # clamp never shrinks a sector below what it already is in vanilla data.
+            if (sector_macro != "" && line ~ /<position x=/) {
+                match(line, /x="([^"]*)"/, nx_arr)
+                match(line, /z="([^"]*)"/, nz_arr)
+                if (nx_arr[1] != "" && nz_arr[1] != "") {
+                    nr = sqrt((nx_arr[1] * nx_arr[1]) + (nz_arr[1] * nz_arr[1]))
+                    if (nr > sector_natural_radius[sector_macro]) sector_natural_radius[sector_macro] = nr
+                }
+            }
             next
         }
         {
@@ -454,20 +498,23 @@ process_sectors_file() {
             if (pending_x != "" && pending_y != "" && pending_z != "") {
                 is_resource = (current_zone_ref in resource_map) ? 1 : 0
                 has_highway = (current_macro in highway_sector) ? 1 : 0
-                print current_macro "|" current_connection "|" pending_x "|" pending_y "|" pending_z "|" current_zone_ref "|" is_resource "|" has_highway
+                natural_radius = (current_macro in sector_natural_radius) ? sector_natural_radius[current_macro] : 0
+                print current_macro "|" current_connection "|" pending_x "|" pending_y "|" pending_z "|" current_zone_ref "|" is_resource "|" has_highway "|" natural_radius
             }
         }
-        ' "$input_file" "$input_file" | while IFS='|' read -r macro conn x y z zone_ref is_resource has_highway; do
+        ' "$input_file" "$input_file" | while IFS='|' read -r macro conn x y z zone_ref is_resource has_highway natural_radius; do
             # Calculate new coordinates using bc for floating point
             effective_factor="$FACTOR"
             if [[ "$has_highway" == "1" ]]; then
                 effective_factor=$(echo "$FACTOR * $HIGHWAY_SECTOR_BONUS" | bc)
             fi
 
+            effective_maxr=$(effective_max_radius "$natural_radius")
+
             new_x=$(echo "$x * $effective_factor" | bc)
             new_z=$(echo "$z * $effective_factor" | bc)
 
-            clamped_main=$(clamp_xz "$new_x" "$new_z")
+            clamped_main=$(clamp_xz "$new_x" "$new_z" "" "$effective_maxr")
             IFS='|' read -r new_x new_z _ <<< "$clamped_main"
             
             # Generate diff entry
@@ -488,9 +535,9 @@ process_sectors_file() {
                 extra_conn="${conn}_resourceextra_a"
                 extra_conn2="${conn}_resourceextra_b"
 
-                clamped_a=$(clamp_xz "$extra_x" "$extra_z" "$EXTRA_PHASE_A")
+                clamped_a=$(clamp_xz "$extra_x" "$extra_z" "$EXTRA_PHASE_A" "$effective_maxr")
                 IFS='|' read -r extra_x extra_z _ <<< "$clamped_a"
-                clamped_b=$(clamp_xz "$extra_x2" "$extra_z2" "$EXTRA_PHASE_B")
+                clamped_b=$(clamp_xz "$extra_x2" "$extra_z2" "$EXTRA_PHASE_B" "$effective_maxr")
                 IFS='|' read -r extra_x2 extra_z2 _ <<< "$clamped_b"
 
                 add_sel="/macros/macro[@name='$macro']/connections"
@@ -712,6 +759,10 @@ process_god_file() {
             if (current_sector != "" && current_connection != "" && line ~ /<position x=/) {
                 if (match(line, /x="([^"]*)"/, x_arr)) pending_x = x_arr[1]
                 if (match(line, /z="([^"]*)"/, z_arr)) pending_z = z_arr[1]
+                if (pending_x != "" && pending_z != "") {
+                    nr = sqrt((pending_x * pending_x) + (pending_z * pending_z))
+                    if (nr > sector_natural_radius[current_sector]) sector_natural_radius[current_sector] = nr
+                }
             }
             if (current_sector != "" && current_connection != "" && line ~ /<macro ref="[^"]*" connection="sector"/) {
                 if (match(line, /ref="([^"]*)"/, ref_arr)) {
@@ -847,10 +898,17 @@ process_god_file() {
                 pitch_out = (pitch == "" ? "__EMPTY__" : pitch)
                 roll_out = (roll == "" ? "__EMPTY__" : roll)
 
-                print sel "\t" x "\t" y "\t" z "\t" yaw_out "\t" pitch_out "\t" roll_out "\t" has_highway "\t" protected "\t" offset_x "\t" offset_z
+                natural_radius = 0
+                if (current_location_class == "sector" && location_key in sector_natural_radius) {
+                    natural_radius = sector_natural_radius[location_key]
+                } else if (parent_sector != "" && parent_sector in sector_natural_radius) {
+                    natural_radius = sector_natural_radius[parent_sector]
+                }
+
+                print sel "\t" x "\t" y "\t" z "\t" yaw_out "\t" pitch_out "\t" roll_out "\t" has_highway "\t" protected "\t" offset_x "\t" offset_z "\t" natural_radius
             }
         }
-        ' "$sectors_scan" "$zones_scan" "$input_file" | while IFS=$'\t' read -r sel x y z yaw pitch roll has_highway protected offset_x offset_z; do
+        ' "$sectors_scan" "$zones_scan" "$input_file" | while IFS=$'\t' read -r sel x y z yaw pitch roll has_highway protected offset_x offset_z natural_radius; do
             if [[ "$yaw" == "__EMPTY__" ]]; then
                 yaw=""
             fi
@@ -866,17 +924,19 @@ process_god_file() {
                 effective_factor=$(echo "$FACTOR * $HIGHWAY_SECTOR_BONUS" | bc)
             fi
 
+            effective_maxr=$(effective_max_radius "$natural_radius")
+
             if [[ "$protected" == "1" ]]; then
                 abs_x=$(awk -v zone="$offset_x" -v local="$x" -v f="$effective_factor" 'BEGIN { print ((zone + local) * f) }')
                 abs_z=$(awk -v zone="$offset_z" -v local="$z" -v f="$effective_factor" 'BEGIN { print ((zone + local) * f) }')
-                clamped_main=$(clamp_xz "$abs_x" "$abs_z")
+                clamped_main=$(clamp_xz "$abs_x" "$abs_z" "" "$effective_maxr")
                 IFS='|' read -r clamped_x clamped_z _ <<< "$clamped_main"
                 new_x=$(awk -v abs="$clamped_x" -v zone="$offset_x" 'BEGIN { print (abs - zone) }')
                 new_z=$(awk -v abs="$clamped_z" -v zone="$offset_z" 'BEGIN { print (abs - zone) }')
             else
                 new_x=$(awk -v v="$x" -v f="$effective_factor" 'BEGIN { print (v * f) }')
                 new_z=$(awk -v v="$z" -v f="$effective_factor" 'BEGIN { print (v * f) }')
-                clamped_main=$(clamp_xz "$new_x" "$new_z")
+                clamped_main=$(clamp_xz "$new_x" "$new_z" "" "$effective_maxr")
                 IFS='|' read -r new_x new_z _ <<< "$clamped_main"
             fi
 
