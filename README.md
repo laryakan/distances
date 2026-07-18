@@ -3,7 +3,7 @@
 Extends travel distances by spreading sector content and updating related map data.
 Default version increase distance by 3 from the sector center (not too much).
 
-X4 is subject to many changes from EGOSOFT. I was fond of the [XRSGE mod from Eucharion/Realspace](https://www.nexusmods.com/x4foundations/mods/1140), the sentiment of space scale was real (I really recommend it). But to achieve what he have done, many things had to be modified, like the AI jobs. This mod, inspired by the old (Expanded Sectors x2)[https://www.nexusmods.com/x4foundations/mods/417] is increasing sector side below the AI logic limit, and offer tools to do more.
+X4 is subject to many changes from EGOSOFT. I was fond of the [XRSGE mod from Eucharion/Realspace](https://www.nexusmods.com/x4foundations/mods/1140), the sentiment of space scale was real (I really recommend it). But to achieve what he have done, many things had to be modified, like the AI jobs. This mod, inspired (but not copied) by the old (Expanded Sectors x2)[https://www.nexusmods.com/x4foundations/mods/417], is increasing sector side below the AI logic limit, and offer tools to do more.
 
 Sector are modified, and such, do not impact additional sectors added by EGOSOFT or other mods, unless you use the tool to regenerate files.
 
@@ -80,7 +80,7 @@ To keep gates, highways and travel links functional, the generator intentionally
 - highway entry/exit zones
 - related protected travel zones
 
-Those zones are not moved in the same way as regular open-world zones.
+Those zones are not moved in the same way as regular open-world zones (or not moved at all, like it's the case of most of Hatikvah's Choice I).
 
 For fixed GOD placements (`god.xml` entries with explicit `<position ... />`), the generator still compensates for protected highway/gate zones so stations do not stay artificially close to the original travel network layout.
 
