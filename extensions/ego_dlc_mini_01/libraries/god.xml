@@ -2,54 +2,54 @@
 <!-- Distances Mod - GOD fixed-position scaling -->
 <diff>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_xxl_01']/position">
-    <position x="-123131" y="515" z="-126316" pitch="0" roll="0" yaw="170" />
+    <position x="-153476.387187" y="515" z="-157445.924483" pitch="0" roll="0" yaw="170" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_xxl_02']/position">
-    <position x="-106425" y="800" z="-140679" pitch="0" roll="0" yaw="170" />
+    <position x="-132653.139844" y="800" z="-175349.265894" pitch="0" roll="0" yaw="170" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_xxl_03']/position">
-    <position x="-109419" y="800" z="-138364" pitch="0" roll="0" yaw="-135" />
+    <position x="-136384.578387" y="800" z="-172462.944827" pitch="0" roll="0" yaw="-135" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_01']/position">
-    <position x="-107027" y="0" z="-140222" pitch="0" roll="0" yaw="0" />
+    <position x="-133403.246773" y="0" z="-174779.273116" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_02']/position">
-    <position x="-109032" y="0" z="-138668" pitch="0" roll="0" yaw="0" />
+    <position x="-135903.090354" y="0" z="-172842.617987" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_03']/position">
-    <position x="-111187" y="0" z="-136947" pitch="0" roll="0" yaw="0" />
+    <position x="-138588.985762" y="0" z="-170696.554112" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_04']/position">
-    <position x="-113203" y="0" z="-135285" pitch="0" roll="0" yaw="0" />
+    <position x="-141101.706474" y="0" z="-168625.410275" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_05']/position">
-    <position x="-114981" y="0" z="-133777" pitch="0" roll="0" yaw="0" />
+    <position x="-143317.479778" y="0" z="-166746.275972" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_06']/position">
-    <position x="-116490" y="0" z="-132465" pitch="0" roll="0" yaw="0" />
+    <position x="-145198.286983" y="0" z="-165111.108099" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_07']/position">
-    <position x="-118226" y="0" z="-130918" pitch="0" roll="0" yaw="0" />
+    <position x="-147362.146231" y="0" z="-163182.776108" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_08']/position">
-    <position x="-119783" y="0" z="-129495" pitch="0" roll="0" yaw="0" />
+    <position x="-149303.061935" y="0" z="-161408.848137" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_09']/position">
-    <position x="-120991" y="0" z="-128367" pitch="0" roll="0" yaw="0" />
+    <position x="-150808.802561" y="0" z="-160002.892569" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_10']/position">
-    <position x="-121312" y="0" z="-128064" pitch="0" roll="0" yaw="0" />
+    <position x="-151209.372045" y="0" z="-159624.391513" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_11']/position">
-    <position x="-120801" y="0" z="-128546" pitch="0" roll="0" yaw="0" />
+    <position x="-150572.306712" y="0" z="-160225.469298" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_12']/position">
-    <position x="-122797" y="0" z="-126640" pitch="0" roll="0" yaw="0" />
+    <position x="-153060.126325" y="0" z="-157850.620175" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='landmark_communication_facility_asteroid_l_13']/position">
-    <position x="-123839" y="0" z="-125622" pitch="0" roll="0" yaw="0" />
+    <position x="-154358.398839" y="0" z="-156581.305615" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='landmark_abandoned_communications_facility_730_01']/position">
-    <position x="-115750" y="0" z="-133112" pitch="0" roll="0" yaw="170" />
+    <position x="-144276.108573" y="0" z="-165917.524859" pitch="0" roll="0" yaw="170" />
   </replace>
 </diff>

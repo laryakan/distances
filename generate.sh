@@ -106,7 +106,7 @@ total_resource_zones_added=0
 total_god_positions_modified=0
 EXTRA_RESOURCE_ZONE_MULT=1.35
 EXTRA_RESOURCE_ZONE_MULT_2=1.7
-MAX_SECTOR_RADIUS=180000
+MAX_SECTOR_RADIUS=200000
 CLAMP_MARGIN=0.98
 EXTRA_PHASE_A=0.04
 EXTRA_PHASE_B=-0.04
@@ -115,12 +115,12 @@ EXTRA_PHASE_B=-0.04
 HIGHWAY_SECTOR_BONUS=1.2
 # Some vanilla/DLC sectors already have zone/gate offsets exceeding MAX_SECTOR_RADIUS
 # (e.g. Hatikvah's Choice I has a vanilla zone at ~237000 and a gate at ~261000).
-# Clamping those to a flat 180000 flattens the whole sector onto a single circle and
+# Clamping those to a flat 200000 flattens the whole sector onto a single circle and
 # defeats the purpose of the mod. Instead, the effective per-sector ceiling never goes
 # below the sector's own vanilla extent (with headroom), while an absolute safety
 # ceiling still guards against pathological blow-ups on extreme outlier sectors.
 NATURAL_RADIUS_HEADROOM=1.15
-SAFETY_MAX_RADIUS=2000000
+SAFETY_MAX_RADIUS=5000000
 
 # Given a sector's vanilla natural radius (largest untouched offset found in that
 # sector, 0/empty if unknown), compute the effective clamp ceiling to use for it.
