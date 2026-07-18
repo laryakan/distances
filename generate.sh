@@ -120,7 +120,7 @@ HIGHWAY_SECTOR_BONUS=1.2
 # below the sector's own vanilla extent (with headroom), while an absolute safety
 # ceiling still guards against pathological blow-ups on extreme outlier sectors.
 NATURAL_RADIUS_HEADROOM=1.15
-SAFETY_MAX_RADIUS=5000000
+SAFETY_MAX_RADIUS=1000000
 
 # Given a sector's vanilla natural radius (largest untouched offset found in that
 # sector, 0/empty if unknown), compute the effective clamp ceiling to use for it.
