@@ -11,18 +11,24 @@
 #   ./generate.sh           # Interactive prompt
 #   ./generate.sh 2.0       # 2x distance
 #   ./generate.sh 3.5       # 3.5x distance
-
+#
+# Organisation :
+#   lib/config.sh   - constantes de reglage (secteurs exclus, clamps, jitter)
+#   lib/dlc.sh       - resolution des noms de fichiers par DLC
+#   lib/process.sh   - enveloppes bash autour des generateurs AWK
+#   awk/common.awk   - fonctions partagees (parsing, clamp, jitter, hash)
+#   awk/emit_*.awk   - toute la logique de calcul de position, par fichier
 set -euo pipefail
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/lib/config.sh"
+source "${SCRIPT_DIR}/lib/dlc.sh"
+source "${SCRIPT_DIR}/lib/process.sh"
 DEFAULT_INPUT_DIR="${SCRIPT_DIR}/_default"
 INPUT_DIR="${INPUT_DIR:-$DEFAULT_INPUT_DIR}"
-
 if [[ ! -d "$INPUT_DIR" ]]; then
     echo "Error: Invalid INPUT_DIR '$INPUT_DIR'" >&2
     exit 1
 fi
-
 INPUT_DIR="$(cd "$INPUT_DIR" && pwd)"
 VANILLA_SECTORS="${INPUT_DIR}/maps/xu_ep2_universe/sectors.xml"
 VANILLA_ZONES="${INPUT_DIR}/maps/xu_ep2_universe/zones.xml"
@@ -30,7 +36,6 @@ VANILLA_GOD="${INPUT_DIR}/libraries/god.xml"
 OUTPUT_SECTORS="${SCRIPT_DIR}/maps/xu_ep2_universe/sectors.xml"
 OUTPUT_ZONES="${SCRIPT_DIR}/maps/xu_ep2_universe/zones.xml"
 OUTPUT_GOD="${SCRIPT_DIR}/libraries/god.xml"
-
 # Get factor from argument or prompt
 if [[ $# -eq 0 ]]; then
     echo "=== Distances Mod Generator ==="
@@ -46,41 +51,23 @@ if [[ $# -eq 0 ]]; then
 else
     FACTOR="$1"
 fi
-
 # Validate
 if ! [[ "$FACTOR" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
     echo "Error: Invalid factor '$FACTOR'" >&2
     exit 1
 fi
-
 if [[ ! -f "$VANILLA_SECTORS" ]]; then
     echo "Error: Input sectors file not found: $VANILLA_SECTORS" >&2
     echo "Provide INPUT_DIR or generate ${DEFAULT_INPUT_DIR} with: cd /path/to/X4 && bash extensions/Distances/extract_default.sh" >&2
     exit 1
 fi
-
 if [[ ! -f "$VANILLA_ZONES" ]]; then
     echo "Warning: input zones.xml not found: $VANILLA_ZONES" >&2
 fi
-
-# Hazard sectors to exclude from modifications.
-# Keep fixed placements in sectors with damage/tide mechanics.
-EXCLUDE_SECTORS=(
-    "[Cc]luster_27_[Ss]ector001_macro"  # The Void
-    "[Cc]luster_605_[Ss]ector001_macro" # Sanctuary of Darkness
-    "[Cc]luster_500_[Ss]ector001_macro" # Avarice
-    "[Cc]luster_500_[Ss]ector002_macro" # Avarice
-    "[Cc]luster_500_[Ss]ector003_macro" # Avarice
-    "[Cc]luster_113_[Ss]ector001_macro" # There is an overlapping here, (Terran DLC)
-)
-# Exclude story, tutorial and scenario-only content from god.xml because it is not part of the open world.
-EXCLUDE_NON_OPEN_WORLD_REGEX='story|tutorial|scenario|gamestart'
-
 echo "Generating with factor $FACTOR..."
 echo "Using input directory: $INPUT_DIR"
 echo "Excluding hazard sectors..."
 echo ""
-
 # Purge previously generated files
 echo "Cleaning up old generated files..."
 rm -f "${SCRIPT_DIR}/maps/xu_ep2_universe"/*.xml 2>/dev/null || true
@@ -88,883 +75,11 @@ rm -f "${SCRIPT_DIR}/libraries/god.xml" 2>/dev/null || true
 find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/maps/xu_ep2_universe/*.xml" -type f -delete 2>/dev/null || true
 find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/libraries/god.xml" -type f -delete 2>/dev/null || true
 echo ""
-
-# Build exclusion pattern
-exclude_pattern=""
-for sector in "${EXCLUDE_SECTORS[@]}"; do
-    if [[ -z "$exclude_pattern" ]]; then
-        exclude_pattern="$sector"
-    else
-        exclude_pattern="${exclude_pattern}|${sector}"
-    fi
-done
-
-# Process all sectors.xml and zones.xml files (base game + DLC)
+exclude_pattern="$(build_exclude_pattern)"
 total_sectors_modified=0
 total_zones_modified=0
 total_resource_zones_added=0
 total_god_positions_modified=0
-EXTRA_RESOURCE_ZONE_MULT=1.35
-EXTRA_RESOURCE_ZONE_MULT_2=1.7
-MAX_SECTOR_RADIUS=200000
-CLAMP_MARGIN=0.98
-EXTRA_PHASE_A=0.04
-EXTRA_PHASE_B=-0.04
-# Additional distance multiplier for non-travel objects in sectors that contain highways.
-# Helps rebalance "favored" sectors while still leaving gates/highways untouched.
-HIGHWAY_SECTOR_BONUS=1.2
-# Some vanilla/DLC sectors already have zone/gate offsets exceeding MAX_SECTOR_RADIUS
-# (e.g. Hatikvah's Choice I has a vanilla zone at ~237000 and a gate at ~261000).
-# Clamping those to a flat 200000 flattens the whole sector onto a single circle and
-# defeats the purpose of the mod. Instead, the effective per-sector ceiling never goes
-# below the sector's own vanilla extent (with headroom), while an absolute safety
-# ceiling still guards against pathological blow-ups on extreme outlier sectors.
-NATURAL_RADIUS_HEADROOM=1.15
-SAFETY_MAX_RADIUS=1000000
-
-# Given a sector's vanilla natural radius (largest untouched offset found in that
-# sector, 0/empty if unknown), compute the effective clamp ceiling to use for it.
-effective_max_radius() {
-    local natural="${1:-0}"
-
-    awk -v natural="$natural" -v floor="$MAX_SECTOR_RADIUS" -v headroom="$NATURAL_RADIUS_HEADROOM" -v safety="$SAFETY_MAX_RADIUS" '
-    BEGIN {
-        OFMT = "%.6f"
-        eff = floor
-        if (natural + 0 > 0) {
-            candidate = natural * headroom
-            if (candidate > eff) eff = candidate
-        }
-        if (eff > safety) eff = safety
-        print eff
-    }'
-}
-
-# Clamp X/Z to a safe radius from sector center.
-# Optional phase (radians) spreads points tangentially to reduce overlap.
-# Optional 4th arg overrides the clamp ceiling (defaults to MAX_SECTOR_RADIUS).
-clamp_xz() {
-    local x="$1"
-    local z="$2"
-    local phase="${3:-0}"
-    local maxr="${4:-$MAX_SECTOR_RADIUS}"
-
-    awk -v x="$x" -v z="$z" -v maxr="$maxr" -v margin="$CLAMP_MARGIN" -v phase="$phase" '
-    BEGIN {
-        # Force plain decimal formatting: with the dynamic per-sector ceiling,
-        # results can exceed 999999 and awk default (%.6g) would switch to
-        # scientific notation (e.g. "1.04e+06"), which bc cannot parse downstream.
-        CONVFMT = "%.6f"
-        OFMT = "%.6f"
-
-        r = sqrt((x * x) + (z * z))
-        if (r == 0) {
-            print "0|0|0"
-            exit
-        }
-
-        # Apply phase for deterministic spread (mainly for added resource zones).
-        theta = atan2(z, x) + phase
-
-        # Keep positions under hard limit, with a tiny margin for safety.
-        rr = r
-        clamped = 0
-        if (rr > maxr) {
-            rr = maxr * margin
-            clamped = 1
-        }
-
-        nx = rr * cos(theta)
-        nz = rr * sin(theta)
-        print nx "|" nz "|" clamped
-    }'
-}
-
-get_dlc_map_prefix() {
-    local dlc_name="$1"
-
-    case "$dlc_name" in
-        ego_dlc_split) echo "dlc4" ;;
-        ego_dlc_timelines) echo "dlc7" ;;
-        *) echo "${dlc_name#ego_}" ;;
-    esac
-}
-
-process_sectors_file() {
-    local input_file="$1"
-    local output_file="$2"
-    local zones_file="${3:-}"
-    local protected_zones=""
-    local resource_zones=""
-    local zone_macros=""
-
-    # Build a list of zone macros that are part of the travel network.
-    # Those zones must not have their sector offsets changed.
-    if [[ -n "$zones_file" && -f "$zones_file" ]]; then
-        protected_zones=$(awk '
-        function strip_comments(raw, out, start, rest, finish) {
-            out = raw
-            while (1) {
-                if (in_comment) {
-                    finish = index(out, "-->")
-                    if (finish == 0) return ""
-                    out = substr(out, finish + 3)
-                    in_comment = 0
-                }
-                start = index(out, "<!--")
-                if (start == 0) break
-                rest = substr(out, start + 4)
-                finish = index(rest, "-->")
-                if (finish == 0) {
-                    out = substr(out, 1, start - 1)
-                    in_comment = 1
-                    break
-                }
-                out = substr(out, 1, start - 1) substr(rest, finish + 3)
-            }
-            return out
-        }
-        {
-            line = strip_comments($0)
-            if (line == "") next
-        }
-        line ~ /<macro name="[^"]*" class="zone">/ {
-            match(line, /name="([^"]*)"/, arr)
-            current_zone = arr[1]
-            if (index(current_zone, "SHCon") > 0) protected[current_zone] = 1
-        }
-        line ~ /<connection / && current_zone {
-            # Gate zones must stay fixed to avoid highway/gate desync.
-            if (index(line, "ref=\"gates\"") > 0) protected[current_zone] = 1
-        }
-        END {
-            first = 1
-            for (z in protected) {
-                if (!first) printf("|")
-                printf("%s", z)
-                first = 0
-            }
-        }
-        ' "$zones_file")
-
-        resource_zones=$(awk '
-        function strip_comments(raw, out, start, rest, finish) {
-            out = raw
-            while (1) {
-                if (in_comment) {
-                    finish = index(out, "-->")
-                    if (finish == 0) return ""
-                    out = substr(out, finish + 3)
-                    in_comment = 0
-                }
-                start = index(out, "<!--")
-                if (start == 0) break
-                rest = substr(out, start + 4)
-                finish = index(rest, "-->")
-                if (finish == 0) {
-                    out = substr(out, 1, start - 1)
-                    in_comment = 1
-                    break
-                }
-                out = substr(out, 1, start - 1) substr(rest, finish + 3)
-            }
-            return out
-        }
-        {
-            xml_line = strip_comments($0)
-            if (xml_line == "") next
-        }
-        xml_line ~ /<macro name="[^"]*" class="zone">/ {
-            match(xml_line, /name="([^"]*)"/, arr)
-            current_zone = arr[1]
-            is_resource = 0
-        }
-        xml_line ~ /<connection / && current_zone {
-            line = tolower(xml_line)
-            is_travel = 0
-            if (index(line, "ref=\"gates\"") > 0) is_travel = 1
-            if (index(line, "highway") > 0) is_travel = 1
-            if (index(line, "_gate\"") > 0) is_travel = 1
-            if (index(line, "clustergate") > 0) is_travel = 1
-            if (!is_travel) is_resource = 1
-
-            if (index(line, "ref=\"asteroids\"") > 0) is_resource = 1
-            if (index(line, "asteroid") > 0) is_resource = 1
-            if (index(line, "resource") > 0) is_resource = 1
-            if (index(line, "ore") > 0) is_resource = 1
-            if (index(line, "silicon") > 0) is_resource = 1
-            if (index(line, "ice") > 0) is_resource = 1
-            if (index(line, "gas") > 0) is_resource = 1
-            if (index(line, "hydrogen") > 0) is_resource = 1
-            if (index(line, "helium") > 0) is_resource = 1
-            if (index(line, "methane") > 0) is_resource = 1
-            if (index(line, "nividium") > 0) is_resource = 1
-            if (index(line, "nebula") > 0) is_resource = 1
-            if (index(line, "fog") > 0) is_resource = 1
-            if (index(line, "debris") > 0) is_resource = 1
-        }
-        xml_line ~ /<macro ref="[^"]*"/ && current_zone {
-            line = tolower(xml_line)
-            if (index(line, "asteroid") > 0) is_resource = 1
-            if (index(line, "ore") > 0) is_resource = 1
-            if (index(line, "silicon") > 0) is_resource = 1
-            if (index(line, "ice") > 0) is_resource = 1
-            if (index(line, "gas") > 0) is_resource = 1
-            if (index(line, "hydrogen") > 0) is_resource = 1
-            if (index(line, "helium") > 0) is_resource = 1
-            if (index(line, "methane") > 0) is_resource = 1
-            if (index(line, "nividium") > 0) is_resource = 1
-            if (index(line, "nebula") > 0) is_resource = 1
-            if (index(line, "fog") > 0) is_resource = 1
-            if (index(line, "debris") > 0) is_resource = 1
-        }
-        xml_line ~ /<\/macro>/ && current_zone {
-            if (is_resource) resource[current_zone] = 1
-            current_zone = ""
-        }
-        END {
-            first = 1
-            for (z in resource) {
-                if (!first) printf("|")
-                printf("%s", z)
-                first = 0
-            }
-        }
-        ' "$zones_file")
-
-        zone_macros=$(awk '
-        function strip_comments(raw, out, start, rest, finish) {
-            out = raw
-            while (1) {
-                if (in_comment) {
-                    finish = index(out, "-->")
-                    if (finish == 0) return ""
-                    out = substr(out, finish + 3)
-                    in_comment = 0
-                }
-                start = index(out, "<!--")
-                if (start == 0) break
-                rest = substr(out, start + 4)
-                finish = index(rest, "-->")
-                if (finish == 0) {
-                    out = substr(out, 1, start - 1)
-                    in_comment = 1
-                    break
-                }
-                out = substr(out, 1, start - 1) substr(rest, finish + 3)
-            }
-            return out
-        }
-        {
-            line = strip_comments($0)
-            if (line == "") next
-        }
-        line ~ /<macro name="[^"]*" class="zone">/ {
-            match(line, /name="([^"]*)"/, arr)
-            zones[arr[1]] = 1
-        }
-        END {
-            first = 1
-            for (z in zones) {
-                if (!first) printf("|")
-                printf("%s", z)
-                first = 0
-            }
-        }
-        ' "$zones_file")
-    fi
-    
-    {
-        echo '<?xml version="1.0" encoding="utf-8"?>'
-        echo '<!-- Distances Mod - Generated -->'
-        echo '<diff>'
-        
-        # Extract all position lines with their context
-        awk -v exclude="$exclude_pattern" -v protected="$protected_zones" -v resources="$resource_zones" -v zonemacros="$zone_macros" '
-        function strip_comments(raw, out, start, rest, finish) {
-            out = raw
-            while (1) {
-                if (in_comment) {
-                    finish = index(out, "-->")
-                    if (finish == 0) return ""
-                    out = substr(out, finish + 3)
-                    in_comment = 0
-                }
-                start = index(out, "<!--")
-                if (start == 0) break
-                rest = substr(out, start + 4)
-                finish = index(rest, "-->")
-                if (finish == 0) {
-                    out = substr(out, 1, start - 1)
-                    in_comment = 1
-                    break
-                }
-                out = substr(out, 1, start - 1) substr(rest, finish + 3)
-            }
-            return out
-        }
-        BEGIN {
-            current_macro = ""
-            current_connection = ""
-            current_zone_ref = ""
-            pending_x = ""
-            pending_y = ""
-            pending_z = ""
-            if (protected != "") {
-                split(protected, p, "|")
-                for (i in p) {
-                    if (p[i] != "") protected_map[p[i]] = 1
-                }
-            }
-            if (resources != "") {
-                split(resources, r, "|")
-                for (i in r) {
-                    if (r[i] != "") resource_map[r[i]] = 1
-                }
-            }
-            if (zonemacros != "") {
-                split(zonemacros, z, "|")
-                for (i in z) {
-                    if (z[i] != "") zone_map[z[i]] = 1
-                }
-            }
-        }
-        FNR == NR {
-            line = strip_comments($0)
-            if (line == "") next
-            if (line ~ /<macro name="[^"]*" class="sector">/) {
-                match(line, /name="([^"]*)"/, s_arr)
-                sector_macro = s_arr[1]
-            }
-            if (sector_macro != "" && line ~ /<connection /) {
-                if (index(line, "Highway") > 0 || index(line, "ref=\"zonehighways\"") > 0) {
-                    highway_sector[sector_macro] = 1
-                }
-            }
-            # Track the sector natural extent (zones + gates + highways) so the
-            # clamp never shrinks a sector below what it already is in vanilla data.
-            if (sector_macro != "" && line ~ /<position x=/) {
-                match(line, /x="([^"]*)"/, nx_arr)
-                match(line, /z="([^"]*)"/, nz_arr)
-                if (nx_arr[1] != "" && nz_arr[1] != "") {
-                    nr = sqrt((nx_arr[1] * nx_arr[1]) + (nz_arr[1] * nz_arr[1]))
-                    if (nr > sector_natural_radius[sector_macro]) sector_natural_radius[sector_macro] = nr
-                }
-            }
-            next
-        }
-        {
-            line = strip_comments($0)
-            if (line == "") next
-        }
-        line ~ /<macro name="[^"]*" class="sector">/ {
-            match(line, /name="([^"]*)"/, arr)
-            current_macro = arr[1]
-        }
-        line ~ /<connection name="([^"]*)"/ {
-            match(line, /name="([^"]*)"/, arr)
-            current_connection = arr[1]
-            current_zone_ref = ""
-            pending_x = ""
-            pending_y = ""
-            pending_z = ""
-        }
-        line ~ /<position x=/ && current_macro && current_connection {
-            match(line, /x="([^"]*)"/, x_arr)
-            match(line, /y="([^"]*)"/, y_arr)
-            match(line, /z="([^"]*)"/, z_arr)
-
-            pending_x = x_arr[1]
-            pending_y = y_arr[1]
-            pending_z = z_arr[1]
-        }
-        line ~ /<macro ref="[^"]*" connection="sector"/ && current_macro && current_connection {
-            match(line, /ref="([^"]*)"/, ref_arr)
-            current_zone_ref = ref_arr[1]
-
-            # Skip if sector macro is in exclude list.
-            if (exclude != "" && match(current_macro, exclude)) next
-
-            # Keep travel network intact: skip gate zones/highways by connection naming.
-            if (index(current_connection, "SHCon") > 0) next
-            if (index(current_connection, "Highway") > 0) next
-
-            # Only process refs that are actual zone macros, never highway macros.
-            if (!(current_zone_ref in zone_map)) next
-
-            # Keep travel network intact: skip zones containing gates/highway endpoints.
-            if (current_zone_ref in protected_map) next
-
-            if (pending_x != "" && pending_y != "" && pending_z != "") {
-                is_resource = (current_zone_ref in resource_map) ? 1 : 0
-                has_highway = (current_macro in highway_sector) ? 1 : 0
-                natural_radius = (current_macro in sector_natural_radius) ? sector_natural_radius[current_macro] : 0
-                print current_macro "|" current_connection "|" pending_x "|" pending_y "|" pending_z "|" current_zone_ref "|" is_resource "|" has_highway "|" natural_radius
-            }
-        }
-        ' "$input_file" "$input_file" | while IFS='|' read -r macro conn x y z zone_ref is_resource has_highway natural_radius; do
-            # Calculate new coordinates using bc for floating point
-            effective_factor="$FACTOR"
-            if [[ "$has_highway" == "1" ]]; then
-                effective_factor=$(echo "$FACTOR * $HIGHWAY_SECTOR_BONUS" | bc)
-            fi
-
-            effective_maxr=$(effective_max_radius "$natural_radius")
-
-            new_x=$(echo "$x * $effective_factor" | bc)
-            new_z=$(echo "$z * $effective_factor" | bc)
-
-            clamped_main=$(clamp_xz "$new_x" "$new_z" "" "$effective_maxr")
-            IFS='|' read -r new_x new_z _ <<< "$clamped_main"
-            
-            # Generate diff entry
-            sel="/macros/macro[@name='$macro']/connections/connection[@name='$conn']/offset/position"
-            
-            echo "  <replace sel=\"$sel\">"
-            echo "    <position x=\"$new_x\" y=\"$y\" z=\"$new_z\" />"
-            echo "  </replace>"
-
-            # Add farther extra zone instances for logistics:
-            # - all eligible non-travel zones get one extra
-            # - resource-tagged zones get a second extra
-            if [[ -n "$zone_ref" ]]; then
-                extra_x=$(echo "$new_x * $EXTRA_RESOURCE_ZONE_MULT" | bc)
-                extra_z=$(echo "$new_z * $EXTRA_RESOURCE_ZONE_MULT" | bc)
-                extra_x2=$(echo "$new_x * $EXTRA_RESOURCE_ZONE_MULT_2" | bc)
-                extra_z2=$(echo "$new_z * $EXTRA_RESOURCE_ZONE_MULT_2" | bc)
-                extra_conn="${conn}_resourceextra_a"
-                extra_conn2="${conn}_resourceextra_b"
-
-                clamped_a=$(clamp_xz "$extra_x" "$extra_z" "$EXTRA_PHASE_A" "$effective_maxr")
-                IFS='|' read -r extra_x extra_z _ <<< "$clamped_a"
-                clamped_b=$(clamp_xz "$extra_x2" "$extra_z2" "$EXTRA_PHASE_B" "$effective_maxr")
-                IFS='|' read -r extra_x2 extra_z2 _ <<< "$clamped_b"
-
-                add_sel="/macros/macro[@name='$macro']/connections"
-                echo "  <add sel=\"$add_sel\">"
-                echo "    <connection name=\"$extra_conn\" ref=\"zones\">"
-                echo "      <offset>"
-                echo "        <position x=\"$extra_x\" y=\"$y\" z=\"$extra_z\" />"
-                echo "      </offset>"
-                echo "      <macro ref=\"$zone_ref\" connection=\"sector\" />"
-                echo "    </connection>"
-                echo "  </add>"
-
-                if [[ "$is_resource" == "1" ]]; then
-                    echo "  <add sel=\"$add_sel\">"
-                    echo "    <connection name=\"$extra_conn2\" ref=\"zones\">"
-                    echo "      <offset>"
-                    echo "        <position x=\"$extra_x2\" y=\"$y\" z=\"$extra_z2\" />"
-                    echo "      </offset>"
-                    echo "      <macro ref=\"$zone_ref\" connection=\"sector\" />"
-                    echo "    </connection>"
-                    echo "  </add>"
-                fi
-            fi
-        done
-        
-        echo '</diff>'
-        
-    } > "$output_file"
-}
-
-process_zones_file() {
-    local input_file="$1"
-    local output_file="$2"
-    
-    {
-        echo '<?xml version="1.0" encoding="utf-8"?>'
-        echo '<!-- Distances Mod - Resource Zones Added -->'
-        echo '<diff>'
-        
-        # Extract zone macro connection positions from actual zones.xml structure.
-        awk -v factor="$FACTOR" -v maxr="$MAX_SECTOR_RADIUS" -v margin="$CLAMP_MARGIN" '
-        function strip_comments(raw, out, start, rest, finish) {
-            out = raw
-            while (1) {
-                if (in_comment) {
-                    finish = index(out, "-->")
-                    if (finish == 0) return ""
-                    out = substr(out, finish + 3)
-                    in_comment = 0
-                }
-                start = index(out, "<!--")
-                if (start == 0) break
-                rest = substr(out, start + 4)
-                finish = index(rest, "-->")
-                if (finish == 0) {
-                    out = substr(out, 1, start - 1)
-                    in_comment = 1
-                    break
-                }
-                out = substr(out, 1, start - 1) substr(rest, finish + 3)
-            }
-            return out
-        }
-        BEGIN {
-            current_macro = ""
-            current_conn_name = ""
-            current_conn_ref = ""
-        }
-        {
-            line = strip_comments($0)
-            if (line == "") next
-        }
-        line ~ /<macro name="[^"]*" class="zone">/ {
-            match(line, /name="([^"]*)"/, arr)
-            current_macro = arr[1]
-        }
-        line ~ /<connection / {
-            current_conn_name = ""
-            current_conn_ref = ""
-            if (match(line, /name="([^"]*)"/, n_arr)) current_conn_name = n_arr[1]
-            if (match(line, /ref="([^"]*)"/, r_arr)) current_conn_ref = r_arr[1]
-        }
-        line ~ /<position x=/ && current_macro {
-            # Ignore gate-only SHCon zone macros to avoid touching critical travel links.
-            if (index(current_macro, "SHCon") > 0) next
-
-            # Ignore highway gate endpoints in zones to keep highway topology stable.
-            if (index(current_conn_name, "Highway") > 0) next
-            if (index(current_conn_ref, "Highway") > 0) next
-
-            # Ignore gate connections too, otherwise gates move while highways stay put.
-            if (current_conn_ref == "gates") next
-            if (index(current_conn_name, "Gate") > 0) next
-            if (index(current_conn_ref, "gate") > 0) next
-
-            match(line, /x="([^"]*)"/, x_arr)
-            match(line, /y="([^"]*)"/, y_arr)
-            match(line, /z="([^"]*)"/, z_arr)
-
-            x = x_arr[1]
-            y = y_arr[1]
-            z = z_arr[1]
-
-            if (x != "" && y != "" && z != "") {
-                new_x = x * factor
-                new_z = z * factor
-
-                r = sqrt((new_x * new_x) + (new_z * new_z))
-                if (r > maxr && r > 0) {
-                    scale = (maxr * margin) / r
-                    new_x = new_x * scale
-                    new_z = new_z * scale
-                }
-
-                if (current_conn_name != "") {
-                    sel = "/macros/macro[@name='\''" current_macro "'\'']/connections/connection[@name='\''" current_conn_name "'\'']/offset/position"
-                } else if (current_conn_ref != "") {
-                    sel = "/macros/macro[@name='\''" current_macro "'\'']/connections/connection[@ref='\''" current_conn_ref "'\'']/offset/position"
-                } else {
-                    next
-                }
-
-                print "  <replace sel=\"" sel "\">"
-                print "    <position x=\"" new_x "\" y=\"" y "\" z=\"" new_z "\" />"
-                print "  </replace>"
-            }
-        }
-        ' "$input_file" | while IFS= read -r line; do
-            [[ -n "$line" ]] && echo "$line"
-        done
-        
-        echo '</diff>'
-        
-    } > "$output_file"
-}
-
-process_god_file() {
-    local input_file="$1"
-    local output_file="$2"
-    local sectors_file="${3:-}"
-    local zones_file="${4:-}"
-    local sectors_scan="${sectors_file:-/dev/null}"
-    local zones_scan="${zones_file:-/dev/null}"
-
-    {
-        echo '<?xml version="1.0" encoding="utf-8"?>'
-        echo '<!-- Distances Mod - GOD fixed-position scaling -->'
-        echo '<diff>'
-
-        awk -v exclude="$exclude_pattern" -v exclude_keywords="$EXCLUDE_NON_OPEN_WORLD_REGEX" -v sectors_file="$sectors_file" -v zones_file="$zones_file" '
-        function strip_comments(raw, out, start, rest, finish) {
-            out = raw
-            while (1) {
-                if (in_comment) {
-                    finish = index(out, "-->")
-                    if (finish == 0) return ""
-                    out = substr(out, finish + 3)
-                    in_comment = 0
-                }
-                start = index(out, "<!--")
-                if (start == 0) break
-                rest = substr(out, start + 4)
-                finish = index(rest, "-->")
-                if (finish == 0) {
-                    out = substr(out, 1, start - 1)
-                    in_comment = 1
-                    break
-                }
-                out = substr(out, 1, start - 1) substr(rest, finish + 3)
-            }
-            return out
-        }
-        BEGIN {
-            current_sector = ""
-            current_connection = ""
-            pending_x = ""
-            pending_z = ""
-            current_zone = ""
-            in_gamestart = 0
-            gamestart_ref = ""
-            section = ""
-            current_station = ""
-            current_object = ""
-            current_location_class = ""
-            current_location_macro = ""
-        }
-        FILENAME == zones_file {
-            line = strip_comments($0)
-            if (line == "") next
-            if (line ~ /<macro name="[^"]*" class="zone">/) {
-                match(line, /name="([^"]*)"/, arr)
-                current_zone = tolower(arr[1])
-                if (index(current_zone, "shcon") > 0) protected_zone[current_zone] = 1
-            }
-            if (line ~ /<connection / && current_zone != "") {
-                if (index(line, "ref=\"gates\"") > 0) protected_zone[current_zone] = 1
-            }
-            if (line ~ /<\/macro>/ && current_zone != "") {
-                current_zone = ""
-            }
-            next
-        }
-        FILENAME == sectors_file {
-            line = strip_comments($0)
-            if (line == "") next
-            if (line ~ /<macro name="[^"]*" class="sector">/) {
-                match(line, /name="([^"]*)"/, arr)
-                current_sector = tolower(arr[1])
-            }
-            if (current_sector != "" && line ~ /<connection /) {
-                if (index(line, "Highway") > 0 || index(line, "ref=\"zonehighways\"") > 0) {
-                    highway_sector[current_sector] = 1
-                }
-                current_connection = ""
-                pending_x = ""
-                pending_z = ""
-                if (match(line, /name="([^"]*)"/, conn_arr)) current_connection = conn_arr[1]
-            }
-            if (current_sector != "" && current_connection != "" && line ~ /<position x=/) {
-                if (match(line, /x="([^"]*)"/, x_arr)) pending_x = x_arr[1]
-                if (match(line, /z="([^"]*)"/, z_arr)) pending_z = z_arr[1]
-                if (pending_x != "" && pending_z != "") {
-                    nr = sqrt((pending_x * pending_x) + (pending_z * pending_z))
-                    if (nr > sector_natural_radius[current_sector]) sector_natural_radius[current_sector] = nr
-                }
-            }
-            if (current_sector != "" && current_connection != "" && line ~ /<macro ref="[^"]*" connection="sector"/) {
-                if (match(line, /ref="([^"]*)"/, ref_arr)) {
-                    zone_name = tolower(ref_arr[1])
-                    zone_parent[zone_name] = current_sector
-                    zone_offset_x[zone_name] = pending_x
-                    zone_offset_z[zone_name] = pending_z
-                }
-            }
-            next
-        }
-        {
-            line = strip_comments($0)
-            if (line == "") next
-        }
-        line ~ /<gamestart ref="[^"]*"/ {
-            in_gamestart = 1
-            if (match(line, /ref="([^"]*)"/, arr)) gamestart_ref = arr[1]
-        }
-        line ~ /<\/gamestart>/ {
-            in_gamestart = 0
-            gamestart_ref = ""
-            section = ""
-            current_station = ""
-            current_object = ""
-        }
-        line ~ /<stations>/ { section = "stations" }
-        line ~ /<\/stations>/ {
-            if (section == "stations") {
-                section = ""
-                current_station = ""
-                current_location_macro = ""
-            }
-        }
-        line ~ /<objects>/ { section = "objects" }
-        line ~ /<\/objects>/ {
-            if (section == "objects") {
-                section = ""
-                current_object = ""
-                current_location_macro = ""
-            }
-        }
-        line ~ /<station id="[^"]*"/ {
-            if (match(line, /id="([^"]*)"/, arr)) current_station = arr[1]
-            current_location_macro = ""
-        }
-        line ~ /<\/station>/ {
-            current_station = ""
-            current_location_class = ""
-            current_location_macro = ""
-        }
-        line ~ /<object id="[^"]*"/ {
-            if (match(line, /id="([^"]*)"/, arr)) current_object = arr[1]
-            current_location_class = ""
-            current_location_macro = ""
-        }
-        line ~ /<\/object>/ {
-            current_object = ""
-            current_location_class = ""
-            current_location_macro = ""
-        }
-        line ~ /<location class="(zone|sector)"/ {
-            if (match(line, /class="([^"]*)"/, c_arr)) current_location_class = c_arr[1]
-            if (match(line, /macro="([^"]*)"/, l_arr)) current_location_macro = l_arr[1]
-        }
-        line ~ /<position x=/ {
-            x = ""
-            y = ""
-            z = ""
-            yaw = ""
-            pitch = ""
-            roll = ""
-
-            # Keep same exclusion behavior as sector/zones processing.
-            if (exclude != "" && current_location_macro != "" && match(current_location_macro, exclude)) next
-            if (gamestart_ref != "" && tolower(gamestart_ref) ~ exclude_keywords) next
-            if (current_station != "" && tolower(current_station) ~ exclude_keywords) next
-            if (current_object != "" && tolower(current_object) ~ exclude_keywords) next
-            if (current_location_macro != "" && tolower(current_location_macro) ~ exclude_keywords) next
-
-            if (match(line, /x="([^"]*)"/, ax)) x = ax[1]
-            if (match(line, /y="([^"]*)"/, ay)) y = ay[1]
-            if (match(line, /z="([^"]*)"/, az)) z = az[1]
-            if (x == "" || z == "") next
-
-            # Skip entries that are not plain numeric coordinates.
-            if (x !~ /^[-+]?[0-9]*\.?[0-9]+$/) next
-            if (z !~ /^[-+]?[0-9]*\.?[0-9]+$/) next
-
-            if (match(line, /yaw="([^"]*)"/, aw)) yaw = aw[1]
-            if (match(line, /pitch="([^"]*)"/, ap)) pitch = ap[1]
-            if (match(line, /roll="([^"]*)"/, ar)) roll = ar[1]
-
-            sel = ""
-            if (current_station != "") {
-                if (in_gamestart && gamestart_ref != "") {
-                    sel = "/god/gamestart[@ref='\''" gamestart_ref "'\'']/stations/station[@id='\''" current_station "'\'']/position"
-                } else {
-                    sel = "/god/stations/station[@id='\''" current_station "'\'']/position"
-                }
-            } else if (current_object != "") {
-                if (in_gamestart && gamestart_ref != "") {
-                    sel = "/god/gamestart[@ref='\''" gamestart_ref "'\'']/objects/object[@id='\''" current_object "'\'']/position"
-                } else {
-                    sel = "/god/objects/object[@id='\''" current_object "'\'']/position"
-                }
-            }
-
-            if (sel != "") {
-                parent_sector = ""
-                has_highway = 0
-                protected = 0
-                offset_x = "0"
-                offset_z = "0"
-
-                location_key = tolower(current_location_macro)
-
-                if (current_location_class == "sector" && location_key in highway_sector) {
-                    has_highway = 1
-                } else if (current_location_class == "zone") {
-                    if (location_key in zone_parent) {
-                        parent_sector = zone_parent[location_key]
-                        if (parent_sector in highway_sector) has_highway = 1
-                    }
-                    if (location_key in protected_zone && location_key in zone_offset_x && location_key in zone_offset_z) {
-                        protected = 1
-                        offset_x = zone_offset_x[location_key]
-                        offset_z = zone_offset_z[location_key]
-                    }
-                }
-
-                yaw_out = (yaw == "" ? "__EMPTY__" : yaw)
-                pitch_out = (pitch == "" ? "__EMPTY__" : pitch)
-                roll_out = (roll == "" ? "__EMPTY__" : roll)
-
-                natural_radius = 0
-                if (current_location_class == "sector" && location_key in sector_natural_radius) {
-                    natural_radius = sector_natural_radius[location_key]
-                } else if (parent_sector != "" && parent_sector in sector_natural_radius) {
-                    natural_radius = sector_natural_radius[parent_sector]
-                }
-
-                print sel "\t" x "\t" y "\t" z "\t" yaw_out "\t" pitch_out "\t" roll_out "\t" has_highway "\t" protected "\t" offset_x "\t" offset_z "\t" natural_radius
-            }
-        }
-        ' "$sectors_scan" "$zones_scan" "$input_file" | while IFS=$'\t' read -r sel x y z yaw pitch roll has_highway protected offset_x offset_z natural_radius; do
-            if [[ "$yaw" == "__EMPTY__" ]]; then
-                yaw=""
-            fi
-            if [[ "$pitch" == "__EMPTY__" ]]; then
-                pitch=""
-            fi
-            if [[ "$roll" == "__EMPTY__" ]]; then
-                roll=""
-            fi
-
-            effective_factor="$FACTOR"
-            if [[ "$has_highway" == "1" ]]; then
-                effective_factor=$(echo "$FACTOR * $HIGHWAY_SECTOR_BONUS" | bc)
-            fi
-
-            effective_maxr=$(effective_max_radius "$natural_radius")
-
-            if [[ "$protected" == "1" ]]; then
-                abs_x=$(awk -v zone="$offset_x" -v local="$x" -v f="$effective_factor" 'BEGIN { print ((zone + local) * f) }')
-                abs_z=$(awk -v zone="$offset_z" -v local="$z" -v f="$effective_factor" 'BEGIN { print ((zone + local) * f) }')
-                clamped_main=$(clamp_xz "$abs_x" "$abs_z" "" "$effective_maxr")
-                IFS='|' read -r clamped_x clamped_z _ <<< "$clamped_main"
-                new_x=$(awk -v abs="$clamped_x" -v zone="$offset_x" 'BEGIN { print (abs - zone) }')
-                new_z=$(awk -v abs="$clamped_z" -v zone="$offset_z" 'BEGIN { print (abs - zone) }')
-            else
-                new_x=$(awk -v v="$x" -v f="$effective_factor" 'BEGIN { print (v * f) }')
-                new_z=$(awk -v v="$z" -v f="$effective_factor" 'BEGIN { print (v * f) }')
-                clamped_main=$(clamp_xz "$new_x" "$new_z" "" "$effective_maxr")
-                IFS='|' read -r new_x new_z _ <<< "$clamped_main"
-            fi
-
-            y_out="$y"
-            if [[ -z "$y_out" ]]; then
-                y_out="0"
-            fi
-
-            extra_attrs=""
-            if [[ -n "$pitch" ]]; then
-                extra_attrs+=" pitch=\"$pitch\""
-            fi
-            if [[ -n "$roll" ]]; then
-                extra_attrs+=" roll=\"$roll\""
-            fi
-            if [[ -n "$yaw" ]]; then
-                extra_attrs+=" yaw=\"$yaw\""
-            fi
-
-            echo "  <replace sel=\"$sel\">"
-            echo "    <position x=\"$new_x\" y=\"$y_out\" z=\"$new_z\"$extra_attrs />"
-            echo "  </replace>"
-        done
-
-        echo '</diff>'
-    } > "$output_file"
-}
-
 # Process base game sectors
 if [[ -f "$VANILLA_SECTORS" ]]; then
     mkdir -p "$(dirname "$OUTPUT_SECTORS")"
@@ -973,39 +88,35 @@ if [[ -f "$VANILLA_SECTORS" ]]; then
     added=$(awk '/_resourceextra/{c++} END{print c+0}' "$OUTPUT_SECTORS")
     total_sectors_modified=$((total_sectors_modified + modified))
     total_resource_zones_added=$((total_resource_zones_added + added))
-    echo "✓ Base game sectors: $modified positions"
-    echo "✓ Base game extra resource zones: $added"
+    echo "OK Base game sectors: $modified positions"
+    echo "OK Base game extra resource zones: $added"
 fi
-
 # Process base game zones
 if [[ -f "$VANILLA_ZONES" ]]; then
     mkdir -p "$(dirname "$OUTPUT_ZONES")"
     process_zones_file "$VANILLA_ZONES" "$OUTPUT_ZONES"
     modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$OUTPUT_ZONES")
     total_zones_modified=$((total_zones_modified + modified))
-    echo "✓ Base game zones: $modified zones repositioned"
+    echo "OK Base game zones: $modified zones repositioned"
     if (( modified == 0 )); then
-        echo "⚠ Base game zones: no matching zone entries found for current parser"
+        echo "WARN Base game zones: no matching zone entries found for current parser"
     fi
 else
-    echo "⚠ Base game zones.xml not found, skipping..."
+    echo "WARN Base game zones.xml not found, skipping..."
 fi
-
 # Process base game GOD
 if [[ -f "$VANILLA_GOD" ]]; then
     mkdir -p "$(dirname "$OUTPUT_GOD")"
     process_god_file "$VANILLA_GOD" "$OUTPUT_GOD" "$VANILLA_SECTORS" "$VANILLA_ZONES"
     modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$OUTPUT_GOD")
     total_god_positions_modified=$((total_god_positions_modified + modified))
-    echo "✓ Base game GOD: $modified fixed positions"
+    echo "OK Base game GOD: $modified fixed positions"
 else
-    echo "⚠ Base game god.xml not found, skipping..."
+    echo "WARN Base game god.xml not found, skipping..."
 fi
-
 echo ""
 echo "Processing input extensions..."
 echo ""
-
 # Process extension sectors and zones from input directory.
 if [[ -d "${INPUT_DIR}/extensions" ]]; then
     for dlc_dir in "${INPUT_DIR}"/extensions/*; do
@@ -1015,12 +126,10 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
             if [[ "$dlc_name_lc" == "distances" ]]; then
                 continue
             fi
-
             dlc_prefix=$(get_dlc_map_prefix "$dlc_name")
             map_dir="${dlc_dir}/maps/xu_ep2_universe"
             sectors_basename="${dlc_prefix}_sectors.xml"
             zones_basename="${dlc_prefix}_zones.xml"
-
             if [[ -f "${map_dir}/${sectors_basename}" ]]; then
                 :
             elif [[ -f "${map_dir}/sectors.xml" ]]; then
@@ -1033,25 +142,20 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
                     zones_basename="${sectors_basename%sectors.xml}zones.xml"
                 fi
             fi
-
             dlc_sectors="${map_dir}/${sectors_basename}"
             dlc_zones="${map_dir}/${zones_basename}"
             dlc_god="${dlc_dir}/libraries/god.xml"
-            
             if [[ -f "$dlc_sectors" ]]; then
                 dlc_sectors_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${sectors_basename}"
                 dlc_zones_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${zones_basename}"
                 dlc_god_output="${SCRIPT_DIR}/extensions/${dlc_name}/libraries/god.xml"
-                
                 mkdir -p "$(dirname "$dlc_sectors_output")"
-                
                 # Process sectors
                 process_sectors_file "$dlc_sectors" "$dlc_sectors_output" "$dlc_zones"
                 sectors_modified=$(awk '/<position x=/{c++} END{print c+0}' "$dlc_sectors_output")
                 added=$(awk '/_resourceextra/{c++} END{print c+0}' "$dlc_sectors_output")
                 total_sectors_modified=$((total_sectors_modified + sectors_modified))
                 total_resource_zones_added=$((total_resource_zones_added + added))
-                
                 # Process zones if available
                 zones_modified=0
                 if [[ -f "$dlc_zones" ]]; then
@@ -1060,7 +164,6 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
                     zones_modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$dlc_zones_output")
                     total_zones_modified=$((total_zones_modified + zones_modified))
                 fi
-
                 # Process GOD if available
                 god_modified=0
                 if [[ -f "$dlc_god" ]]; then
@@ -1069,25 +172,22 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
                     god_modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$dlc_god_output")
                     total_god_positions_modified=$((total_god_positions_modified + god_modified))
                 fi
-                
                 if (( sectors_modified > 0 || zones_modified > 0 || god_modified > 0 )); then
-                    echo "✓ $dlc_name: $sectors_modified sectors, $zones_modified zones, $god_modified GOD fixed positions, $added extra resource zones"
+                    echo "OK $dlc_name: $sectors_modified sectors, $zones_modified zones, $god_modified GOD fixed positions, $added extra resource zones"
                 fi
             else
-                echo "⚠ $dlc_name: sectors file not found"
+                echo "WARN $dlc_name: sectors file not found"
             fi
         fi
     done
 else
-    echo "⚠ No input extensions directory found"
+    echo "WARN No input extensions directory found"
 fi
-
 # Summary
 excluded_count=${#EXCLUDE_SECTORS[@]}
-
 echo ""
 echo "========================================="
-echo "✓ Generation completed!"
+echo "OK Generation completed!"
 echo "  Sector positions: $total_sectors_modified"
 echo "  Resource zones: $total_zones_modified"
 echo "  GOD fixed positions: $total_god_positions_modified"

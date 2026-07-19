@@ -2,6 +2,6 @@
 <!-- Distances Mod - Resource Zones Added -->
 <diff>
   <replace sel="/macros/macro[@name='Zone004_Cluster_113_Sector001_macro']/connections/connection[@name='connection_lmx']/offset/position">
-    <position x="-73421.5" y="0" z="-37697.1" />
+    <position x="-73421.472656" y="0" z="-37697.112305" />
   </replace>
 </diff>

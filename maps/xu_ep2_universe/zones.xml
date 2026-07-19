@@ -2,24 +2,24 @@
 <!-- Distances Mod - Resource Zones Added -->
 <diff>
   <replace sel="/macros/macro[@name='Zone005_Cluster_01_Sector01_macro']/connections/connection[@name='asteroid_special_lm_01_macro2']/offset/position">
-    <position x="28386.5" y="-301.4678955078" z="25680.3" />
+    <position x="28386.474609" y="-301.4678955078" z="25680.266602" />
   </replace>
   <replace sel="/macros/macro[@name='Zone005_Cluster_01_Sector01_macro']/connections/connection[@name='asteroid_special_lm_01_macro3']/offset/position">
-    <position x="-42471.3" y="-301.4678955078" z="8380.46" />
+    <position x="-42471.313477" y="-301.4678955078" z="8380.462646" />
   </replace>
   <replace sel="/macros/macro[@name='Zone005_Cluster_01_Sector01_macro']/connections/connection[@name='asteroid_special_lm_01_macro']/offset/position">
-    <position x="12715.9" y="-301.4678955078" z="-37048.7" />
+    <position x="12715.942383" y="-301.4678955078" z="-37048.737305" />
   </replace>
   <replace sel="/macros/macro[@name='Zone003_Cluster_04_Sector001_macro']/connections/connection[@name='connection_explorationtest_macro']/offset/position">
-    <position x="69125.5" y="0" z="82173" />
+    <position x="69125.519531" y="0" z="82172.976562" />
   </replace>
   <replace sel="/macros/macro[@name='Zone004_Cluster_26_Sector001_macro']/connections/connection[@name='env_debris_xenon_xxl_02_macro']/offset/position">
-    <position x="-17115" y="-9272.9990234375" z="141702" />
+    <position x="-17115.005859" y="-9272.9990234375" z="141702" />
   </replace>
   <replace sel="/macros/macro[@name='Zone004_Cluster_26_Sector002_macro']/connections/connection[@name='env_debris_xenon_xxl_01_macro']/offset/position">
-    <position x="-17712.9" y="25099" z="-119941" />
+    <position x="-17712.890625" y="25099" z="-119941.406250" />
   </replace>
   <replace sel="/macros/macro[@name='Zone003_Cluster_32_Sector001_macro']/connections/connection[@name='landmarks_xenon_crash_site_01_macro']/offset/position">
-    <position x="64940.5" y="0" z="59040.5" />
+    <position x="64940.531250" y="0" z="59040.492187" />
   </replace>
 </diff>
