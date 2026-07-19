@@ -8,39 +8,39 @@
     <position x="150000" y="0" z="-15000" pitch="0" roll="0" yaw="20" />
   </replace>
   <replace sel="/god/stations/station[@id='kao_energy_array']/position">
-    <position x="-166321.197535" y="0" z="-118800.855382" pitch="0" roll="0" yaw="305" />
+    <position x="-199364.700446" y="0" z="-142403.357461" pitch="0" roll="0" yaw="305" />
   </replace>
   <replace sel="/god/stations/station[@id='kao_wharf_cluster_702']/position">
-    <position x="0" y="0" z="0" pitch="0" roll="0" yaw="0" />
+    <position x="-759.200000" y="0" z="-758.800000" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kao_hydro_processing_plant']/position">
-    <position x="-83875.552591" y="0" z="-186390.116869" pitch="0" roll="0" yaw="35" />
+    <position x="-100539.345946" y="0" z="-223420.768768" pitch="0" roll="0" yaw="35" />
   </replace>
   <replace sel="/god/stations/station[@id='kao_compound_refinery']/position">
-    <position x="-167445.040546" y="0" z="117211.528382" pitch="0" roll="0" yaw="165" />
+    <position x="-180000" y="0" z="126000" pitch="0" roll="0" yaw="165" />
   </replace>
   <replace sel="/god/stations/station[@id='kao_tradestation_cluster_703']/position">
-    <position x="113376.681891" y="0" z="170065.022837" pitch="0" roll="0" yaw="0" />
+    <position x="135901.548075" y="0" z="203852.322113" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kao_shipyard_cluster_703']/position">
-    <position x="-167445.040546" y="0" z="-117211.528382" pitch="0" roll="0" yaw="40" />
+    <position x="-180000" y="0" z="-126000" pitch="0" roll="0" yaw="40" />
   </replace>
   <replace sel="/god/stations/station[@id='kao_advanced_tech_complex']/position">
-    <position x="203885.401380" y="0" z="-14391.910686" pitch="0" roll="0" yaw="0" />
+    <position x="244391.890954" y="0" z="-17251.192303" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kao_produce_facility']/position">
-    <position x="-150668.939775" y="0" z="138113.194794" pitch="0" roll="0" yaw="0" />
+    <position x="-180000.000000" y="0" z="165000.000000" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='arg_tradestation_cluster_704']/position">
-    <position x="109061.871622" y="0" z="-172863.796520" pitch="0" roll="0" yaw="330" />
+    <position x="112050" y="0" z="-177600" pitch="0" roll="0" yaw="330" />
   </replace>
   <replace sel="/god/stations/station[@id='arg_defence_cluster_704_sector001_01']/position">
-    <position x="-180446.321449" y="0" z="95997.443011" pitch="0" roll="0" yaw="0" />
+    <position x="-216296.102694" y="0" z="115069.526633" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='sca_piratestation_cluster_705']/position">
-    <position x="198834.508252" y="-3000" z="47341.549584" pitch="0" roll="0" yaw="35" />
+    <position x="238337.522598" y="-3000" z="56747.029190" pitch="0" roll="0" yaw="35" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_708_sector001_01']/position">
-    <position x="-203286.238549" y="0" z="21238.860744" pitch="0" roll="0" />
+    <position x="-243673.690748" y="0" z="25458.445302" pitch="0" roll="0" />
   </replace>
 </diff>
