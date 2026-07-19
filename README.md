@@ -129,6 +129,50 @@ Two safeguards worth knowing about when tuning the generator:
   along the sector's axes. It is reproducible: the same input always
   produces the same output.
 - **Protected-zone reparenting**: stations/objects with a fixed `god.xml`
+  position inside a small gate/highway (SHCon) zone are reassigned directly
+  to the enclosing sector (`location class="sector"`) instead of a sibling
+  zone, so they benefit from the mod's spread without risking a "nearest
+  zone" guess landing them inside a highway-only zone. Defense stations
+  guarding a gate (id containing `defence`/`defense`) are the one exception:
+  they are left completely untouched.
+
+## Script Architecture
+
+`generate.sh` is a thin orchestrator: it only handles CLI/interactive input,
+cleanup of previously generated files, and looping over the base game plus
+every input extension. All actual logic is split into small, focused files
+so each concern can be read, tested and maintained independently:
+
+```
+generate.sh              Orchestrator: options, cleanup, DLC loop, summary
+lib/config.sh             Tuning constants (excluded sectors, clamp/jitter values)
+lib/dlc.sh                 DLC folder name -> map file prefix resolution
+lib/process.sh             Thin bash wrappers calling the AWK generators
+lib/awk/common.awk         Shared helpers: XML comment stripping, clamp,
+                           per-sector radius ceiling, deterministic hash/jitter
+lib/awk/emit_sectors.awk   sectors.xml: position scaling + extra resource zones
+lib/awk/emit_zones.awk     zones.xml: internal zone connection scaling
+lib/awk/emit_god.awk       god.xml: fixed station/object position scaling,
+                           including protected-zone reparenting
+```
+
+All position math (scaling, clamping, axis-jitter, protected-zone
+reparenting) is implemented directly in AWK for performance and clarity;
+the bash layer only assembles file paths/parameters and writes the
+resulting `<diff>` XML.
+
+Two safeguards worth knowing about when tuning the generator:
+
+- **Dynamic per-sector clamp**: some vanilla/DLC sectors already exceed the
+  base clamp radius (e.g. Hatikvah's Choice I). The effective ceiling used
+  for a sector never goes below its own vanilla extent (`NATURAL_RADIUS_HEADROOM`
+  in `lib/config.sh`), so it no longer flattens those sectors onto a single circle.
+- **Zero-axis jitter**: when a scaled X or Z coordinate lands exactly on 0
+  (common in vanilla data), a small deterministic pseudo-random offset
+  (`JITTER_FRACTION` / `JITTER_MIN_ABS`) is applied so objects don't pile up
+  along the sector's axes. It is reproducible: the same input always
+  produces the same output.
+- **Protected-zone reparenting**: stations/objects with a fixed `god.xml`
   position inside a small gate/highway (SHCon) zone are reassigned to the
   nearest non-protected zone in the same sector, so they benefit from the
   mod's spread instead of staying pinned near the original travel network.

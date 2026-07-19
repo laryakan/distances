@@ -34,41 +34,11 @@
   <replace sel="/god/stations/station[@id='ter_supportstation_cluster_104_sector002']/position">
     <position x="-235430.969179" y="0.0" z="-67803.088066" pitch="0" roll="0" />
   </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_104_sector002']/location">
-    <location class="zone" macro="Zone004_Cluster_104_Sector002_macro" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_104_sector002']/position">
-    <position x="-112476.418890" y="0.0" z="-48531.486622" pitch="0" roll="0" yaw="-74.31804" />
-  </replace>
   <replace sel="/god/stations/station[@id='ter_wharf_cluster_101_sector001']/position">
     <position x="114504" y="0.0" z="36885.000000" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='ter_supplybase_cluster_101_sector001']/position">
     <position x="217788" y="0.0" z="7674" pitch="0" roll="0" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_101_sector001']/location">
-    <location class="zone" macro="Zone004_Cluster_101_Sector001_macro" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_101_sector001']/position">
-    <position x="-15929.436361" y="0.0" z="-121459.882501" pitch="0" roll="0" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_102_sector001']/location">
-    <location class="zone" macro="Zone004_Cluster_102_Sector001_macro" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_102_sector001']/position">
-    <position x="69050.944583" y="0" z="101184.075092" pitch="0" roll="0" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_106_sector001']/location">
-    <location class="zone" macro="Zone001_Cluster_106_Sector001_macro" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_106_sector001']/position">
-    <position x="48204.739736" y="0.0" z="-112616.841844" pitch="0" roll="0" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defenceplatform_cluster_100_sector001']/location">
-    <location class="zone" macro="Zone003_Cluster_100_Sector001_macro" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defenceplatform_cluster_100_sector001']/position">
-    <position x="19722.985320" y="0.0" z="-120901.835594" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='ter_equipmentdock_cluster_107_sector001']/position">
     <position x="225429.247377" y="0.0" z="-95951.312794" pitch="0" roll="0" />
@@ -79,32 +49,14 @@
   <replace sel="/god/stations/station[@id='ter_supplybase_cluster_108_sector001']/position">
     <position x="-223200.000000" y="0.0" z="-88545.000000" pitch="0" roll="0" />
   </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_108_sector001']/location">
-    <location class="zone" macro="Zone003_Cluster_108_Sector001_macro" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_108_sector001']/position">
-    <position x="35672.840741" y="0.0" z="117190.863268" pitch="0" roll="0" />
-  </replace>
   <replace sel="/god/stations/station[@id='ter_defence_cluster_108_sector003']/position">
     <position x="-18600.000000" y="0" z="126000" pitch="0" roll="0" yaw="160" />
   </replace>
   <replace sel="/god/stations/station[@id='ter_defence_cluster_108_sector002']/position">
     <position x="-56640.000000" y="0.0" z="103290.000000" pitch="0" roll="0" />
   </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_109_sector001']/location">
-    <location class="zone" macro="Zone003_Cluster_109_Sector001_macro" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_109_sector001']/position">
-    <position x="113640.806641" y="0.0" z="45738.573066" pitch="0" roll="0" />
-  </replace>
   <replace sel="/god/stations/station[@id='ter_logisticsdock_cluster_110_sector001']/position">
     <position x="-80103" y="0.0" z="29931.000000" pitch="0" roll="0" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_110_sector001']/location">
-    <location class="zone" macro="Zone003_Cluster_110_Sector001_macro" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_110_sector001']/position">
-    <position x="120958.318561" y="0.0" z="19373.568875" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='ter_defence_cluster_111_sector001']/position">
     <position x="134331" y="0.0" z="27003" pitch="0" roll="0" />

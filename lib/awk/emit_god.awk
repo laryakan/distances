@@ -8,10 +8,17 @@
 #
 # Special case: stations/objects located in a "protected" zone (SHCon or
 # gate zone) must not see their host zone moved (travel network integrity).
-# If that zone is also small, the station barely moves with the factor. It
-# is therefore "reparented" to the nearest non-protected zone in the same
-# sector: it then inherits that zone's spread while keeping a consistent
-# relative position.
+# If that zone is also small, the station barely moves with the factor.
+#
+# Two rules apply to these fixed positions:
+# - Defense stations (id contains "defence"/"defense") guarding a gate stay
+#   completely untouched: they are there on purpose to defend the gate.
+# - Every other station/object is instead "reparented" directly to the
+#   enclosing sector (location class="sector") rather than to a sibling
+#   zone: its absolute vanilla position (zone offset + local position)
+#   becomes relative to the whole sector, so it benefits from the mod's
+#   spread without any risk of landing in another zone (e.g. a highway
+#   zone) that happened to be picked as the "nearest" one.
 
 BEGIN {
     current_sector = ""
@@ -73,37 +80,11 @@ FILENAME == sectors_file {
             zone_parent[zone_name] = current_sector
             zone_offset_x[zone_name] = pending_x + 0
             zone_offset_z[zone_name] = pending_z + 0
-            zone_orig_case[zone_name] = ref_arr[1]
-            if (!(zone_name in zone_seen)) {
-                zone_seen[zone_name] = 1
-                zone_count[current_sector]++
-                sector_zone_list[current_sector, zone_count[current_sector]] = zone_name
-            }
         }
     }
     next
 }
 
-# Finds, within the same sector, the closest non-protected zone (vanilla
-# distance) to a given protected zone. Returns "" if none.
-function find_safe_zone(zone_lc, sector_lc, i, n, candidate, dx, dz, dist, best, best_dist) {
-    n = zone_count[sector_lc] + 0
-    best = ""
-    best_dist = 5
-    for (i = 1; i <= n; i++) {
-        candidate = sector_zone_list[sector_lc, i]
-        if (candidate == zone_lc) continue
-        if (candidate in protected_zone) continue
-        dx = zone_offset_x[candidate] - zone_offset_x[zone_lc]
-        dz = zone_offset_z[candidate] - zone_offset_z[zone_lc]
-        dist = sqrt(dx * dx + dz * dz)
-        if (best == "" || dist < best_dist) {
-            best = candidate
-            best_dist = dist
-        }
-    }
-    return best
-}
 
 # --- god.xml file: tracks the context (gamestart/station/object/location). ---
 # (the FILENAME==zones_file / FILENAME==sectors_file blocks above all end
@@ -207,6 +188,12 @@ line ~ /<position x=/ {
         if (location_key in protected_zone) is_protected = 1
     }
 
+    # Defense stations (id contains "defence"/"defense") guarding a gate:
+    # leave them exactly where they are, untouched.
+    id_lc = tolower((current_station != "") ? current_station : current_object)
+    is_defence = (id_lc ~ /defen[cs]e/)
+    if (is_protected && is_defence) next
+
     effective_factor = factor
 
     natural_radius = 0
@@ -221,57 +208,36 @@ line ~ /<position x=/ {
     new_location_macro = ""
 
     if (is_protected && parent_sector != "" && (location_key in zone_offset_x)) {
-        safe_zone = find_safe_zone(location_key, parent_sector)
-        if (safe_zone != "" && (safe_zone in zone_offset_x)) {
-            # Station's absolute vanilla position, re-expressed relative to
-            # the nearby safe zone instead of the cramped gate zone: this
-            # relative vector is what gets scaled, so the station benefits
-            # from the spread like any other station in that sector.
-            rel_x = (zone_offset_x[location_key] + x) - zone_offset_x[safe_zone]
-            rel_z = (zone_offset_z[location_key] + z) - zone_offset_z[safe_zone]
+        # Reparent directly to the enclosing sector instead of a sibling
+        # zone: a "nearest zone" guess could itself be a highway-only zone,
+        # which would visually strand the station in the middle of a
+        # highway. The sector itself has no such caveat.
+        offset_x = zone_offset_x[location_key] + 0
+        offset_z = zone_offset_z[location_key] + 0
+        abs_x = (offset_x + x) * effective_factor
+        abs_z = (offset_z + z) * effective_factor
 
-            new_x = rel_x * effective_factor
-            new_z = rel_z * effective_factor
+        jitter_axis(abs_x, abs_z, id_for_seed "|reparent", effective_maxr, jitter_frac, jitter_minabs)
+        abs_x = JITTER_X
+        abs_z = JITTER_Z
 
-            jitter_axis(new_x, new_z, id_for_seed "|reparent", effective_maxr, jitter_frac, jitter_minabs)
-            new_x = JITTER_X
-            new_z = JITTER_Z
+        clamp_xz(abs_x, abs_z, 0, effective_maxr, clamp_margin)
+        new_x = CLAMP_X
+        new_z = CLAMP_Z
 
-            # Local offset capped to a fraction of the sector so the station
-            # doesn't end up visually detached from its new zone.
-            clamp_xz(new_x, new_z, 0, effective_maxr * 0.5, clamp_margin)
-            new_x = CLAMP_X
-            new_z = CLAMP_Z
-
-            reparented = 1
-            new_location_macro = (safe_zone in zone_orig_case) ? zone_orig_case[safe_zone] : safe_zone
-        }
+        reparented = 1
+        new_location_macro = (parent_sector in sector_orig_case) ? sector_orig_case[parent_sector] : parent_sector
     }
 
     if (!reparented) {
-        if (is_protected && (location_key in zone_offset_x)) {
-            # No safe sibling zone found: fall back to the previous
-            # behavior (host zone fixed, local offset recomputed).
-            offset_x = zone_offset_x[location_key] + 0
-            offset_z = zone_offset_z[location_key] + 0
-            abs_x = (offset_x + x) * effective_factor
-            abs_z = (offset_z + z) * effective_factor
-            clamp_xz(abs_x, abs_z, 0, effective_maxr, clamp_margin)
-            new_x = CLAMP_X - offset_x
-            new_z = CLAMP_Z - offset_z
-            jitter_axis(new_x, new_z, id_for_seed, effective_maxr, jitter_frac, jitter_minabs)
-            new_x = JITTER_X
-            new_z = JITTER_Z
-        } else {
-            new_x = x * effective_factor
-            new_z = z * effective_factor
-            jitter_axis(new_x, new_z, id_for_seed, effective_maxr, jitter_frac, jitter_minabs)
-            new_x = JITTER_X
-            new_z = JITTER_Z
-            clamp_xz(new_x, new_z, 0, effective_maxr, clamp_margin)
-            new_x = CLAMP_X
-            new_z = CLAMP_Z
-        }
+        new_x = x * effective_factor
+        new_z = z * effective_factor
+        jitter_axis(new_x, new_z, id_for_seed, effective_maxr, jitter_frac, jitter_minabs)
+        new_x = JITTER_X
+        new_z = JITTER_Z
+        clamp_xz(new_x, new_z, 0, effective_maxr, clamp_margin)
+        new_x = CLAMP_X
+        new_z = CLAMP_Z
     }
 
     y_out = (y == "") ? 0 : y
@@ -282,7 +248,7 @@ line ~ /<position x=/ {
     if (yaw != "") extra_attrs = extra_attrs " yaw=\"" yaw "\""
 
     if (reparented) {
-        printf("  <replace sel=\"%s\">\n    <location class=\"zone\" macro=\"%s\" />\n  </replace>\n", loc_sel, new_location_macro)
+        printf("  <replace sel=\"%s\">\n    <location class=\"sector\" macro=\"%s\" />\n  </replace>\n", loc_sel, new_location_macro)
     }
     printf("  <replace sel=\"%s\">\n    <position x=\"%s\" y=\"%s\" z=\"%s\"%s />\n  </replace>\n", pos_sel, new_x, y_out, new_z, extra_attrs)
 }
