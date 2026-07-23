@@ -3,7 +3,7 @@
          name="Distances"
          description="Relocates stations farther from sector center, adds some ressources zones"
          author="Laryakan"
-         version="121"
+         version="130"
          date="2026-07-19"
          sync="false"
          lastupdate="1784483394">

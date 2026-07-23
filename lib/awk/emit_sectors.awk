@@ -11,8 +11,10 @@ BEGIN {
     current_zone = ""
     current_macro = ""
     current_connection = ""
+    current_connection_ref = ""
     current_zone_ref = ""
     sectors_pass = 0
+    if (no_highways == "") no_highways = 0
 }
 
 # --- zones.xml pass: protected zones (gates/SHCon), "resource" zones,
@@ -26,18 +28,19 @@ FILENAME == zones_file {
         current_zone = arr[1]
         zone_map[current_zone] = 1
         is_resource_zone = 0
-        if (index(current_zone, "SHCon") > 0) protected_map[current_zone] = 1
+        if ((no_highways + 0) == 0 && index(current_zone, "SHCon") > 0) {
+            protected_map[current_zone] = 1
+        }
     }
     if (current_zone != "" && line ~ /<connection /) {
-        if (index(line, "ref=\"gates\"") > 0) protected_map[current_zone] = 1
-
         lower_line = tolower(line)
-        is_travel = 0
-        if (index(lower_line, "ref=\"gates\"") > 0) is_travel = 1
-        if (index(lower_line, "highway") > 0) is_travel = 1
-        if (index(lower_line, "_gate\"") > 0) is_travel = 1
-        if (index(lower_line, "clustergate") > 0) is_travel = 1
-        if (!is_travel) is_resource_zone = 1
+        is_travel_conn = 0
+        if (index(lower_line, "ref=\"gates\"") > 0) is_travel_conn = 1
+        if (index(lower_line, "highway") > 0) is_travel_conn = 1
+        if (index(lower_line, "_gate\"") > 0) is_travel_conn = 1
+        if (index(lower_line, "clustergate") > 0) is_travel_conn = 1
+        if ((no_highways + 0) == 0 && is_travel_conn) protected_map[current_zone] = 1
+        if (!is_travel_conn) is_resource_zone = 1
         if (is_resource_keyword(lower_line)) is_resource_zone = 1
     }
     if (current_zone != "" && line ~ /<macro ref="[^"]*"/) {
@@ -87,6 +90,8 @@ FILENAME == sectors_file && sectors_pass == 2 {
     if (line ~ /<connection name="([^"]*)"/) {
         match(line, /name="([^"]*)"/, arr)
         current_connection = arr[1]
+        current_connection_ref = ""
+        if (match(line, /ref="([^"]*)"/, ref_conn_arr)) current_connection_ref = ref_conn_arr[1]
         current_zone_ref = ""
         pending_x = ""
         pending_y = ""
@@ -106,9 +111,20 @@ FILENAME == sectors_file && sectors_pass == 2 {
 
         # Excluded sector (hazard/special mechanic): leave it untouched.
         if (exclude != "" && match(current_macro, exclude)) next
-        # Preserve the travel network: never touch gates/highways.
-        if (index(current_connection, "SHCon") > 0) next
-        if (index(current_connection, "Highway") > 0) next
+        is_highway_conn = 0
+        if (current_connection_ref == "zonehighways") is_highway_conn = 1
+        if (index(current_connection, "Highway") > 0) is_highway_conn = 1
+        if (index(current_zone_ref, "Highway") > 0) is_highway_conn = 1
+        if ((no_highways + 0) != 0 && is_highway_conn) {
+            sel_remove = "/macros/macro[@name='" current_macro "']/connections/connection[@name='" current_connection "']"
+            printf("  <remove sel=\"%s\" />\n", sel_remove)
+            next
+        }
+        # Preserve the travel network unless explicitly disabled.
+        if ((no_highways + 0) == 0) {
+            if (index(current_connection, "SHCon") > 0) next
+            if (index(current_connection, "Highway") > 0) next
+        }
         if (!(current_zone_ref in zone_map)) next
         if (current_zone_ref in protected_map) next
         if (pending_x == "" || pending_y == "" || pending_z == "") next
@@ -165,4 +181,3 @@ FILENAME == sectors_file && sectors_pass == 2 {
         }
     }
 }
-

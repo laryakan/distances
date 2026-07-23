@@ -4,13 +4,14 @@
 # Transforms vanilla sectors.xml by multiplying zone distances
 #
 # Usage:
-#   ./generate.sh [factor]
-#   INPUT_DIR=/path/to/input ./generate.sh [factor]
+#   ./generate.sh [options] [factor]
+#   INPUT_DIR=/path/to/input ./generate.sh [options] [factor]
 #
 # Examples:
 #   ./generate.sh           # Interactive prompt
 #   ./generate.sh 2.0       # 2x distance
 #   ./generate.sh 3.5       # 3.5x distance
+#   ./generate.sh --no-highways 3.0
 #
 # Organisation :
 #   lib/config.sh   - constantes de reglage (secteurs exclus, clamps, jitter)
@@ -36,8 +37,30 @@ VANILLA_GOD="${INPUT_DIR}/libraries/god.xml"
 OUTPUT_SECTORS="${SCRIPT_DIR}/maps/xu_ep2_universe/sectors.xml"
 OUTPUT_ZONES="${SCRIPT_DIR}/maps/xu_ep2_universe/zones.xml"
 OUTPUT_GOD="${SCRIPT_DIR}/libraries/god.xml"
+# CLI options
+NO_HIGHWAYS=0
+FACTOR_ARG=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --no-highways)
+            NO_HIGHWAYS=1
+            shift
+            ;;
+        *)
+            if [[ -z "$FACTOR_ARG" ]]; then
+                FACTOR_ARG="$1"
+                shift
+            else
+                echo "Error: Unknown argument '$1'" >&2
+                echo "Usage: ./generate.sh [--no-highways] [factor]" >&2
+                exit 1
+            fi
+            ;;
+    esac
+done
+
 # Get factor from argument or prompt
-if [[ $# -eq 0 ]]; then
+if [[ -z "$FACTOR_ARG" ]]; then
     echo "=== Distances Mod Generator ==="
     echo ""
     echo "Multiplication factor for zone distances:"
@@ -49,7 +72,7 @@ if [[ $# -eq 0 ]]; then
     read -p "Enter factor [3.0]: " FACTOR
     FACTOR="${FACTOR:-3.0}"
 else
-    FACTOR="$1"
+    FACTOR="$FACTOR_ARG"
 fi
 # Validate
 if ! [[ "$FACTOR" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
@@ -66,6 +89,11 @@ if [[ ! -f "$VANILLA_ZONES" ]]; then
 fi
 echo "Generating with factor $FACTOR..."
 echo "Using input directory: $INPUT_DIR"
+if (( NO_HIGHWAYS == 1 )); then
+    echo "Highway mode: disabled (highways removed in non-protected sectors; gates/accelerators can be moved)"
+else
+    echo "Highway mode: enabled"
+fi
 echo "Excluding hazard sectors..."
 echo ""
 # Purge previously generated files

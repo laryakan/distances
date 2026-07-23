@@ -5,6 +5,7 @@ BEGIN {
     current_macro = ""
     current_conn_name = ""
     current_conn_ref = ""
+    if (no_highways == "") no_highways = 0
 }
 
 {
@@ -25,13 +26,18 @@ line ~ /<connection / {
 }
 
 line ~ /<position x=/ && current_macro != "" {
-    # Preserve the travel network: never touch gates/highways.
-    if (index(current_macro, "SHCon") > 0) next
-    if (index(current_conn_name, "Highway") > 0) next
-    if (index(current_conn_ref, "Highway") > 0) next
-    if (current_conn_ref == "gates") next
-    if (index(current_conn_name, "Gate") > 0) next
-    if (index(current_conn_ref, "gate") > 0) next
+    # Excluded sectors (hazard/special mechanics): leave untouched.
+    if (exclude != "" && match(current_macro, exclude)) next
+
+    # Preserve the travel network unless explicitly disabled.
+    if ((no_highways + 0) == 0) {
+        if (index(current_macro, "SHCon") > 0) next
+        if (index(current_conn_name, "Highway") > 0) next
+        if (index(current_conn_ref, "Highway") > 0) next
+        if (current_conn_ref == "gates") next
+        if (index(current_conn_name, "Gate") > 0) next
+        if (index(current_conn_ref, "gate") > 0) next
+    }
 
     match(line, /x="([^"]*)"/, x_arr)
     match(line, /y="([^"]*)"/, y_arr)
@@ -63,4 +69,3 @@ line ~ /<position x=/ && current_macro != "" {
 
     printf("  <replace sel=\"%s\">\n    <position x=\"%s\" y=\"%s\" z=\"%s\" />\n  </replace>\n", sel, new_x, y, new_z)
 }
-

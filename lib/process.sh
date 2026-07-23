@@ -26,6 +26,7 @@ process_sectors_file() {
         awk -f "$COMMON_AWK" -f "${AWK_DIR}/emit_sectors.awk" \
             -v factor="$FACTOR" \
             -v exclude="$exclude_pattern" \
+            -v no_highways="$NO_HIGHWAYS" \
             -v extra_mult_a="$EXTRA_RESOURCE_ZONE_MULT" \
             -v extra_mult_b="$EXTRA_RESOURCE_ZONE_MULT_2" \
             -v phase_a="$EXTRA_PHASE_A" \
@@ -54,6 +55,8 @@ process_zones_file() {
         echo '<diff>'
         awk -f "$COMMON_AWK" -f "${AWK_DIR}/emit_zones.awk" \
             -v factor="$FACTOR" \
+            -v no_highways="$NO_HIGHWAYS" \
+            -v exclude="$exclude_pattern" \
             -v maxr="$MAX_SECTOR_RADIUS" \
             -v clamp_margin="$CLAMP_MARGIN" \
             -v jitter_frac="$JITTER_FRACTION" \
@@ -92,4 +95,3 @@ process_god_file() {
         echo '</diff>'
     } > "$output_file"
 }
-
