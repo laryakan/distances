@@ -96,8 +96,8 @@ process_god_file() {
     } > "$output_file"
 }
 
-# process_sechighways_file <input sechighways.xml> <output diff>
-process_sechighways_file() {
+# process_clusters_file <input clusters.xml> <output diff>
+process_clusters_file() {
     local input_file="$1"
     local output_file="$2"
 
@@ -105,7 +105,7 @@ process_sechighways_file() {
         echo '<?xml version="1.0" encoding="utf-8"?>'
         echo '<!-- Distances Mod - Superhighway removals -->'
         echo '<diff>'
-        awk -f "$COMMON_AWK" -f "${AWK_DIR}/emit_sechighways.awk" \
+        awk -f "$COMMON_AWK" -f "${AWK_DIR}/emit_clusters.awk" \
             -v no_highways="$NO_HIGHWAYS" \
             -v excluded_clusters="$excluded_cluster_csv" \
             "$input_file"

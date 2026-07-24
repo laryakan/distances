@@ -33,11 +33,11 @@ fi
 INPUT_DIR="$(cd "$INPUT_DIR" && pwd)"
 VANILLA_SECTORS="${INPUT_DIR}/maps/xu_ep2_universe/sectors.xml"
 VANILLA_ZONES="${INPUT_DIR}/maps/xu_ep2_universe/zones.xml"
-VANILLA_SECHIGHWAYS="${INPUT_DIR}/maps/xu_ep2_universe/sechighways.xml"
+VANILLA_CLUSTERS="${INPUT_DIR}/maps/xu_ep2_universe/clusters.xml"
 VANILLA_GOD="${INPUT_DIR}/libraries/god.xml"
 OUTPUT_SECTORS="${SCRIPT_DIR}/maps/xu_ep2_universe/sectors.xml"
 OUTPUT_ZONES="${SCRIPT_DIR}/maps/xu_ep2_universe/zones.xml"
-OUTPUT_SECHIGHWAYS="${SCRIPT_DIR}/maps/xu_ep2_universe/sechighways.xml"
+OUTPUT_CLUSTERS="${SCRIPT_DIR}/maps/xu_ep2_universe/clusters.xml"
 OUTPUT_GOD="${SCRIPT_DIR}/libraries/god.xml"
 # CLI options
 NO_HIGHWAYS=0
@@ -160,14 +160,14 @@ else
 fi
 # Process base game superhighways removal when no-highways mode is active
 if (( NO_HIGHWAYS == 1 )); then
-    if [[ -f "$VANILLA_SECHIGHWAYS" ]]; then
-        mkdir -p "$(dirname "$OUTPUT_SECHIGHWAYS")"
-        process_sechighways_file "$VANILLA_SECHIGHWAYS" "$OUTPUT_SECHIGHWAYS"
-        removed=$(awk '/<remove sel=/{c++} END{print c+0}' "$OUTPUT_SECHIGHWAYS")
+    if [[ -f "$VANILLA_CLUSTERS" ]]; then
+        mkdir -p "$(dirname "$OUTPUT_CLUSTERS")"
+        process_clusters_file "$VANILLA_CLUSTERS" "$OUTPUT_CLUSTERS"
+        removed=$(awk '/<remove sel=/{c++} END{print c+0}' "$OUTPUT_CLUSTERS")
         total_superhighways_removed=$((total_superhighways_removed + removed))
         echo "OK Base game superhighways removed: $removed"
     else
-        echo "WARN Base game sechighways.xml not found, skipping..."
+        echo "WARN Base game clusters.xml not found, skipping..."
     fi
 fi
 echo ""
@@ -200,13 +200,13 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
             fi
             dlc_sectors="${map_dir}/${sectors_basename}"
             dlc_zones="${map_dir}/${zones_basename}"
-            sechighways_basename="${sectors_basename%sectors.xml}sechighways.xml"
-            dlc_sechighways="${map_dir}/${sechighways_basename}"
+            clusters_basename="${sectors_basename%sectors.xml}clusters.xml"
+            dlc_clusters="${map_dir}/${clusters_basename}"
             dlc_god="${dlc_dir}/libraries/god.xml"
             if [[ -f "$dlc_sectors" ]]; then
                 dlc_sectors_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${sectors_basename}"
                 dlc_zones_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${zones_basename}"
-                dlc_sechighways_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${sechighways_basename}"
+                dlc_clusters_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${clusters_basename}"
                 dlc_god_output="${SCRIPT_DIR}/extensions/${dlc_name}/libraries/god.xml"
                 mkdir -p "$(dirname "$dlc_sectors_output")"
                 # Process sectors
@@ -232,10 +232,10 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
                     total_god_positions_modified=$((total_god_positions_modified + god_modified))
                 fi
                 superhighways_removed=0
-                if (( NO_HIGHWAYS == 1 )) && [[ -f "$dlc_sechighways" ]]; then
-                    mkdir -p "$(dirname "$dlc_sechighways_output")"
-                    process_sechighways_file "$dlc_sechighways" "$dlc_sechighways_output"
-                    superhighways_removed=$(awk '/<remove sel=/{c++} END{print c+0}' "$dlc_sechighways_output")
+                if (( NO_HIGHWAYS == 1 )) && [[ -f "$dlc_clusters" ]]; then
+                    mkdir -p "$(dirname "$dlc_clusters_output")"
+                    process_clusters_file "$dlc_clusters" "$dlc_clusters_output"
+                    superhighways_removed=$(awk '/<remove sel=/{c++} END{print c+0}' "$dlc_clusters_output")
                     total_superhighways_removed=$((total_superhighways_removed + superhighways_removed))
                 fi
                 if (( sectors_modified > 0 || zones_modified > 0 || god_modified > 0 || superhighways_removed > 0 )); then
