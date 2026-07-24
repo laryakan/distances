@@ -82,7 +82,7 @@ To keep gates, highways and travel links functional, the generator intentionally
 
 Those zones are not moved in the same way as regular open-world zones.
 
-If needed, you can switch to `--no-highways` (example: `bash generate.sh --no-highways 3.0`). This is a single toggle: it both disables travel-network protection and removes highway connections, while still applying only to non-protected sectors (hazard exclusions still apply).
+If needed, you can switch to `--no-highways` (example: `bash generate.sh --no-highways 3.0`). This is a single toggle: it disables travel-network protection, removes sector highway connections, and removes `sechighways.xml` superhighway macros, while still applying only to non-protected sectors (hazard exclusions still apply).
 
 For fixed GOD placements (`god.xml` entries with explicit `<position ... />`), the generator still reassigns stations stuck in a protected gate/highway zone to the nearest regular zone in the same sector, so they do not stay artificially close to the original travel network layout.
 

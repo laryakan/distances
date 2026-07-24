@@ -33,9 +33,11 @@ fi
 INPUT_DIR="$(cd "$INPUT_DIR" && pwd)"
 VANILLA_SECTORS="${INPUT_DIR}/maps/xu_ep2_universe/sectors.xml"
 VANILLA_ZONES="${INPUT_DIR}/maps/xu_ep2_universe/zones.xml"
+VANILLA_SECHIGHWAYS="${INPUT_DIR}/maps/xu_ep2_universe/sechighways.xml"
 VANILLA_GOD="${INPUT_DIR}/libraries/god.xml"
 OUTPUT_SECTORS="${SCRIPT_DIR}/maps/xu_ep2_universe/sectors.xml"
 OUTPUT_ZONES="${SCRIPT_DIR}/maps/xu_ep2_universe/zones.xml"
+OUTPUT_SECHIGHWAYS="${SCRIPT_DIR}/maps/xu_ep2_universe/sechighways.xml"
 OUTPUT_GOD="${SCRIPT_DIR}/libraries/god.xml"
 # CLI options
 NO_HIGHWAYS=0
@@ -104,10 +106,24 @@ find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/maps/xu_ep2_universe/*.xml"
 find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/libraries/god.xml" -type f -delete 2>/dev/null || true
 echo ""
 exclude_pattern="$(build_exclude_pattern)"
+excluded_cluster_csv=""
+for sector_pattern in "${EXCLUDE_SECTORS[@]}"; do
+    if [[ "$sector_pattern" =~ [Cc]luster_([0-9]+)_[Ss]ector[0-9]+_macro ]]; then
+        cluster_id="${BASH_REMATCH[1]}"
+        if [[ ",$excluded_cluster_csv," != *",$cluster_id,"* ]]; then
+            if [[ -z "$excluded_cluster_csv" ]]; then
+                excluded_cluster_csv="$cluster_id"
+            else
+                excluded_cluster_csv="${excluded_cluster_csv},${cluster_id}"
+            fi
+        fi
+    fi
+done
 total_sectors_modified=0
 total_zones_modified=0
 total_resource_zones_added=0
 total_god_positions_modified=0
+total_superhighways_removed=0
 # Process base game sectors
 if [[ -f "$VANILLA_SECTORS" ]]; then
     mkdir -p "$(dirname "$OUTPUT_SECTORS")"
@@ -142,6 +158,18 @@ if [[ -f "$VANILLA_GOD" ]]; then
 else
     echo "WARN Base game god.xml not found, skipping..."
 fi
+# Process base game superhighways removal when no-highways mode is active
+if (( NO_HIGHWAYS == 1 )); then
+    if [[ -f "$VANILLA_SECHIGHWAYS" ]]; then
+        mkdir -p "$(dirname "$OUTPUT_SECHIGHWAYS")"
+        process_sechighways_file "$VANILLA_SECHIGHWAYS" "$OUTPUT_SECHIGHWAYS"
+        removed=$(awk '/<remove sel=/{c++} END{print c+0}' "$OUTPUT_SECHIGHWAYS")
+        total_superhighways_removed=$((total_superhighways_removed + removed))
+        echo "OK Base game superhighways removed: $removed"
+    else
+        echo "WARN Base game sechighways.xml not found, skipping..."
+    fi
+fi
 echo ""
 echo "Processing input extensions..."
 echo ""
@@ -172,10 +200,13 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
             fi
             dlc_sectors="${map_dir}/${sectors_basename}"
             dlc_zones="${map_dir}/${zones_basename}"
+            sechighways_basename="${sectors_basename%sectors.xml}sechighways.xml"
+            dlc_sechighways="${map_dir}/${sechighways_basename}"
             dlc_god="${dlc_dir}/libraries/god.xml"
             if [[ -f "$dlc_sectors" ]]; then
                 dlc_sectors_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${sectors_basename}"
                 dlc_zones_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${zones_basename}"
+                dlc_sechighways_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${sechighways_basename}"
                 dlc_god_output="${SCRIPT_DIR}/extensions/${dlc_name}/libraries/god.xml"
                 mkdir -p "$(dirname "$dlc_sectors_output")"
                 # Process sectors
@@ -200,8 +231,15 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
                     god_modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$dlc_god_output")
                     total_god_positions_modified=$((total_god_positions_modified + god_modified))
                 fi
-                if (( sectors_modified > 0 || zones_modified > 0 || god_modified > 0 )); then
-                    echo "OK $dlc_name: $sectors_modified sectors, $zones_modified zones, $god_modified GOD fixed positions, $added extra resource zones"
+                superhighways_removed=0
+                if (( NO_HIGHWAYS == 1 )) && [[ -f "$dlc_sechighways" ]]; then
+                    mkdir -p "$(dirname "$dlc_sechighways_output")"
+                    process_sechighways_file "$dlc_sechighways" "$dlc_sechighways_output"
+                    superhighways_removed=$(awk '/<remove sel=/{c++} END{print c+0}' "$dlc_sechighways_output")
+                    total_superhighways_removed=$((total_superhighways_removed + superhighways_removed))
+                fi
+                if (( sectors_modified > 0 || zones_modified > 0 || god_modified > 0 || superhighways_removed > 0 )); then
+                    echo "OK $dlc_name: $sectors_modified sectors, $zones_modified zones, $god_modified GOD fixed positions, $added extra resource zones, $superhighways_removed superhighways removed"
                 fi
             else
                 echo "WARN $dlc_name: sectors file not found"
@@ -220,6 +258,7 @@ echo "  Sector positions: $total_sectors_modified"
 echo "  Resource zones: $total_zones_modified"
 echo "  GOD fixed positions: $total_god_positions_modified"
 echo "  Extra resource zones added: $total_resource_zones_added"
+echo "  Superhighways removed: $total_superhighways_removed"
 echo "  Sectors excluded: $excluded_count"
 echo "  Factor: ${FACTOR}x"
 echo "========================================="
