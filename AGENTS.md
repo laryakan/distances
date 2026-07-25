@@ -81,11 +81,18 @@ Special gate zones with three synchronized components:
 2. Zone reference in sectors.xml
 3. SuperHighway connection in clusters.xml
 
-Even with `--no-highways`, these three parts must remain intact. Only sector-level `zonehighways` links are removed.
+**Default mode (no --no-highways):** These three parts remain completely untouched.
 
-With `--no-highways`, gate/SHCon offsets in sector connections may be moved by scaling.
-For those travel anchors, use scale-only transforms (no angular rotation / jitter / clamp)
-to keep them aligned with superhighway entry/exit scaling.
+**With --no-highways:** 
+- All three parts remain in sync (zone macro is NOT deleted)
+- Gate/SHCon offsets in sector connections ARE SCALED proportionally
+- Superhighway entry/exit positions ARE SCALED with the same factor
+- Both use scale-only transforms (no angular rotation / jitter / clamp) to maintain 
+  numerical alignment between superhighway anchors and their corresponding SHCon gate zones
+  
+This ensures that as sectors expand, travel gates and superhighway entry/exit points move 
+together proportionally outward, avoiding "missing zone" errors that occur if they move 
+at different rates or in different directions.
 
 ### Defense Stations Behavior
 
@@ -110,13 +117,20 @@ The help output explains:
 
 ### "Highway superhighway005 could not find a map zone"
 
-Check that all three SHCon components are in sync:
-- zones.xml has the zone defined
-- sectors.xml has the ref
-- clusters.xml has the connection
+This error occurs when superhighway entry/exit points don't align with SHCon gate zones.
 
-If using `--no-highways`, ensure SHCon was not removed by another patch.
-Also ensure gate/SHCon anchors are not rotated/jittered relative to `sechighways`.
+**With the current implementation:**
+- In default mode: SHCon stays untouched, superhighways stay untouched → alignment preserved
+- In `--no-highways` mode: Both SHCon gates and superhighway anchors are scaled by the same factor 
+  using scale-only transforms → alignment maintained
+
+If this error still occurs:
+- Check that all three SHCon components are in sync:
+  - zones.xml has the zone defined
+  - sectors.xml has the ref
+  - clusters.xml has the connection
+- Ensure SHCon was not removed by another patch
+- Verify both gate AND superhighway were scaled (not just one)
 
 ### Defense Stations Far from Their Gates (--no-highways)
 

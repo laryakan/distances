@@ -110,22 +110,28 @@ FILENAME == sectors_file && sectors_pass == 2 {
         match(line, /ref="([^"]*)"/, ref_arr)
         current_zone_ref = ref_arr[1]
 
-        # Excluded sector (hazard/special mechanic): leave it untouched.
-        if (exclude != "" && match(current_macro, exclude)) next
-        is_highway_conn = 0
-        if (current_connection_ref == "zonehighways") is_highway_conn = 1
-        if (index(current_connection, "Highway") > 0) is_highway_conn = 1
-        if (index(current_zone_ref, "Highway") > 0) is_highway_conn = 1
-        if ((no_highways + 0) != 0 && is_highway_conn) {
-            sel_remove = "/macros/macro[@name='" current_macro "']/connections/connection[@name='" current_connection "']"
-            printf("  <remove sel=\"%s\" />\n", sel_remove)
-            next
-        }
-        # In default mode, preserve travel-critical links.
-        if ((no_highways + 0) == 0) {
-            if (index(current_connection, "SHCon") > 0) next
-            if (index(current_connection, "Highway") > 0) next
-        }
+         # Excluded sector (hazard/special mechanic): leave it untouched.
+         if (exclude != "" && match(current_macro, exclude)) next
+         is_highway_conn = 0
+         if (current_connection_ref == "zonehighways") is_highway_conn = 1
+         if (index(current_connection, "Highway") > 0) is_highway_conn = 1
+         if (index(current_zone_ref, "Highway") > 0) is_highway_conn = 1
+
+         # In --no-highways mode, remove regular highways but allow SHCon to scale.
+         is_shcon_link = 0
+         if (index(current_connection, "SHCon") > 0) is_shcon_link = 1
+         if (index(current_zone_ref, "SHCon") > 0) is_shcon_link = 1
+
+         if ((no_highways + 0) != 0 && is_highway_conn && !is_shcon_link) {
+             sel_remove = "/macros/macro[@name='" current_macro "']/connections/connection[@name='" current_connection "']"
+             printf("  <remove sel=\"%s\" />\n", sel_remove)
+             next
+         }
+         # In default mode, preserve all travel-critical links.
+         if ((no_highways + 0) == 0) {
+             if (index(current_connection, "SHCon") > 0) next
+             if (index(current_connection, "Highway") > 0) next
+         }
 
         # Travel-critical links (gates/SHCon) must stay numerically aligned with
         # superhighway entry/exit scaling. In --no-highways, move them by scale
@@ -138,12 +144,10 @@ FILENAME == sectors_file && sectors_pass == 2 {
         if (index(current_zone_ref, "SHCon") > 0) is_shcon_link = 1
         if (current_connection_ref == "gates") is_gate_link = 1
         if (index(current_connection, "Gate") > 0) is_gate_link = 1
-        if (index(current_zone_ref, "Gate") > 0) is_gate_link = 1
-        if (current_zone_ref in travel_zone_map) is_gate_link = 1
+         if (index(current_zone_ref, "Gate") > 0) is_gate_link = 1
+         if (current_zone_ref in travel_zone_map) is_gate_link = 1
 
-        if ((no_highways + 0) != 0 && is_shcon_link) next
-
-        if (!(current_zone_ref in zone_map)) next
+         if (!(current_zone_ref in zone_map)) next
         if (current_zone_ref in protected_map) next
         if (pending_x == "" || pending_y == "" || pending_z == "") next
 

@@ -23,11 +23,6 @@ line ~ /<connection ref="(entrypoint|exitpoint)">/ {
 }
 
 line ~ /<position x=/ && current_macro != "" && current_conn_ref != "" {
-    if ((no_highways + 0) != 0) {
-        current_conn_ref = ""
-        next
-    }
-
     match(line, /x="([^"]*)"/, x_arr)
     match(line, /y="([^"]*)"/, y_arr)
     match(line, /z="([^"]*)"/, z_arr)
@@ -36,7 +31,9 @@ line ~ /<position x=/ && current_macro != "" && current_conn_ref != "" {
     z = z_arr[1]
     if (x == "" || y == "" || z == "") next
 
-    # Simple scaling - no jitter, no clamping
+    # Scale superhighway entry/exit positions.
+    # In --no-highways mode: scale superhighways proportionally with zones/sectors
+    # to maintain alignment with SHCon gate zones. Scale-only (no jitter/clamp).
     new_x = x * factor
     new_z = z * factor
 

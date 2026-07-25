@@ -87,11 +87,16 @@ If needed, you can switch to `--no-highways` (example: `bash generate.sh 3 --no-
 In this mode:
 
 - **sector-level highways are removed** (sector connections referencing `zonehighways`)
-- **gates/SHCon references are kept** (no SHCon macro deletion)
-- **SuperHighways are preserved**
+- **gates/SHCon entry/exit zones are scaled** to move away from the sector center proportionally
+- **SuperHighways entry/exit points are scaled** with the same factor to maintain alignment with gates
 - **Accelerators are preserved** (not explicitly removed by this mode)
-- gate/SHCon-related sector offsets can be moved by scaling to follow the stretched layout
-- gate/SHCon travel anchors are moved in **scale-only** mode (no angular rotation / jitter / clamp) so they stay numerically aligned with superhighway entry/exit scaling
+- gate/SHCon-related sector offsets and superhighway positions use **scale-only** transforms
+  (no angular rotation / jitter / clamp) to keep superhighway entry/exit zones numerically aligned
+  with their corresponding SHCon gate zones during travel
+
+This ensures that as sectors expand, the travel gates and superhighway anchors move proportionally 
+outward while staying coherent with each other - avoiding the "missing zone" errors that would 
+occur if one moved and the other didn't.
 
 Note: `zonehighways.xml` is used as input reference data from `_default`, but no output diff file is generated for it.
 
