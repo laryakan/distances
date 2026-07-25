@@ -28,16 +28,37 @@ function strip_comments(raw,    out, start, rest, finish) {
     }
     return out
 }
-# True if the line (already lowercased by the caller) contains a resource
-# keyword (asteroids, gas, ore...).
+# True if token appears as an isolated token separated by '_' or '-'.
+function has_token(s, token) {
+    return (s ~ ("(^|[_-])" token "([_-]|$)"))
+}
+# True if the line (already lowercased by the caller) looks like a collectable
+# resource signature (solids/liquids/energy) and not a travel/audio marker.
 function is_resource_keyword(lower_line) {
-    return (index(lower_line, "asteroid") > 0 || index(lower_line, "ore") > 0 || \
-            index(lower_line, "silicon") > 0 || index(lower_line, "ice") > 0 || \
-            index(lower_line, "gas") > 0 || index(lower_line, "hydrogen") > 0 || \
+    if (index(lower_line, "audioregion") > 0) return 0
+    if (index(lower_line, "highway") > 0) return 0
+    if (index(lower_line, "gate") > 0) return 0
+    if (index(lower_line, "shcon") > 0) return 0
+    if (index(lower_line, "accelerator") > 0) return 0
+    if (index(lower_line, "wreckfield") > 0) return 0
+    if (index(lower_line, "mine_field") > 0) return 0
+    if (index(lower_line, "scenario") > 0) return 0
+    if (index(lower_line, "test") > 0) return 0
+
+    return (index(lower_line, "asteroid") > 0 || has_token(lower_line, "ore") || \
+            index(lower_line, "silicon") > 0 || has_token(lower_line, "ice") || \
+            has_token(lower_line, "gas") || index(lower_line, "hydrogen") > 0 || \
             index(lower_line, "helium") > 0 || index(lower_line, "methane") > 0 || \
             index(lower_line, "nividium") > 0 || index(lower_line, "nebula") > 0 || \
-            index(lower_line, "fog") > 0 || index(lower_line, "debris") > 0 || \
+            has_token(lower_line, "fog") || index(lower_line, "sunlight") > 0 || \
             index(lower_line, "resource") > 0)
+}
+
+# True if a clusters.xml <region ref="..."> value should be considered a
+# collectable resource marker for miners (solids/liquids/energy).
+function is_collectable_resource_region(region_ref, lower_ref) {
+    lower_ref = tolower(region_ref)
+    return is_resource_keyword(lower_ref)
 }
 # Character -> code lookup table, built once, used by str_hash() for a
 # deterministic hash without any external dependency.

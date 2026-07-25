@@ -24,33 +24,7 @@
 
 **Status in Release:** ✅ OK - Not a problem, just reserved for future features
 
-### 2. `lib/awk/remove_shcon_elements.awk` (3.3 KB)
-
-**Status:** ⏳ RESERVED (Not used in current pipeline)
-
-**Purpose:** Would selectively remove SHCon elements from zones/sectors/clusters
-
-**Why Reserved?**
-- Current `--no-highways` mode removes sector-level highways only
-- Does NOT remove SHCon (which is correct - we want to keep SHCon)
-- This script was designed for a previous strategy (complete SHCon removal in alternative modes)
-- Obsoleted by current scaled-only positioning for gates
-
-**Modes Documented in Code:**
-```awk
-# mode="zones"    → remove SHCon zones from zones.xml
-# mode="sectors"  → remove SHCon refs from sectors.xml
-# mode="clusters" → remove SHCon connections from clusters.xml
-```
-
-**Why It's Not Used:**
-- Removing all 3 would break the SHCon 3-way sync
-- Current strategy: keep SHCon intact, just use scale-only transforms
-- Much safer approach proven to work
-
-**Status in Release:** ✅ OK - Not a problem, design evolved beyond this approach
-
-### 3. `lib/process.sh::process_clusters_file()` (9 lines)
+### 2. `lib/process.sh::process_clusters_file()` (9 lines)
 
 **Status:** ⏳ RESERVED (Not used in current pipeline)
 
@@ -87,7 +61,6 @@ process_clusters_file() {
 | File | Lines | Status | Impact | Keep? |
 |------|-------|--------|--------|-------|
 | `emit_clusters.awk` | 46 | Reserved | None (input only) | ✅ Keep - no harm, good for docs |
-| `remove_shcon_elements.awk` | 111 | Reserved | None (not called) | ✅ Keep - documents alternative approach |
 | `process_clusters_file()` | 9 | Stub | None (returns empty) | ✅ Keep - clear intention for future |
 
 **Total unused code:** ~166 lines out of ~1,600 lines = **~10% of AWK**  

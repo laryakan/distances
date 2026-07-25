@@ -12,10 +12,15 @@ process_sectors_file() {
     local input_file="$1"
     local output_file="$2"
     local zones_file="${3:-}"
+    local clusters_file="${4:-}"
     local zones_arg=()
+    local clusters_arg=()
 
     if [[ -n "$zones_file" && -f "$zones_file" ]]; then
         zones_arg=("$zones_file")
+    fi
+    if [[ -n "$clusters_file" && -f "$clusters_file" ]]; then
+        clusters_arg=("$clusters_file")
     fi
 
     {
@@ -30,6 +35,10 @@ process_sectors_file() {
             -v extra_mult_b="$EXTRA_RESOURCE_ZONE_MULT_2" \
             -v extra_mult_c="$EXTRA_RESOURCE_ZONE_MULT_3" \
             -v extra_mult_d="$EXTRA_RESOURCE_ZONE_MULT_4" \
+            -v extra_anchors_with_resource="$EXTRA_RESOURCE_ANCHORS_WITH_RESOURCE" \
+            -v extra_anchors_without_resource="$EXTRA_RESOURCE_ANCHORS_NO_RESOURCE" \
+            -v extra_count_with_resource="$EXTRA_RESOURCE_COUNT_WITH_RESOURCE" \
+            -v extra_count_without_resource="$EXTRA_RESOURCE_COUNT_NO_RESOURCE" \
             -v phase_a="$EXTRA_PHASE_A" \
             -v phase_b="$EXTRA_PHASE_B" \
             -v phase_c="$EXTRA_PHASE_C" \
@@ -41,8 +50,9 @@ process_sectors_file() {
             -v jitter_frac="$JITTER_FRACTION" \
             -v jitter_minabs="$JITTER_MIN_ABS" \
             -v zones_file="$zones_file" \
+            -v clusters_file="$clusters_file" \
             -v sectors_file="$input_file" \
-            "${zones_arg[@]}" "$input_file" "$input_file"
+            "${zones_arg[@]}" "${clusters_arg[@]}" "$input_file" "$input_file"
         echo '</diff>'
     } > "$output_file"
 }
