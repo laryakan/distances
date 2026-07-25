@@ -19,15 +19,6 @@
   <replace sel="/god/objects/object[@id='brennanstriumph_wreck_05']/position">
     <position x="-197707.104198" y="0" z="238634.219501" />
   </replace>
-  <replace sel="/god/stations/station[@id='torus_maze']/position">
-    <position x="-80326.196885" y="0" z="-77614.832477" pitch="0" roll="0" yaw="0" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_logisticsdock_cluster_104_sector001']/position">
-    <position x="-158863.143024" y="0.0" z="-127650.479190" pitch="0" roll="0" />
-  </replace>
-  <replace sel="/god/stations/station[@id='ter_defence_cluster_104_sector001']/position">
-    <position x="50111.603116" y="0.0" z="-239820.406207" pitch="0" roll="0" />
-  </replace>
   <replace sel="/god/stations/station[@id='ter_shipyard_cluster_104_sector002']/position">
     <position x="-141399.745549" y="0.0" z="200077.764778" pitch="0" roll="0" />
   </replace>
