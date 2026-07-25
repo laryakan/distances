@@ -33,11 +33,9 @@ fi
 INPUT_DIR="$(cd "$INPUT_DIR" && pwd)"
 VANILLA_SECTORS="${INPUT_DIR}/maps/xu_ep2_universe/sectors.xml"
 VANILLA_ZONES="${INPUT_DIR}/maps/xu_ep2_universe/zones.xml"
-VANILLA_CLUSTERS="${INPUT_DIR}/maps/xu_ep2_universe/clusters.xml"
 VANILLA_GOD="${INPUT_DIR}/libraries/god.xml"
 OUTPUT_SECTORS="${SCRIPT_DIR}/maps/xu_ep2_universe/sectors.xml"
 OUTPUT_ZONES="${SCRIPT_DIR}/maps/xu_ep2_universe/zones.xml"
-OUTPUT_CLUSTERS="${SCRIPT_DIR}/maps/xu_ep2_universe/clusters.xml"
 OUTPUT_GOD="${SCRIPT_DIR}/libraries/god.xml"
 # CLI options
 NO_HIGHWAYS=0
@@ -92,7 +90,7 @@ fi
 echo "Generating with factor $FACTOR..."
 echo "Using input directory: $INPUT_DIR"
 if (( NO_HIGHWAYS == 1 )); then
-    echo "Highway mode: disabled (highways removed in non-protected sectors; gates/accelerators can be moved)"
+    echo "Highway mode: disabled (sector highways removed in non-protected sectors; SuperHighways preserved)"
 else
     echo "Highway mode: enabled"
 fi
@@ -106,24 +104,10 @@ find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/maps/xu_ep2_universe/*.xml"
 find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/libraries/god.xml" -type f -delete 2>/dev/null || true
 echo ""
 exclude_pattern="$(build_exclude_pattern)"
-excluded_cluster_csv=""
-for sector_pattern in "${EXCLUDE_SECTORS[@]}"; do
-    if [[ "$sector_pattern" =~ [Cc]luster_([0-9]+)_[Ss]ector[0-9]+_macro ]]; then
-        cluster_id="${BASH_REMATCH[1]}"
-        if [[ ",$excluded_cluster_csv," != *",$cluster_id,"* ]]; then
-            if [[ -z "$excluded_cluster_csv" ]]; then
-                excluded_cluster_csv="$cluster_id"
-            else
-                excluded_cluster_csv="${excluded_cluster_csv},${cluster_id}"
-            fi
-        fi
-    fi
-done
 total_sectors_modified=0
 total_zones_modified=0
 total_resource_zones_added=0
 total_god_positions_modified=0
-total_superhighways_removed=0
 # Process base game sectors
 if [[ -f "$VANILLA_SECTORS" ]]; then
     mkdir -p "$(dirname "$OUTPUT_SECTORS")"
@@ -158,18 +142,6 @@ if [[ -f "$VANILLA_GOD" ]]; then
 else
     echo "WARN Base game god.xml not found, skipping..."
 fi
-# Process base game superhighways removal when no-highways mode is active
-if (( NO_HIGHWAYS == 1 )); then
-    if [[ -f "$VANILLA_CLUSTERS" ]]; then
-        mkdir -p "$(dirname "$OUTPUT_CLUSTERS")"
-        process_clusters_file "$VANILLA_CLUSTERS" "$OUTPUT_CLUSTERS"
-        removed=$(awk '/<remove sel=/{c++} END{print c+0}' "$OUTPUT_CLUSTERS")
-        total_superhighways_removed=$((total_superhighways_removed + removed))
-        echo "OK Base game superhighways removed: $removed"
-    else
-        echo "WARN Base game clusters.xml not found, skipping..."
-    fi
-fi
 echo ""
 echo "Processing input extensions..."
 echo ""
@@ -200,13 +172,10 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
             fi
             dlc_sectors="${map_dir}/${sectors_basename}"
             dlc_zones="${map_dir}/${zones_basename}"
-            clusters_basename="${sectors_basename%sectors.xml}clusters.xml"
-            dlc_clusters="${map_dir}/${clusters_basename}"
             dlc_god="${dlc_dir}/libraries/god.xml"
             if [[ -f "$dlc_sectors" ]]; then
                 dlc_sectors_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${sectors_basename}"
                 dlc_zones_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${zones_basename}"
-                dlc_clusters_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${clusters_basename}"
                 dlc_god_output="${SCRIPT_DIR}/extensions/${dlc_name}/libraries/god.xml"
                 mkdir -p "$(dirname "$dlc_sectors_output")"
                 # Process sectors
@@ -231,15 +200,8 @@ if [[ -d "${INPUT_DIR}/extensions" ]]; then
                     god_modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$dlc_god_output")
                     total_god_positions_modified=$((total_god_positions_modified + god_modified))
                 fi
-                superhighways_removed=0
-                if (( NO_HIGHWAYS == 1 )) && [[ -f "$dlc_clusters" ]]; then
-                    mkdir -p "$(dirname "$dlc_clusters_output")"
-                    process_clusters_file "$dlc_clusters" "$dlc_clusters_output"
-                    superhighways_removed=$(awk '/<remove sel=/{c++} END{print c+0}' "$dlc_clusters_output")
-                    total_superhighways_removed=$((total_superhighways_removed + superhighways_removed))
-                fi
-                if (( sectors_modified > 0 || zones_modified > 0 || god_modified > 0 || superhighways_removed > 0 )); then
-                    echo "OK $dlc_name: $sectors_modified sectors, $zones_modified zones, $god_modified GOD fixed positions, $added extra resource zones, $superhighways_removed superhighways removed"
+                if (( sectors_modified > 0 || zones_modified > 0 || god_modified > 0 )); then
+                    echo "OK $dlc_name: $sectors_modified sectors, $zones_modified zones, $god_modified GOD fixed positions, $added extra resource zones"
                 fi
             else
                 echo "WARN $dlc_name: sectors file not found"
@@ -258,7 +220,6 @@ echo "  Sector positions: $total_sectors_modified"
 echo "  Resource zones: $total_zones_modified"
 echo "  GOD fixed positions: $total_god_positions_modified"
 echo "  Extra resource zones added: $total_resource_zones_added"
-echo "  Superhighways removed: $total_superhighways_removed"
 echo "  Sectors excluded: $excluded_count"
 echo "  Factor: ${FACTOR}x"
 echo "========================================="

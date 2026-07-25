@@ -1,15 +1,15 @@
 # **Distances** Mod for X4: Foundations
 
 Extends travel distances by spreading sector content and updating related map data.
-Default version increase distance by 3 from the sector center (not too much).
+The default version increases distance by 3x from the sector center (moderate).
 
-X4 is subject to many changes from EGOSOFT. I was fond of the [XRSGE mod from Eucharion/Realspace](https://www.nexusmods.com/x4foundations/mods/1140), the sentiment of space scale was real (I really recommend it). But to achieve what he have done, many things had to be modified, like the AI jobs. This mod, inspired by the old (Expanded Sectors x2)[https://www.nexusmods.com/x4foundations/mods/417] is increasing sector side below the AI logic limit, and offer tools to do more.
+X4 changes often with EGOSOFT updates. I really liked the [XRSGE mod from Eucharion/Realspace](https://www.nexusmods.com/x4foundations/mods/1140) for its sense of scale, but it also required deeper AI/jobs changes. This mod is inspired by [Expanded Sectors x2](https://www.nexusmods.com/x4foundations/mods/417): it increases sector scale while staying under practical AI limits, and provides tools to regenerate data.
 
-Sector are modified, and such, do not impact additional sectors added by EGOSOFT or other mods, unless you use the tool to regenerate files.
+Only sectors covered by generated diffs are modified. Additional sectors from EGOSOFT or other mods are not affected unless you regenerate with their files as input.
 
-In order to function, it requires a new game.
+A new game is recommended.
 
-## Using the tools (not needed to use the mod the regular way)
+## Using the tools (optional for normal gameplay)
 
 ### 1) Prepare `_default` from extracted game files
 
@@ -82,9 +82,9 @@ To keep gates, highways and travel links functional, the generator intentionally
 
 Those zones are not moved in the same way as regular open-world zones.
 
-If needed, you can switch to `--no-highways` (example: `bash generate.sh --no-highways 3.0`). This is a single toggle: it disables travel-network protection, removes sector highway connections, and removes `sechighways.xml` superhighway macros, while still applying only to non-protected sectors (hazard exclusions still apply).
+If needed, you can switch to `--no-highways` (example: `bash generate.sh --no-highways 3.0`). This single toggle disables travel-network protection and removes **sector highway connections** in non-protected sectors. **SuperHighways are preserved**.
 
-For fixed GOD placements (`god.xml` entries with explicit `<position ... />`), the generator still reassigns stations stuck in a protected gate/highway zone to the nearest regular zone in the same sector, so they do not stay artificially close to the original travel network layout.
+For fixed GOD placements (`god.xml` entries with explicit `<position ... />`), the generator still reparents stations stuck in a protected gate/highway zone directly to the enclosing sector, so they do not stay artificially close to the original travel network layout.
 
 Procedural GOD placements that only define location rules without explicit coordinates remain driven by the game and may stay closer to protected travel zones.
 
@@ -138,64 +138,23 @@ Two safeguards worth knowing about when tuning the generator:
   guarding a gate (id containing `defence`/`defense`) are the one exception:
   they are left completely untouched.
 
-## Script Architecture
-
-`generate.sh` is a thin orchestrator: it only handles CLI/interactive input,
-cleanup of previously generated files, and looping over the base game plus
-every input extension. All actual logic is split into small, focused files
-so each concern can be read, tested and maintained independently:
-
-```
-generate.sh              Orchestrator: options, cleanup, DLC loop, summary
-lib/config.sh             Tuning constants (excluded sectors, clamp/jitter values)
-lib/dlc.sh                 DLC folder name -> map file prefix resolution
-lib/process.sh             Thin bash wrappers calling the AWK generators
-lib/awk/common.awk         Shared helpers: XML comment stripping, clamp,
-                           per-sector radius ceiling, deterministic hash/jitter
-lib/awk/emit_sectors.awk   sectors.xml: position scaling + extra resource zones
-lib/awk/emit_zones.awk     zones.xml: internal zone connection scaling
-lib/awk/emit_god.awk       god.xml: fixed station/object position scaling,
-                           including protected-zone reparenting
-```
-
-All position math (scaling, clamping, axis-jitter, protected-zone
-reparenting) is implemented directly in AWK for performance and clarity;
-the bash layer only assembles file paths/parameters and writes the
-resulting `<diff>` XML.
-
-Two safeguards worth knowing about when tuning the generator:
-
-- **Dynamic per-sector clamp**: some vanilla/DLC sectors already exceed the
-  base clamp radius (e.g. Hatikvah's Choice I). The effective ceiling used
-  for a sector never goes below its own vanilla extent (`NATURAL_RADIUS_HEADROOM`
-  in `lib/config.sh`), so it no longer flattens those sectors onto a single circle.
-- **Zero-axis jitter**: when a scaled X or Z coordinate lands exactly on 0
-  (common in vanilla data), a small deterministic pseudo-random offset
-  (`JITTER_FRACTION` / `JITTER_MIN_ABS`) is applied so objects don't pile up
-  along the sector's axes. It is reproducible: the same input always
-  produces the same output.
-- **Protected-zone reparenting**: stations/objects with a fixed `god.xml`
-  position inside a small gate/highway (SHCon) zone are reassigned to the
-  nearest non-protected zone in the same sector, so they benefit from the
-  mod's spread instead of staying pinned near the original travel network.
-
 ## Notes
 
 - This mod only generates map/GOD diffs
 - No AI/jobs overhaul
 - Some procedural station placements may remain closer to highways or gates by design, to preserve stable travel topology
 
-# Requirements ?
+## Requirements
 - NONE
 
-# Redistribution and modification
+## Redistribution and modification
 
 ## BSD 2-Clause License
 
 ### Copyright (c) 2026, laryakan
 
-You are free to use, modify and redistribute any code or assets of mine which is not directly extracted from the game as soon as you mention the above Copyright.
-A link to my github is provided below. A little mention is all I ask.
+You are free to use, modify, and redistribute any code or assets of mine that are not directly extracted from the game, as long as you keep the copyright notice above.
+A link to my GitHub is provided below. A small mention is all I ask.
 
 --- THIS MOD ---
 - github : https://github.com/laryakan/distances
