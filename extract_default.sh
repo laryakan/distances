@@ -64,8 +64,11 @@ echo "Extracting vanilla files for Distances Mod..."
 echo ""
 
 # Main game files
+copy_files "$SCRIPT_DIR/maps/xu_ep2_universe" "galaxy.xml" "maps/xu_ep2_universe" "Copying galaxy.xml"
 copy_files "$SCRIPT_DIR/maps/xu_ep2_universe" "sectors.xml" "maps/xu_ep2_universe" "Copying sectors.xml"
+copy_files "$SCRIPT_DIR/maps/xu_ep2_universe" "clusters.xml" "maps/xu_ep2_universe" "Copying clusters.xml"
 copy_files "$SCRIPT_DIR/maps/xu_ep2_universe" "zones.xml" "maps/xu_ep2_universe" "Copying zones.xml"
+copy_files "$SCRIPT_DIR/maps/xu_ep2_universe" "zonehighways.xml" "maps/xu_ep2_universe" "Copying zonehighways.xml"
 copy_files "$SCRIPT_DIR/maps/xu_ep2_universe" "sechighways.xml" "maps/xu_ep2_universe" "Copying sechighways.xml"
 copy_files "$SCRIPT_DIR/libraries" "god.xml" "libraries" "Copying god.xml"
 
@@ -87,8 +90,12 @@ for dlc_dir in "$SCRIPT_DIR/extensions"/ego_dlc_*; do
                 fi
             fi
             # DLC files have prefix (e.g., dlc_boron_sectors.xml)
+            copy_files "$dlc_dir/maps/xu_ep2_universe" "${dlc_prefix}_galaxy.xml" "extensions/$dlc_name/maps/xu_ep2_universe" "Copying ${dlc_prefix}_galaxy.xml"
             copy_files "$dlc_dir/maps/xu_ep2_universe" "${dlc_prefix}_sectors.xml" "extensions/$dlc_name/maps/xu_ep2_universe" "Copying ${dlc_prefix}_sectors.xml"
+            copy_files "$dlc_dir/maps/xu_ep2_universe" "${dlc_prefix}_clusters.xml" "extensions/$dlc_name/maps/xu_ep2_universe" "Copying ${dlc_prefix}_clusters.xml"
             copy_files "$dlc_dir/maps/xu_ep2_universe" "${dlc_prefix}_zones.xml" "extensions/$dlc_name/maps/xu_ep2_universe" "Copying ${dlc_prefix}_zones.xml"
+            copy_files "$dlc_dir/maps/xu_ep2_universe" "${dlc_prefix}_zonehighways.xml" "extensions/$dlc_name/maps/xu_ep2_universe" "Copying ${dlc_prefix}_zonehighways.xml"
+            copy_files "$dlc_dir/maps/xu_ep2_universe" "${dlc_prefix}_sechighways.xml" "extensions/$dlc_name/maps/xu_ep2_universe" "Copying ${dlc_prefix}_sechighways.xml"
         fi
 
         if [[ -d "$dlc_dir/libraries" ]]; then
