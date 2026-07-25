@@ -4,6 +4,30 @@
   <replace sel="/god/stations/station[@id='spl_defence_cluster_400_sector001']/position">
     <position x="21488.322687" y="0" z="148823.727907" pitch="0" roll="0" yaw="0" />
   </replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_401_sector001']/location">
+    <location class="sector" macro="cluster_401_sector001_macro" />
+  </replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_401_sector001']/position">
+    <position x="-168536.046423" y="0" z="177821.823902" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_401_sector001_2']/location">
+    <location class="sector" macro="cluster_401_sector001_macro" />
+  </replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_401_sector001_2']/position">
+    <position x="148473.346912" y="0" z="-194886.288016" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_402_sector001']/location">
+    <location class="sector" macro="cluster_402_sector001_macro" />
+  </replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_402_sector001']/position">
+    <position x="-228861.313551" y="0" z="87449.980900" pitch="0" roll="0" yaw="0" />
+  </replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_402_sector001_2']/location">
+    <location class="sector" macro="cluster_402_sector001_macro" />
+  </replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_402_sector001_2']/position">
+    <position x="-138117.241687" y="0" z="-202357.672325" pitch="0" roll="0" yaw="0" />
+  </replace>
   <replace sel="/god/stations/station[@id='wharf_split_02']/position">
     <position x="-103054.540836" y="0" z="222271.819206" pitch="0" roll="0" />
   </replace>

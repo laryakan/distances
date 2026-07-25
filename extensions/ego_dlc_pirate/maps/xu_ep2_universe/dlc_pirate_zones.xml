@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Distances Mod - Resource Zones Added -->
 <diff>
+  <replace sel="/macros/macro[@name='Zone002_Cluster_501_Sector001_macro']/connections/connection[@name='connection_ClusterGate501To008']/offset/position">
+    <position x="31177.620000" y="0" z="82256.010000" />
+  </replace>
+  <replace sel="/macros/macro[@name='Zone003_Cluster_501_Sector001_macro']/connections/connection[@name='connection_ClusterGate501To502']/offset/position">
+    <position x="-120925.590000" y="0" z="-114076.590000" />
+  </replace>
+  <replace sel="/macros/macro[@name='Zone004_Cluster_501_Sector001_macro']/connections/connection[@name='connection_ClusterGate501To002']/offset/position">
+    <position x="79296.300000" y="0" z="-62328.450000" />
+  </replace>
+  <replace sel="/macros/macro[@name='Zone004_Cluster_502_Sector001_macro']/connections/connection[@name='connection_ClusterGate502To500']/offset/position">
+    <position x="95440.200000" y="0" z="-19021.140000" />
+  </replace>
+  <replace sel="/macros/macro[@name='Zone002_Cluster_502_Sector001_macro']/connections/connection[@name='connection_ClusterGate502To501']/offset/position">
+    <position x="31177.590000" y="0" z="82256.010000" />
+  </replace>
+  <replace sel="/macros/macro[@name='Zone005_Cluster_502_Sector001_macro']/connections/connection[@name='connection_ClusterGate502To503']/offset/position">
+    <position x="-10099.869000" y="0" z="-68065.260000" />
+  </replace>
+  <replace sel="/macros/macro[@name='Zone002_Cluster_503_Sector001_macro']/connections/connection[@name='connection_ClusterGate503To502']/offset/position">
+    <position x="31177.620000" y="0" z="82256.010000" />
+  </replace>
+  <replace sel="/macros/macro[@name='Zone005_Cluster_503_Sector001_macro']/connections/connection[@name='connection_ClusterGate503To006']/offset/position">
+    <position x="-125608.470000" y="0" z="-71663.460000" />
+  </replace>
 </diff>

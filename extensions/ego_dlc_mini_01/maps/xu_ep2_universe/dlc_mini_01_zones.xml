@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Distances Mod - Resource Zones Added -->
 <diff>
+  <replace sel="/macros/macro[@name='Zone003_Cluster_730_Sector001_macro']/connections/connection[@name='connection_ClusterGate730To720']/offset/position">
+    <position x="-84696.600000" y="500" z="-72128.700000" />
+  </replace>
 </diff>
