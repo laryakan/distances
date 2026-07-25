@@ -8,7 +8,6 @@
 AWK_DIR="${AWK_DIR:-${SCRIPT_DIR}/lib/awk}"
 COMMON_AWK="${AWK_DIR}/common.awk"
 
-# process_sectors_file <input sectors.xml> <output diff> [zones.xml]
 process_sectors_file() {
     local input_file="$1"
     local output_file="$2"
@@ -65,7 +64,6 @@ process_zones_file() {
     } > "$output_file"
 }
 
-# process_god_file <input god.xml> <output diff> [sectors.xml] [zones.xml]
 process_god_file() {
     local input_file="$1"
     local output_file="$2"
@@ -82,6 +80,7 @@ process_god_file() {
             -v exclude="$exclude_pattern" \
             -v exclude_keywords="$EXCLUDE_NON_OPEN_WORLD_REGEX" \
             -v factor="$FACTOR" \
+            -v no_highways="$NO_HIGHWAYS" \
             -v radius_floor="$MAX_SECTOR_RADIUS" \
             -v radius_headroom="$NATURAL_RADIUS_HEADROOM" \
             -v radius_safety="$SAFETY_MAX_RADIUS" \
@@ -95,37 +94,30 @@ process_god_file() {
     } > "$output_file"
 }
 
-# process_sechighways_file <input sechighways.xml> <output diff>
-
-
-
-# process_sechighways_file <input sechighways.xml> <output diff>
 process_sechighways_file() {
     local input_file="$1"
     local output_file="$2"
 
     {
         echo '<?xml version="1.0" encoding="utf-8"?>'
-        echo '<!-- Distances Mod - Superhighway entry/exit scaling -->'
+        echo '<!-- Distances Mod - Superhighway scaling -->'
         echo '<diff>'
         awk -f "$COMMON_AWK" -f "${AWK_DIR}/emit_sechighways.awk" \
             -v factor="$FACTOR" \
+            -v no_highways="$NO_HIGHWAYS" \
             "$input_file"
         echo '</diff>'
     } > "$output_file"
 }
 
-
-# process_sechighways_file - scales superhighway entry/exit points
-process_sechighways_file() {
+process_clusters_file() {
     local input_file="$1"
     local output_file="$2"
+
     {
         echo '<?xml version="1.0" encoding="utf-8"?>'
-        echo '<!-- Distances Mod - Superhighway scaling -->'
+        echo '<!-- Distances Mod - (reserved) clusters patch -->'
         echo '<diff>'
-        awk -f "$COMMON_AWK" -f "${AWK_DIR}/emit_sechighways.awk" -v factor="$FACTOR" "$input_file"
         echo '</diff>'
     } > "$output_file"
 }
-

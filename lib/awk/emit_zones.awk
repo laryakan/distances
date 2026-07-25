@@ -29,7 +29,8 @@ line ~ /<position x=/ && current_macro != "" {
     # Excluded sectors (hazard/special mechanics): leave untouched.
     if (exclude != "" && match(current_macro, exclude)) next
 
-    # Preserve the travel network unless explicitly disabled.
+    # In default mode, preserve travel-critical links (gates/highways/SHCon).
+    # With --no-highways, allow moving them to keep spread consistent.
     if ((no_highways + 0) == 0) {
         if (index(current_macro, "SHCon") > 0) next
         if (index(current_conn_name, "Highway") > 0) next
@@ -51,13 +52,32 @@ line ~ /<position x=/ && current_macro != "" {
     new_z = z * factor
 
     seed = current_macro "|" (current_conn_name != "" ? current_conn_name : current_conn_ref)
-    jitter_axis(new_x, new_z, seed, 0, jitter_frac, jitter_minabs)
-    new_x = JITTER_X
-    new_z = JITTER_Z
 
-    clamp_xz(new_x, new_z, 0, maxr, clamp_margin)
-    new_x = CLAMP_X
-    new_z = CLAMP_Z
+    is_travel_link = 0
+    if (index(current_macro, "SHCon") > 0) is_travel_link = 1
+    if (index(current_conn_name, "Highway") > 0) is_travel_link = 1
+    if (index(current_conn_ref, "Highway") > 0) is_travel_link = 1
+    if (current_conn_ref == "gates") is_travel_link = 1
+    if (index(current_conn_name, "Gate") > 0) is_travel_link = 1
+    if (index(current_conn_ref, "gate") > 0) is_travel_link = 1
+
+    if ((no_highways + 0) != 0 && is_travel_link) {
+        # Keep travel anchors aligned with superhighway scaling.
+        # Scale-only path: no rotation, no jitter, no clamp.
+    } else {
+        # General spread path for regular content.
+        rotate_angular(new_x, new_z, seed)
+        new_x = ROTATED_X
+        new_z = ROTATED_Z
+
+        jitter_axis(new_x, new_z, seed, 0, jitter_frac, jitter_minabs)
+        new_x = JITTER_X
+        new_z = JITTER_Z
+
+        clamp_xz(new_x, new_z, 0, maxr, clamp_margin)
+        new_x = CLAMP_X
+        new_z = CLAMP_Z
+    }
 
     if (current_conn_name != "") {
         sel = "/macros/macro[@name='" current_macro "']/connections/connection[@name='" current_conn_name "']/offset/position"

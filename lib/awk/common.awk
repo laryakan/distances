@@ -110,3 +110,22 @@ function jitter_axis(x, z, seed, ref_radius, frac, minabs,    mag, base) {
     if (x == 0) JITTER_X = pseudo_rand(seed "|x") * mag
     if (z == 0) JITTER_Z = pseudo_rand(seed "|z") * mag
 }
+
+# Applies pseudo-random angular rotation to x/z coordinates around the origin.
+# Result stored in ROTATED_X / ROTATED_Z. Seed determines the rotation angle.
+# This spreads objects around the sector rather than all radiating outward.
+function rotate_angular(x, z, seed,    r, theta, angle_offset) {
+    r = sqrt((x * x) + (z * z))
+    if (r == 0) {
+        ROTATED_X = 0
+        ROTATED_Z = 0
+        return
+    }
+    theta = atan2(z, x)
+    # Add pseudo-random rotation in radians (±π range, ~-3.14 to +3.14)
+    angle_offset = pseudo_rand(seed "|angle") * 3.14159265359
+    theta = theta + angle_offset
+    ROTATED_X = r * cos(theta)
+    ROTATED_Z = r * sin(theta)
+}
+

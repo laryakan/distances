@@ -39,6 +39,7 @@ FILENAME == zones_file {
         if (index(lower_line, "highway") > 0) is_travel_conn = 1
         if (index(lower_line, "_gate\"") > 0) is_travel_conn = 1
         if (index(lower_line, "clustergate") > 0) is_travel_conn = 1
+        if (is_travel_conn) travel_zone_map[current_zone] = 1
         if ((no_highways + 0) == 0 && is_travel_conn) protected_map[current_zone] = 1
         if (!is_travel_conn) is_resource_zone = 1
         if (is_resource_keyword(lower_line)) is_resource_zone = 1
@@ -120,11 +121,28 @@ FILENAME == sectors_file && sectors_pass == 2 {
             printf("  <remove sel=\"%s\" />\n", sel_remove)
             next
         }
-        # Preserve the travel network unless explicitly disabled.
+        # In default mode, preserve travel-critical links.
         if ((no_highways + 0) == 0) {
             if (index(current_connection, "SHCon") > 0) next
             if (index(current_connection, "Highway") > 0) next
         }
+
+        # Travel-critical links (gates/SHCon) must stay numerically aligned with
+        # superhighway entry/exit scaling. In --no-highways, move them by scale
+        # only (no angular rotation, no jitter, no clamp).
+        is_gate_link = 0
+        is_shcon_link = 0
+        if (index(current_connection, "SHCon") > 0) is_gate_link = 1
+        if (index(current_zone_ref, "SHCon") > 0) is_gate_link = 1
+        if (index(current_connection, "SHCon") > 0) is_shcon_link = 1
+        if (index(current_zone_ref, "SHCon") > 0) is_shcon_link = 1
+        if (current_connection_ref == "gates") is_gate_link = 1
+        if (index(current_connection, "Gate") > 0) is_gate_link = 1
+        if (index(current_zone_ref, "Gate") > 0) is_gate_link = 1
+        if (current_zone_ref in travel_zone_map) is_gate_link = 1
+
+        if ((no_highways + 0) != 0 && is_shcon_link) next
+
         if (!(current_zone_ref in zone_map)) next
         if (current_zone_ref in protected_map) next
         if (pending_x == "" || pending_y == "" || pending_z == "") next
@@ -139,13 +157,25 @@ FILENAME == sectors_file && sectors_pass == 2 {
         new_z = pending_z * effective_factor
 
         seed = current_macro "|" current_connection
-        jitter_axis(new_x, new_z, seed, effective_maxr, jitter_frac, jitter_minabs)
-        new_x = JITTER_X
-        new_z = JITTER_Z
 
-        clamp_xz(new_x, new_z, 0, effective_maxr, clamp_margin)
-        new_x = CLAMP_X
-        new_z = CLAMP_Z
+        if ((no_highways + 0) != 0 && is_gate_link) {
+            # Scale-only path for gate/SHCon travel anchors.
+            new_x = pending_x * effective_factor
+            new_z = pending_z * effective_factor
+        } else {
+            # General spread path for regular content.
+            rotate_angular(new_x, new_z, seed)
+            new_x = ROTATED_X
+            new_z = ROTATED_Z
+
+            jitter_axis(new_x, new_z, seed, effective_maxr, jitter_frac, jitter_minabs)
+            new_x = JITTER_X
+            new_z = JITTER_Z
+
+            clamp_xz(new_x, new_z, 0, effective_maxr, clamp_margin)
+            new_x = CLAMP_X
+            new_z = CLAMP_Z
+        }
 
         sel = "/macros/macro[@name='" current_macro "']/connections/connection[@name='" current_connection "']/offset/position"
         printf("  <replace sel=\"%s\">\n    <position x=\"%s\" y=\"%s\" z=\"%s\" />\n  </replace>\n", sel, new_x, pending_y, new_z)

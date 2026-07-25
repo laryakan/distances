@@ -13,12 +13,16 @@
 # Two rules apply to these fixed positions:
 # - Defense stations (id contains "defence"/"defense") guarding a gate stay
 #   completely untouched: they are there on purpose to defend the gate.
+#   Exception: if --no-highways is set, they are also scaled to stay with their sector.
 # - Every other station/object is instead "reparented" directly to the
 #   enclosing sector (location class="sector") rather than to a sibling
 #   zone: its absolute vanilla position (zone offset + local position)
 #   becomes relative to the whole sector, so it benefits from the mod's
 #   spread without any risk of landing in another zone (e.g. a highway
 #   zone) that happened to be picked as the "nearest" one.
+#
+# Angular rotation is applied to spread objects naturally around the sector
+# rather than radiating in their original directions.
 
 BEGIN {
     current_sector = ""
@@ -33,6 +37,7 @@ BEGIN {
     current_object = ""
     current_location_class = ""
     current_location_macro = ""
+    if (no_highways == "") no_highways = 0
 }
 
 # --- zones.xml pass: protected zones (gates/SHCon). ---
@@ -189,10 +194,11 @@ line ~ /<position x=/ {
     }
 
     # Defense stations (id contains "defence"/"defense") guarding a gate:
-    # leave them exactly where they are, untouched.
+    # When --no-highways removes the protected zone, also stretch defense stations
+    # to stay at the same relative distance. Otherwise, leave them untouched.
     id_lc = tolower((current_station != "") ? current_station : current_object)
     is_defence = (id_lc ~ /defen[cs]e/)
-    if (is_protected && is_defence) next
+    if (is_protected && is_defence && (no_highways + 0) == 0) next
 
     effective_factor = factor
 
@@ -217,6 +223,11 @@ line ~ /<position x=/ {
         abs_x = (offset_x + x) * effective_factor
         abs_z = (offset_z + z) * effective_factor
 
+        # Apply angular rotation to spread stations around the sector
+        rotate_angular(abs_x, abs_z, id_for_seed "|reparent")
+        abs_x = ROTATED_X
+        abs_z = ROTATED_Z
+
         jitter_axis(abs_x, abs_z, id_for_seed "|reparent", effective_maxr, jitter_frac, jitter_minabs)
         abs_x = JITTER_X
         abs_z = JITTER_Z
@@ -232,6 +243,12 @@ line ~ /<position x=/ {
     if (!reparented) {
         new_x = x * effective_factor
         new_z = z * effective_factor
+
+        # Apply angular rotation to spread stations around the sector
+        rotate_angular(new_x, new_z, id_for_seed)
+        new_x = ROTATED_X
+        new_z = ROTATED_Z
+
         jitter_axis(new_x, new_z, id_for_seed, effective_maxr, jitter_frac, jitter_minabs)
         new_x = JITTER_X
         new_z = JITTER_Z

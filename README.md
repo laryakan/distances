@@ -13,38 +13,36 @@ A new game is recommended.
 
 ### 1) Prepare `_default` from extracted game files
 
-`extract_default.sh` is designed to run from the root of your extracted X4 files.
-
-Example:
-```bash
-# from your extracted X4 root
-./extract_default.sh
+You need to have vanilla X4 map files in the `_default` folder. Place extracted game files like:
 ```
-
-This creates a `_default` folder next to the script.
-
-Then copy it into the mod folder:
-```bash
-rm -rf .../distances/_default
-mv _default .../distances/_default
+_default/
+  maps/
+    xu_ep2_universe/
+      zones.xml
+      sectors.xml
+      clusters.xml
+      sechighways.xml
+      zonehighways.xml
+      galaxy.xml
+  libraries/
+    god.xml
+  extensions/
+    (same structure for DLC files)
 ```
 
 ### 2) Generate mod diffs
 
 ```bash
 cd distances
-bash generate.sh 3.0
+bash generate.sh 3
 ```
 
-You can also run without argument to choose interactively.
-
-By default, the generator reads input files from `./_default`.
-
-You can also override the source data directory with `INPUT_DIR`, for example to process extracted files or sibling extensions without copying them into `_default` first:
-
+For help and usage options:
 ```bash
-INPUT_DIR=/path/to/x4-or-mod-root bash generate.sh 3.0
+bash generate.sh --help
 ```
+
+The generator reads input files from `./_default/maps/xu_ep2_universe/` by default.
 
 ### 3) Enable in X4
 
@@ -56,9 +54,10 @@ INPUT_DIR=/path/to/x4-or-mod-root bash generate.sh 3.0
 
 The script generates diffs for base game and input extensions in:
 
-- `maps/xu_ep2_universe/*.xml`
-- `libraries/god.xml`
-- `extensions/<extension_name>/...`
+- `maps/xu_ep2_universe/*.xml` (zones, sectors, sechighways)
+- `libraries/god.xml` (fixed station/object positions)
+- `extensions/<extension_name>/maps/xu_ep2_universe/*.xml` (DLC content)
+- `extensions/<extension_name>/libraries/god.xml` (DLC fixed positions)
 
 It includes DLC naming special-cases internally (Split=`dlc4`, Timelines=`dlc7`), also supports community mods that use plain `sectors.xml` / `zones.xml`, and skips the `Distances` extension itself when scanning input extensions.
 
@@ -74,25 +73,45 @@ You can adjust this in `lib/config.sh` via `EXCLUDE_SECTORS`.
 
 ## Travel Network Safeguards
 
-To keep gates, highways and travel links functional, the generator intentionally preserves some travel-critical zones:
+### Default mode (no `--no-highways`)
 
-- gate zones
-- highway entry/exit zones
-- related protected travel zones
+By default, the generator enlarges sectors while preserving travel-critical layout behavior:
 
-Those zones are not moved in the same way as regular open-world zones.
+- regular sector content is spread/scaled (with angular distribution + clamp/jitter safeguards)
+- travel-network anchors (gates/highway-critical links) stay protected to keep stable routing
 
-If needed, you can switch to `--no-highways` (example: `bash generate.sh --no-highways 3.0`). This single toggle disables travel-network protection and removes **sector highway connections** in non-protected sectors. **SuperHighways are preserved**.
+### `--no-highways` mode
 
-For fixed GOD placements (`god.xml` entries with explicit `<position ... />`), the generator still reparents stations stuck in a protected gate/highway zone directly to the enclosing sector, so they do not stay artificially close to the original travel network layout.
+If needed, you can switch to `--no-highways` (example: `bash generate.sh 3 --no-highways`).
+
+In this mode:
+
+- **sector-level highways are removed** (sector connections referencing `zonehighways`)
+- **gates/SHCon references are kept** (no SHCon macro deletion)
+- **SuperHighways are preserved**
+- **Accelerators are preserved** (not explicitly removed by this mode)
+- gate/SHCon-related sector offsets can be moved by scaling to follow the stretched layout
+- gate/SHCon travel anchors are moved in **scale-only** mode (no angular rotation / jitter / clamp) so they stay numerically aligned with superhighway entry/exit scaling
+
+Note: `zonehighways.xml` is used as input reference data from `_default`, but no output diff file is generated for it.
+
+### Defense Station Positioning
+
+**Defense stations** (identified by "defence" or "defense" in their ID) deserve special handling:
+
+- **Without --no-highways** (default): Defense stations remain exactly where they are. They are excluded from scaling to maintain their defensive position near the gates they protect.
+
+- **With --no-highways**: Defense stations are scaled by the same factor and reparented to their enclosing sector, so their placement remains coherent with moved gate/sector layout.
+
+For fixed GOD placements (`god.xml` entries with explicit `<position ... />`), non-defense stations stuck in a protected gate/highway zone are reparented directly to the enclosing sector, so they do not stay artificially close to the original travel network layout.
 
 Procedural GOD placements that only define location rules without explicit coordinates remain driven by the game and may stay closer to protected travel zones.
 
 ## Update Workflow (after patch/new extraction)
 
-1. Re-run `extract_default.sh` from extracted root
-2. Refresh `extensions/Distances/_default` or point `INPUT_DIR` to the updated source directory
-3. Re-run `generate.sh`
+1. Update `_default/maps/xu_ep2_universe/` with new extracted game files
+2. (Optionally update DLC extensions in `_default/extensions/`)
+3. Re-run `generate.sh` with your desired factor
 
 ## Script Architecture
 
@@ -102,16 +121,18 @@ every input extension. All actual logic is split into small, focused files
 so each concern can be read, tested and maintained independently:
 
 ```
-generate.sh              Orchestrator: options, cleanup, DLC loop, summary
-lib/config.sh             Tuning constants (excluded sectors, clamp/jitter values)
-lib/dlc.sh                 DLC folder name -> map file prefix resolution
-lib/process.sh             Thin bash wrappers calling the AWK generators
-lib/awk/common.awk         Shared helpers: XML comment stripping, clamp,
-                           per-sector radius ceiling, deterministic hash/jitter
-lib/awk/emit_sectors.awk   sectors.xml: position scaling + extra resource zones
-lib/awk/emit_zones.awk     zones.xml: internal zone connection scaling
-lib/awk/emit_god.awk       god.xml: fixed station/object position scaling,
-                           including protected-zone reparenting
+generate.sh                          Orchestrator: options, cleanup, DLC loop, summary
+lib/config.sh                         Tuning constants (excluded sectors, clamp/jitter values)
+lib/dlc.sh                            DLC folder name -> map file prefix resolution
+lib/process.sh                        Thin bash wrappers calling the AWK generators
+lib/awk/common.awk                    Shared helpers: XML comment stripping, clamp,
+                                      per-sector radius ceiling, deterministic hash/jitter,
+                                      angular rotation
+lib/awk/emit_sectors.awk              sectors.xml: position scaling + extra resource zones
+lib/awk/emit_zones.awk                zones.xml: internal zone connection scaling
+lib/awk/emit_sechighways.awk          sechighways.xml: superhighway entry/exit scaling
+lib/awk/emit_god.awk                  god.xml: fixed station/object position scaling,
+                                      including protected-zone reparenting
 ```
 
 All position math (scaling, clamping, axis-jitter, protected-zone
@@ -125,6 +146,10 @@ Two safeguards worth knowing about when tuning the generator:
   base clamp radius (e.g. Hatikvah's Choice I). The effective ceiling used
   for a sector never goes below its own vanilla extent (`NATURAL_RADIUS_HEADROOM`
   in `lib/config.sh`), so it no longer flattens those sectors onto a single circle.
+- **Angular distribution**: positions are rotated pseudo-randomly around the sector center
+  based on their connection ID. This spreads zones and stations around the sector
+  rather than having them all radiate outward in their original directions, creating
+  more natural spatial distribution.
 - **Zero-axis jitter**: when a scaled X or Z coordinate lands exactly on 0
   (common in vanilla data), a small deterministic pseudo-random offset
   (`JITTER_FRACTION` / `JITTER_MIN_ABS`) is applied so objects don't pile up
@@ -136,7 +161,7 @@ Two safeguards worth knowing about when tuning the generator:
   zone, so they benefit from the mod's spread without risking a "nearest
   zone" guess landing them inside a highway-only zone. Defense stations
   guarding a gate (id containing `defence`/`defense`) are the one exception:
-  they are left completely untouched.
+  they are left completely untouched (unless --no-highways is used).
 
 ## Notes
 
@@ -164,3 +189,6 @@ A link to my GitHub is provided below. A small mention is all I ask.
 --- OTHER MODS ---
 - nexus user mods : https://www.nexusmods.com/games/x4foundations/mods?author=laryakan
 - steam user mods : https://steamcommunity.com/id/laryakan/myworkshopfiles/?appid=392160
+
+
+

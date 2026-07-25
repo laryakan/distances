@@ -1,237 +1,180 @@
 #!/bin/bash
-#
-# Distances Mod - Generate Script
-# Transforms vanilla sectors.xml by multiplying zone distances
-#
-# Usage:
-#   ./generate.sh [options] [factor]
-#   INPUT_DIR=/path/to/input ./generate.sh [options] [factor]
-#
-# Examples:
-#   ./generate.sh           # Interactive prompt
-#   ./generate.sh 2.0       # 2x distance
-#   ./generate.sh 3.5       # 3.5x distance
-#   ./generate.sh --no-highways 3.0
-#
-# Organisation :
-#   lib/config.sh   - constantes de reglage (secteurs exclus, clamps, jitter)
-#   lib/dlc.sh       - resolution des noms de fichiers par DLC
-#   lib/process.sh   - enveloppes bash autour des generateurs AWK
-#   awk/common.awk   - fonctions partagees (parsing, clamp, jitter, hash)
-#   awk/emit_*.awk   - toute la logique de calcul de position, par fichier
-set -euo pipefail
+# Distances Mod - Main generation script
+set -e
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FACTOR="${1:-}"
+NO_HIGHWAYS=0
+
+# Display help
+show_help() {
+    cat << 'EOF'
+Distances Mod - Generation Script
+
+Usage: ./generate.sh <factor> [options]
+
+Arguments:
+  <factor>          Scaling multiplier (positive integer)
+                    Examples: 2, 3, 5, 10
+
+Options:
+  --no-highways     Remove sector-level Highway connections
+                    - Keeps SHCon gate zones and SuperHighways intact
+                    - Keeps Accelerators intact
+                    - Removes only sector links that reference zonehighways
+                    (avoids dangling macro references in index/macros)
+
+  --help, -h        Show this help message
+
+Examples:
+  ./generate.sh 2           # Scale by 2x, keep highways
+  ./generate.sh 3 --no-highways  # Scale by 3x, remove highways
+  ./generate.sh 5 --no-highways    # Scale by 5x, remove highways
+
+Notes:
+  - Output files go to: maps/xu_ep2_universe/
+  - DLC files are read from: _default/extensions/ego_dlc_*/
+  - Input files must be in: _default/maps/xu_ep2_universe/
+
+EOF
+}
+
+# Check for help option
+if [[ "$FACTOR" == "--help" ]] || [[ "$FACTOR" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+    show_help
+    exit 0
+fi
+
+if [[ -z "$FACTOR" ]]; then
+    echo "Error: Missing factor argument"
+    echo "Usage: $0 <factor> [--no-highways]"
+    echo "Run '$0 --help' for more information"
+    exit 1
+fi
+
+if ! [[ "$FACTOR" =~ ^[0-9]+$ ]] || (( FACTOR < 1 )); then
+    echo "Error: factor must be a positive integer (got: $FACTOR)"
+    exit 1
+fi
+
+if [[ "$2" == "--no-highways" ]]; then
+    NO_HIGHWAYS=1
+fi
+
+export FACTOR NO_HIGHWAYS SCRIPT_DIR
+
 source "${SCRIPT_DIR}/lib/config.sh"
 source "${SCRIPT_DIR}/lib/dlc.sh"
 source "${SCRIPT_DIR}/lib/process.sh"
-DEFAULT_INPUT_DIR="${SCRIPT_DIR}/_default"
-INPUT_DIR="${INPUT_DIR:-$DEFAULT_INPUT_DIR}"
-if [[ ! -d "$INPUT_DIR" ]]; then
-    echo "Error: Invalid INPUT_DIR '$INPUT_DIR'" >&2
-    exit 1
+
+exclude_pattern=$(build_exclude_pattern)
+export exclude_pattern
+
+# Cleanup previously generated files
+echo "Cleaning up previous generation..."
+rm -rf "${SCRIPT_DIR}/maps" "${SCRIPT_DIR}/extensions" "${SCRIPT_DIR}/libraries"
+
+mkdir -p "${SCRIPT_DIR}/maps/xu_ep2_universe"
+
+echo "=========================================="
+echo "Distances Mod - Generation Script"
+echo "=========================================="
+echo "Factor: ${FACTOR}x"
+echo "Remove Highways: $([ $NO_HIGHWAYS -eq 1 ] && echo "YES" || echo "NO")"
+echo ""
+
+echo "Processing Vanilla (Base Game)..."
+VANILLA_SRC="${SCRIPT_DIR}/_default/maps/xu_ep2_universe"
+VANILLA_OUT="${SCRIPT_DIR}/maps/xu_ep2_universe"
+
+if [[ -f "${VANILLA_SRC}/zones.xml" ]]; then
+    echo "  - zones.xml"
+    process_zones_file "${VANILLA_SRC}/zones.xml" "${VANILLA_OUT}/zones.xml"
 fi
-INPUT_DIR="$(cd "$INPUT_DIR" && pwd)"
-VANILLA_SECTORS="${INPUT_DIR}/maps/xu_ep2_universe/sectors.xml"
-VANILLA_ZONES="${INPUT_DIR}/maps/xu_ep2_universe/zones.xml"
-VANILLA_GOD="${INPUT_DIR}/libraries/god.xml"
-VANILLA_SECHIGHWAYS="${INPUT_DIR}/maps/xu_ep2_universe/sechighways.xml"
-OUTPUT_SECTORS="${SCRIPT_DIR}/maps/xu_ep2_universe/sectors.xml"
-OUTPUT_ZONES="${SCRIPT_DIR}/maps/xu_ep2_universe/zones.xml"
-OUTPUT_GOD="${SCRIPT_DIR}/libraries/god.xml"
-OUTPUT_SECHIGHWAYS="${SCRIPT_DIR}/maps/xu_ep2_universe/sechighways.xml"
-# CLI options
-NO_HIGHWAYS=0
-FACTOR_ARG=""
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --no-highways)
-            NO_HIGHWAYS=1
-            shift
-            ;;
-        *)
-            if [[ -z "$FACTOR_ARG" ]]; then
-                FACTOR_ARG="$1"
-                shift
-            else
-                echo "Error: Unknown argument '$1'" >&2
-                echo "Usage: ./generate.sh [--no-highways] [factor]" >&2
-                exit 1
-            fi
-            ;;
-    esac
+
+if [[ -f "${VANILLA_SRC}/sectors.xml" ]]; then
+    echo "  - sectors.xml"
+    zones_ref=""
+    [[ -f "${VANILLA_SRC}/zones.xml" ]] && zones_ref="${VANILLA_SRC}/zones.xml"
+    process_sectors_file "${VANILLA_SRC}/sectors.xml" "${VANILLA_OUT}/sectors.xml" "$zones_ref"
+fi
+
+if [[ -f "${VANILLA_SRC}/sechighways.xml" ]]; then
+    echo "  - sechighways.xml"
+    process_sechighways_file "${VANILLA_SRC}/sechighways.xml" "${VANILLA_OUT}/sechighways.xml"
+fi
+
+# Process god.xml for vanilla
+if [[ -f "${SCRIPT_DIR}/_default/libraries/god.xml" ]]; then
+    echo "  - god.xml"
+    sectors_ref=""
+    zones_ref=""
+    [[ -f "${VANILLA_SRC}/sectors.xml" ]] && sectors_ref="${VANILLA_SRC}/sectors.xml"
+    [[ -f "${VANILLA_SRC}/zones.xml" ]] && zones_ref="${VANILLA_SRC}/zones.xml"
+    mkdir -p "${SCRIPT_DIR}/libraries"
+    process_god_file "${SCRIPT_DIR}/_default/libraries/god.xml" "${SCRIPT_DIR}/libraries/god.xml" "$sectors_ref" "$zones_ref"
+fi
+
+echo ""
+
+DLC_SRC_DIR="${SCRIPT_DIR}/_default/extensions"
+DLC_OUT_DIR="${SCRIPT_DIR}/extensions"
+DLC_NAMES=("ego_dlc_boron" "ego_dlc_mini_01" "ego_dlc_mini_02" "ego_dlc_pirate" "ego_dlc_split" "ego_dlc_terran" "ego_dlc_timelines")
+
+for dlc_name in "${DLC_NAMES[@]}"; do
+    DLC_SRC="${DLC_SRC_DIR}/${dlc_name}/maps/xu_ep2_universe"
+    if [[ ! -d "$DLC_SRC" ]]; then
+        continue
+    fi
+    
+    DLC_OUT="${DLC_OUT_DIR}/${dlc_name}/maps/xu_ep2_universe"
+    mkdir -p "$DLC_OUT"
+    
+    dlc_prefix=$(get_dlc_map_prefix "$dlc_name")
+    dlc_file_count=0
+    
+    echo "Processing DLC: $dlc_name"
+    
+    dlc_zones_file="${DLC_SRC}/${dlc_prefix}_zones.xml"
+    if [[ -f "$dlc_zones_file" ]]; then
+        echo "  - ${dlc_prefix}_zones.xml"
+        process_zones_file "$dlc_zones_file" "${DLC_OUT}/${dlc_prefix}_zones.xml"
+        dlc_file_count=$((dlc_file_count + 1))
+    fi
+    
+    dlc_sectors_file="${DLC_SRC}/${dlc_prefix}_sectors.xml"
+    if [[ -f "$dlc_sectors_file" ]]; then
+        echo "  - ${dlc_prefix}_sectors.xml"
+        zones_ref=""
+        [[ -f "$dlc_zones_file" ]] && zones_ref="$dlc_zones_file"
+        process_sectors_file "$dlc_sectors_file" "${DLC_OUT}/${dlc_prefix}_sectors.xml" "$zones_ref"
+        dlc_file_count=$((dlc_file_count + 1))
+    fi
+
+    # Process god.xml for DLC
+    dlc_god_file="${DLC_SRC_DIR}/${dlc_name}/libraries/god.xml"
+    if [[ -f "$dlc_god_file" ]]; then
+        echo "  - god.xml"
+        mkdir -p "${DLC_OUT_DIR}/${dlc_name}/libraries"
+        sectors_ref=""
+        zones_ref=""
+        [[ -f "$dlc_sectors_file" ]] && sectors_ref="$dlc_sectors_file"
+        [[ -f "$dlc_zones_file" ]] && zones_ref="$dlc_zones_file"
+        process_god_file "$dlc_god_file" "${DLC_OUT_DIR}/${dlc_name}/libraries/god.xml" "$sectors_ref" "$zones_ref"
+        dlc_file_count=$((dlc_file_count + 1))
+    fi
+
+    echo ""
 done
 
-# Get factor from argument or prompt
-if [[ -z "$FACTOR_ARG" ]]; then
-    echo "=== Distances Mod Generator ==="
-    echo ""
-    echo "Multiplication factor for zone distances:"
-    echo "  2.0 = 2x distance (moderate)"
-    echo "  2.5 = 2.5x distance (balanced)"
-    echo "  3.0 = 3x distance (recommended)"
-    echo "  4.0 = 4x distance (large)"
-    echo ""
-    read -p "Enter factor [3.0]: " FACTOR
-    FACTOR="${FACTOR:-3.0}"
-else
-    FACTOR="$FACTOR_ARG"
-fi
-# Validate
-if ! [[ "$FACTOR" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
-    echo "Error: Invalid factor '$FACTOR'" >&2
-    exit 1
-fi
-if [[ ! -f "$VANILLA_SECTORS" ]]; then
-    echo "Error: Input sectors file not found: $VANILLA_SECTORS" >&2
-    echo "Provide INPUT_DIR or generate ${DEFAULT_INPUT_DIR} with: cd /path/to/X4 && bash extensions/Distances/extract_default.sh" >&2
-    exit 1
-fi
-if [[ ! -f "$VANILLA_ZONES" ]]; then
-    echo "Warning: input zones.xml not found: $VANILLA_ZONES" >&2
-fi
-echo "Generating with factor $FACTOR..."
-echo "Using input directory: $INPUT_DIR"
-if (( NO_HIGHWAYS == 1 )); then
-    echo "Highway mode: disabled (sector highways removed in non-protected sectors; SuperHighways preserved)"
-else
-    echo "Highway mode: enabled"
-fi
-echo "Excluding hazard sectors..."
+echo "=========================================="
+echo "Generation Complete"
+echo "=========================================="
 echo ""
-# Purge previously generated files
-echo "Cleaning up old generated files..."
-rm -f "${SCRIPT_DIR}/maps/xu_ep2_universe"/*.xml 2>/dev/null || true
-rm -f "${SCRIPT_DIR}/libraries/god.xml" 2>/dev/null || true
-find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/maps/xu_ep2_universe/*.xml" -type f -delete 2>/dev/null || true
-find "${SCRIPT_DIR}/extensions" -mindepth 2 -path "*/libraries/god.xml" -type f -delete 2>/dev/null || true
-echo ""
-exclude_pattern="$(build_exclude_pattern)"
-total_sectors_modified=0
-total_zones_modified=0
-total_resource_zones_added=0
-total_god_positions_modified=0
-# Process base game sectors
-if [[ -f "$VANILLA_SECTORS" ]]; then
-    mkdir -p "$(dirname "$OUTPUT_SECTORS")"
-    process_sectors_file "$VANILLA_SECTORS" "$OUTPUT_SECTORS" "$VANILLA_ZONES"
-    modified=$(awk '/<position x=/{c++} END{print c+0}' "$OUTPUT_SECTORS")
-    added=$(awk '/_resourceextra/{c++} END{print c+0}' "$OUTPUT_SECTORS")
-    total_sectors_modified=$((total_sectors_modified + modified))
-    total_resource_zones_added=$((total_resource_zones_added + added))
-    echo "OK Base game sectors: $modified positions"
-    echo "OK Base game extra resource zones: $added"
-fi
-# Process base game zones
-if [[ -f "$VANILLA_ZONES" ]]; then
-    mkdir -p "$(dirname "$OUTPUT_ZONES")"
-    process_zones_file "$VANILLA_ZONES" "$OUTPUT_ZONES"
-    modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$OUTPUT_ZONES")
-    total_zones_modified=$((total_zones_modified + modified))
-    echo "OK Base game zones: $modified zones repositioned"
-    if (( modified == 0 )); then
-        echo "WARN Base game zones: no matching zone entries found for current parser"
-    fi
-else
-    echo "WARN Base game zones.xml not found, skipping..."
-fi
-# Process base game GOD
-if [[ -f "$VANILLA_GOD" ]]; then
-    mkdir -p "$(dirname "$OUTPUT_GOD")"
-    process_god_file "$VANILLA_GOD" "$OUTPUT_GOD" "$VANILLA_SECTORS" "$VANILLA_ZONES"
-    modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$OUTPUT_GOD")
-    total_god_positions_modified=$((total_god_positions_modified + modified))
-    echo "OK Base game GOD: $modified fixed positions"
-else
-    echo "WARN Base game god.xml not found, skipping..."
-fi
 
-# Process base game sechighways
-if [[ -f "$VANILLA_SECHIGHWAYS" ]]; then
-    mkdir -p "$(dirname "$OUTPUT_SECHIGHWAYS")"
-    process_sechighways_file "$VANILLA_SECHIGHWAYS" "$OUTPUT_SECHIGHWAYS"
-    modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$OUTPUT_SECHIGHWAYS")
-    echo "OK Base game sechighways: $modified entry/exit points"
-else
-    echo "WARN Base game sechighways.xml not found, skipping..."
-fi
+echo "Output Location: ${VANILLA_OUT}/"
+echo "Factor Applied: ${FACTOR}x"
+echo "Highways Removed: $([ $NO_HIGHWAYS -eq 1 ] && echo "YES" || echo "NO")"
 echo ""
-echo "Processing input extensions..."
-echo ""
-# Process extension sectors and zones from input directory.
-if [[ -d "${INPUT_DIR}/extensions" ]]; then
-    for dlc_dir in "${INPUT_DIR}"/extensions/*; do
-        if [[ -d "$dlc_dir" ]]; then
-            dlc_name=$(basename "$dlc_dir")
-            dlc_name_lc=$(printf '%s' "$dlc_name" | tr '[:upper:]' '[:lower:]')
-            if [[ "$dlc_name_lc" == "distances" ]]; then
-                continue
-            fi
-            dlc_prefix=$(get_dlc_map_prefix "$dlc_name")
-            map_dir="${dlc_dir}/maps/xu_ep2_universe"
-            sectors_basename="${dlc_prefix}_sectors.xml"
-            zones_basename="${dlc_prefix}_zones.xml"
-            if [[ -f "${map_dir}/${sectors_basename}" ]]; then
-                :
-            elif [[ -f "${map_dir}/sectors.xml" ]]; then
-                sectors_basename="sectors.xml"
-                zones_basename="zones.xml"
-            else
-                detected_file=$(find "$map_dir" -maxdepth 1 -type f \( -name "*_sectors.xml" -o -name "sectors.xml" \) 2>/dev/null | head -n 1)
-                if [[ -n "$detected_file" ]]; then
-                    sectors_basename=$(basename "$detected_file")
-                    zones_basename="${sectors_basename%sectors.xml}zones.xml"
-                fi
-            fi
-            dlc_sectors="${map_dir}/${sectors_basename}"
-            dlc_zones="${map_dir}/${zones_basename}"
-            dlc_god="${dlc_dir}/libraries/god.xml"
-            if [[ -f "$dlc_sectors" ]]; then
-                dlc_sectors_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${sectors_basename}"
-                dlc_zones_output="${SCRIPT_DIR}/extensions/${dlc_name}/maps/xu_ep2_universe/${zones_basename}"
-                dlc_god_output="${SCRIPT_DIR}/extensions/${dlc_name}/libraries/god.xml"
-                mkdir -p "$(dirname "$dlc_sectors_output")"
-                # Process sectors
-                process_sectors_file "$dlc_sectors" "$dlc_sectors_output" "$dlc_zones"
-                sectors_modified=$(awk '/<position x=/{c++} END{print c+0}' "$dlc_sectors_output")
-                added=$(awk '/_resourceextra/{c++} END{print c+0}' "$dlc_sectors_output")
-                total_sectors_modified=$((total_sectors_modified + sectors_modified))
-                total_resource_zones_added=$((total_resource_zones_added + added))
-                # Process zones if available
-                zones_modified=0
-                if [[ -f "$dlc_zones" ]]; then
-                    mkdir -p "$(dirname "$dlc_zones_output")"
-                    process_zones_file "$dlc_zones" "$dlc_zones_output"
-                    zones_modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$dlc_zones_output")
-                    total_zones_modified=$((total_zones_modified + zones_modified))
-                fi
-                # Process GOD if available
-                god_modified=0
-                if [[ -f "$dlc_god" ]]; then
-                    mkdir -p "$(dirname "$dlc_god_output")"
-                    process_god_file "$dlc_god" "$dlc_god_output" "$dlc_sectors" "$dlc_zones"
-                    god_modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$dlc_god_output")
-                    total_god_positions_modified=$((total_god_positions_modified + god_modified))
-                fi
-                if (( sectors_modified > 0 || zones_modified > 0 || god_modified > 0 )); then
-                    echo "OK $dlc_name: $sectors_modified sectors, $zones_modified zones, $god_modified GOD fixed positions, $added extra resource zones"
-                fi
-            else
-                echo "WARN $dlc_name: sectors file not found"
-            fi
-        fi
-    done
-else
-    echo "WARN No input extensions directory found"
-fi
-# Summary
-excluded_count=${#EXCLUDE_SECTORS[@]}
-echo ""
-echo "========================================="
-echo "OK Generation completed!"
-echo "  Sector positions: $total_sectors_modified"
-echo "  Resource zones: $total_zones_modified"
-echo "  GOD fixed positions: $total_god_positions_modified"
-echo "  Extra resource zones added: $total_resource_zones_added"
-echo "  Sectors excluded: $excluded_count"
-echo "  Factor: ${FACTOR}x"
-echo "========================================="
+
+echo "SUCCESS - All XML diff patches generated"

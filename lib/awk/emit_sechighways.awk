@@ -4,6 +4,7 @@
 BEGIN {
     current_macro = ""
     current_conn_ref = ""
+    if (no_highways == "") no_highways = 0
 }
 
 {
@@ -22,6 +23,11 @@ line ~ /<connection ref="(entrypoint|exitpoint)">/ {
 }
 
 line ~ /<position x=/ && current_macro != "" && current_conn_ref != "" {
+    if ((no_highways + 0) != 0) {
+        current_conn_ref = ""
+        next
+    }
+
     match(line, /x="([^"]*)"/, x_arr)
     match(line, /y="([^"]*)"/, y_arr)
     match(line, /z="([^"]*)"/, z_arr)
