@@ -180,34 +180,60 @@ FILENAME == sectors_file && sectors_pass == 2 {
         sel = "/macros/macro[@name='" current_macro "']/connections/connection[@name='" current_connection "']/offset/position"
         printf("  <replace sel=\"%s\">\n    <position x=\"%s\" y=\"%s\" z=\"%s\" />\n  </replace>\n", sel, new_x, pending_y, new_z)
 
-        # Extra logistics zones, further out, to spread traffic.
-        extra_x = new_x * extra_mult_a
-        extra_z = new_z * extra_mult_a
-        extra_x2 = new_x * extra_mult_b
-        extra_z2 = new_z * extra_mult_b
+         # Extra logistics zones, further out, to spread traffic.
+         extra_x = new_x * extra_mult_a
+         extra_z = new_z * extra_mult_a
+         extra_x2 = new_x * extra_mult_b
+         extra_z2 = new_z * extra_mult_b
+         extra_x3 = new_x * extra_mult_c
+         extra_z3 = new_z * extra_mult_c
+         extra_x4 = new_x * extra_mult_d
+         extra_z4 = new_z * extra_mult_d
 
-        clamp_xz(extra_x, extra_z, phase_a, effective_maxr, clamp_margin)
-        extra_x = CLAMP_X
-        extra_z = CLAMP_Z
-        clamp_xz(extra_x2, extra_z2, phase_b, effective_maxr, clamp_margin)
-        extra_x2 = CLAMP_X
-        extra_z2 = CLAMP_Z
+         clamp_xz(extra_x, extra_z, phase_a, effective_maxr, clamp_margin)
+         extra_x = CLAMP_X
+         extra_z = CLAMP_Z
+         clamp_xz(extra_x2, extra_z2, phase_b, effective_maxr, clamp_margin)
+         extra_x2 = CLAMP_X
+         extra_z2 = CLAMP_Z
+         clamp_xz(extra_x3, extra_z3, phase_c, effective_maxr, clamp_margin)
+         extra_x3 = CLAMP_X
+         extra_z3 = CLAMP_Z
+         clamp_xz(extra_x4, extra_z4, phase_d, effective_maxr, clamp_margin)
+         extra_x4 = CLAMP_X
+         extra_z4 = CLAMP_Z
 
-        add_sel = "/macros/macro[@name='" current_macro "']/connections"
-        extra_conn = current_connection "_resourceextra_a"
-        printf("  <add sel=\"%s\">\n", add_sel)
-        printf("    <connection name=\"%s\" ref=\"zones\">\n", extra_conn)
-        printf("      <offset>\n        <position x=\"%s\" y=\"%s\" z=\"%s\" />\n      </offset>\n", extra_x, pending_y, extra_z)
-        printf("      <macro ref=\"%s\" connection=\"sector\" />\n", current_zone_ref)
-        printf("    </connection>\n  </add>\n")
+         add_sel = "/macros/macro[@name='" current_macro "']/connections"
+         extra_conn = current_connection "_resourceextra_a"
+         printf("  <add sel=\"%s\">\n", add_sel)
+         printf("    <connection name=\"%s\" ref=\"zones\">\n", extra_conn)
+         printf("      <offset>\n        <position x=\"%s\" y=\"%s\" z=\"%s\" />\n      </offset>\n", extra_x, pending_y, extra_z)
+         printf("      <macro ref=\"%s\" connection=\"sector\" />\n", current_zone_ref)
+         printf("    </connection>\n  </add>\n")
 
-        if (is_resource) {
-            extra_conn2 = current_connection "_resourceextra_b"
-            printf("  <add sel=\"%s\">\n", add_sel)
-            printf("    <connection name=\"%s\" ref=\"zones\">\n", extra_conn2)
-            printf("      <offset>\n        <position x=\"%s\" y=\"%s\" z=\"%s\" />\n      </offset>\n", extra_x2, pending_y, extra_z2)
-            printf("      <macro ref=\"%s\" connection=\"sector\" />\n", current_zone_ref)
-            printf("    </connection>\n  </add>\n")
-        }
+         # Extra zone for all sectors (not just resource zones)
+         extra_conn3 = current_connection "_resourceextra_c"
+         printf("  <add sel=\"%s\">\n", add_sel)
+         printf("    <connection name=\"%s\" ref=\"zones\">\n", extra_conn3)
+         printf("      <offset>\n        <position x=\"%s\" y=\"%s\" z=\"%s\" />\n      </offset>\n", extra_x3, pending_y, extra_z3)
+         printf("      <macro ref=\"%s\" connection=\"sector\" />\n", current_zone_ref)
+         printf("    </connection>\n  </add>\n")
+
+         if (is_resource) {
+             extra_conn2 = current_connection "_resourceextra_b"
+             printf("  <add sel=\"%s\">\n", add_sel)
+             printf("    <connection name=\"%s\" ref=\"zones\">\n", extra_conn2)
+             printf("      <offset>\n        <position x=\"%s\" y=\"%s\" z=\"%s\" />\n      </offset>\n", extra_x2, pending_y, extra_z2)
+             printf("      <macro ref=\"%s\" connection=\"sector\" />\n", current_zone_ref)
+             printf("    </connection>\n  </add>\n")
+
+             # Extra zone d for resource zones
+             extra_conn4 = current_connection "_resourceextra_d"
+             printf("  <add sel=\"%s\">\n", add_sel)
+             printf("    <connection name=\"%s\" ref=\"zones\">\n", extra_conn4)
+             printf("      <offset>\n        <position x=\"%s\" y=\"%s\" z=\"%s\" />\n      </offset>\n", extra_x4, pending_y, extra_z4)
+             printf("      <macro ref=\"%s\" connection=\"sector\" />\n", current_zone_ref)
+             printf("    </connection>\n  </add>\n")
+         }
     }
 }

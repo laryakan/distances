@@ -28,8 +28,12 @@ process_sectors_file() {
             -v no_highways="$NO_HIGHWAYS" \
             -v extra_mult_a="$EXTRA_RESOURCE_ZONE_MULT" \
             -v extra_mult_b="$EXTRA_RESOURCE_ZONE_MULT_2" \
+            -v extra_mult_c="$EXTRA_RESOURCE_ZONE_MULT_3" \
+            -v extra_mult_d="$EXTRA_RESOURCE_ZONE_MULT_4" \
             -v phase_a="$EXTRA_PHASE_A" \
             -v phase_b="$EXTRA_PHASE_B" \
+            -v phase_c="$EXTRA_PHASE_C" \
+            -v phase_d="$EXTRA_PHASE_D" \
             -v radius_floor="$MAX_SECTOR_RADIUS" \
             -v radius_headroom="$NATURAL_RADIUS_HEADROOM" \
             -v radius_safety="$SAFETY_MAX_RADIUS" \
