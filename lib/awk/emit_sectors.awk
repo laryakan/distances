@@ -190,18 +190,18 @@ FILENAME == sectors_file && sectors_pass == 2 {
          extra_x4 = new_x * extra_mult_d
          extra_z4 = new_z * extra_mult_d
 
-         clamp_xz(extra_x, extra_z, phase_a, effective_maxr, clamp_margin)
-         extra_x = CLAMP_X
-         extra_z = CLAMP_Z
-         clamp_xz(extra_x2, extra_z2, phase_b, effective_maxr, clamp_margin)
-         extra_x2 = CLAMP_X
-         extra_z2 = CLAMP_Z
-         clamp_xz(extra_x3, extra_z3, phase_c, effective_maxr, clamp_margin)
-         extra_x3 = CLAMP_X
-         extra_z3 = CLAMP_Z
-         clamp_xz(extra_x4, extra_z4, phase_d, effective_maxr, clamp_margin)
-         extra_x4 = CLAMP_X
-         extra_z4 = CLAMP_Z
+          clamp_xz(extra_x, extra_z, phase_a, effective_maxr, 1.0)
+          extra_x = CLAMP_X
+          extra_z = CLAMP_Z
+          clamp_xz(extra_x2, extra_z2, phase_b, effective_maxr, 1.0)
+          extra_x2 = CLAMP_X
+          extra_z2 = CLAMP_Z
+          clamp_xz(extra_x3, extra_z3, phase_c, effective_maxr, 1.0)
+          extra_x3 = CLAMP_X
+          extra_z3 = CLAMP_Z
+          clamp_xz(extra_x4, extra_z4, phase_d, effective_maxr, 1.0)
+          extra_x4 = CLAMP_X
+          extra_z4 = CLAMP_Z
 
          add_sel = "/macros/macro[@name='" current_macro "']/connections"
          extra_conn = current_connection "_resourceextra_a"
