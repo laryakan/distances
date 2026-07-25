@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Distances Mod - Superhighway scaling -->
+<diff>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_01_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-89329530" y="0" z="-68780256" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_01_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="89600934" y="0" z="68780262" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_01_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="89332458" y="0" z="68780262" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_01_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-89600934" y="0" z="-68780256" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway003_Cluster_01_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="58242894" y="0" z="79852980" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway003_Cluster_01_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-57977994" y="0" z="-79852980" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway004_Cluster_01_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-58155000" y="0" z="-79851792" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway004_Cluster_01_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="58065654" y="0" z="79854066" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway005_Cluster_01_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-31070937" y="0" z="10937649.750000" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway005_Cluster_01_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="31070937" y="0" z="-10937649.750000" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway006_Cluster_01_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="31070937" y="0" z="-10937721.750000" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway006_Cluster_01_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-31070937" y="0" z="10937722.500000" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_04_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="1434948.656250" y="0" z="-29929722" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_04_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-1434948.750000" y="0" z="29929722" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_04_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-1435870.593750" y="0" z="29929722" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_04_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="1435870.593750" y="0" z="-29929722" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_06_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-71039340" y="0" z="8632049.250000" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_06_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="71039340" y="0" z="-8632049.250000" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_06_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="71039340" y="0" z="-8632103.250000" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_06_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-71039340" y="0" z="8632102.500000" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_15_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="164369796" y="0" z="0" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_15_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-164369796" y="0" z="0" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_15_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-164369796" y="0" z="55.080414" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_15_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="164369796" y="0" z="-55.080414" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_19_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="168409392" y="0" z="134901.527344" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_19_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-168409392" y="0" z="-134901.527344" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_19_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-168409392" y="0" z="-134652.597656" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_19_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="168409392" y="0" z="134652.597656" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_21_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-439642.171875" y="0" z="69465048" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_21_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="439642.171875" y="0" z="-69465048" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_21_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="439758.515625" y="0" z="-69465048" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_21_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-439758.515625" y="0" z="69465048" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_25_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-284553.937500" y="0" z="56182524" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_25_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="284553.937500" y="0" z="-56182524" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_25_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="284370.914062" y="0" z="-56182524" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_25_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-284370.914062" y="0" z="56182524" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_26_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-39708987" y="0" z="82514946" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_26_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="39708987" y="0" z="-82514946" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_26_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="39708987" y="0" z="-82514946" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_26_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-39708984" y="0" z="82514946" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_29_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-119965500" y="0" z="-40425144" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_29_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="119965500" y="0" z="40425141" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_29_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="119965500" y="0" z="40425138" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_29_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-119965500" y="0" z="-40425141" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_32_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-270940.054688" y="0" z="-49124181" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_32_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="270940.054688" y="0" z="49124181" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_32_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="270751.335938" y="0" z="49124181" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_32_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-270751.335938" y="0" z="-49124181" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_42_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="168409392" y="0" z="134901.527344" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_42_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-168409392" y="0" z="-134901.527344" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_42_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-168409392" y="0" z="-134652.597656" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_42_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="168409392" y="0" z="134652.597656" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_50_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="-39708987" y="0" z="82514946" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway001_Cluster_50_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="39708987" y="0" z="-82514946" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_50_macro']/connections/connection[@ref='entrypoint']/offset/position">
+    <position x="39708987" y="0" z="-82514946" />
+  </replace>
+  <replace sel="/macros/macro[@name='SuperHighway002_Cluster_50_macro']/connections/connection[@ref='exitpoint']/offset/position">
+    <position x="-39708984" y="0" z="82514946" />
+  </replace>
+</diff>

@@ -2,594 +2,594 @@
 <!-- Distances Mod - GOD fixed-position scaling -->
 <diff>
   <replace sel="/god/objects/object[@id='monument_paranid']/position">
-    <position x="242424.518160" y="-1532.621" z="35430.960965" pitch="0" roll="0" yaw="90" />
+    <position x="163582.858320" y="-1532.621" z="-182388.728993" pitch="0" roll="0" yaw="90" />
   </replace>
   <replace sel="/god/objects/object[@id='derelict_station']/position">
-    <position x="-189480.866263" y="-5432.621" z="155312.592278" />
+    <position x="237853.870375" y="-5432.621" z="-58741.266141" />
   </replace>
   <replace sel="/god/objects/object[@id='pathtoprofit_anomaly_01']/location">
     <location class="sector" macro="cluster_05_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='pathtoprofit_anomaly_01']/position">
-    <position x="-158668.526204" y="-1351.621" z="186679.668931" />
+    <position x="198135.994525" y="-1351.621" z="-144108.041668" />
   </replace>
   <replace sel="/god/objects/object[@id='scaleplategreen_anomaly_01']/location">
     <location class="sector" macro="cluster_21_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='scaleplategreen_anomaly_01']/position">
-    <position x="226787.137003" y="57" z="174329.750729" />
+    <position x="61431.559785" y="57" z="-279373.282477" />
   </replace>
   <replace sel="/god/objects/object[@id='morningstar_anomaly_01']/location">
     <location class="sector" macro="cluster_30_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='morningstar_anomaly_01']/position">
-    <position x="197179.395930" y="0" z="-145414.187137" />
+    <position x="30947.094300" y="0" z="-243037.604815" />
   </replace>
   <replace sel="/god/objects/object[@id='cardinalsregress_anomaly_01']/position">
-    <position x="32925.000000" y="0" z="41688" />
+    <position x="47382.407412" y="0" z="24017.752535" />
   </replace>
   <replace sel="/god/objects/object[@id='blackholesun_anomaly_01']/position">
-    <position x="32925" y="0" z="41907.000000" />
+    <position x="48803.523095" y="0" z="21411.875386" />
   </replace>
   <replace sel="/god/objects/object[@id='ianamuszura_anomaly_01']/location">
     <location class="sector" macro="cluster_15_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='ianamuszura_anomaly_01']/position">
-    <position x="235035.724114" y="0" z="69160.743128" />
+    <position x="-240678.584433" y="0" z="-45812.869319" />
   </replace>
   <replace sel="/god/objects/object[@id='trinitysanctum_anomaly_01']/position">
-    <position x="32925.000000" y="0" z="116907.000000" />
+    <position x="85339.357785" y="0" z="-86420.462200" />
   </replace>
   <replace sel="/god/objects/object[@id='atiyasmisfortune_anomaly_01']/position">
-    <position x="32925" y="0" z="41697" />
+    <position x="-42855.110528" y="0" z="31402.785475" />
   </replace>
   <replace sel="/god/objects/object[@id='companyregard_anomaly_01']/position">
-    <position x="5325" y="0" z="4107" />
+    <position x="-6693.757893" y="0" z="-645.506982" />
   </replace>
   <replace sel="/god/objects/object[@id='secondcontact_anomaly_01']/location">
     <location class="sector" macro="cluster_40_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='secondcontact_anomaly_01']/position">
-    <position x="157871.525440" y="0" z="187354.160496" />
+    <position x="243563.879102" y="0" z="-26488.427600" />
   </replace>
   <replace sel="/god/objects/object[@id='hereticsend_anomaly_01']/location">
     <location class="sector" macro="cluster_31_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='hereticsend_anomaly_01']/position">
-    <position x="244820.266880" y="0" z="-9382.799410" />
+    <position x="-26634.983681" y="0" z="-243547.895996" />
   </replace>
   <replace sel="/god/objects/object[@id='khosreproach_anomaly_02']/location">
     <location class="sector" macro="cluster_44_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='khosreproach_anomaly_02']/position">
-    <position x="546.002872" y="0" z="244999.391593" />
+    <position x="-183736.801184" y="0" z="162067.232625" />
   </replace>
   <replace sel="/god/objects/object[@id='nopileoslegacy_anomaly_01']/position">
-    <position x="525" y="0" z="4107" />
+    <position x="-2398.605929" y="0" z="3374.872382" />
   </replace>
   <replace sel="/god/objects/object[@id='priorsvoid_anomaly_01']/location">
     <location class="sector" macro="cluster_37_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='priorsvoid_anomaly_01']/position">
-    <position x="546.002872" y="0" z="244999.391593" />
+    <position x="-72032.067353" y="0" z="-234171.691869" />
   </replace>
   <replace sel="/god/objects/object[@id='lastingvengeance_anomaly_01']/location">
     <location class="sector" macro="cluster_35_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='lastingvengeance_anomaly_01']/position">
-    <position x="-221815.194890" y="0" z="104033.741237" />
+    <position x="133566.675169" y="0" z="205389.735100" />
   </replace>
   <replace sel="/god/objects/object[@id='thereach_anomaly_01']/position">
-    <position x="525" y="0" z="4107" />
+    <position x="-3501.715928" y="0" z="-2209.312010" />
   </replace>
   <replace sel="/god/objects/object[@id='memoryofprofit_anomaly_02']/location">
     <location class="sector" macro="cluster_03_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='memoryofprofit_anomaly_02']/position">
-    <position x="-156051.050828" y="0" z="-188873.157266" />
+    <position x="244959.628672" y="0" z="4447.507271" />
   </replace>
   <replace sel="/god/objects/object[@id='nopileosfortune_anomaly_01']/position">
-    <position x="525" y="0" z="4107" />
+    <position x="4139.474731" y="0" z="-88.447450" />
   </replace>
   <replace sel="/god/objects/object[@id='morningstar_anomaly_02']/position">
-    <position x="11490.000000" y="0" z="-34002" />
+    <position x="-8021.686218" y="0" z="34982.976635" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_ap_aqueduct_01']/location">
     <location class="sector" macro="cluster_14_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_ap_aqueduct_01']/position">
-    <position x="-195293.427829" y="-12338.1142578125" z="147937.409221" pitch="0" roll="0" />
+    <position x="173951.521091" y="-12338.1142578125" z="172527.876908" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_01']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_01']/position">
-    <position x="184897.866975" y="-2811" z="-160741.341254" pitch="0" roll="0" yaw="0" />
+    <position x="-242362.386143" y="-2811" z="35853.504472" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_02']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_02']/position">
-    <position x="173636.384542" y="-2446" z="-172845.034535" pitch="0" roll="0" yaw="0" />
+    <position x="-102114.984671" y="-2446" z="222705.028918" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_03']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_03']/position">
-    <position x="172247.964700" y="-2288" z="-174228.696421" pitch="0" roll="0" yaw="-30" />
+    <position x="118447.396659" y="-2288" z="214464.948709" pitch="0" roll="0" yaw="-30" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_04']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_04']/position">
-    <position x="176631.380099" y="-3210" z="-169783.260554" pitch="0" roll="0" yaw="165" />
+    <position x="241666.099738" y="-3210" z="40280.221415" pitch="0" roll="0" yaw="165" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_05']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_05']/position">
-    <position x="172179.805285" y="-3093" z="-174296.054608" pitch="0" roll="0" yaw="165" />
+    <position x="-235894.442630" y="-3093" z="66172.592034" pitch="0" roll="0" yaw="165" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_06']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_06']/position">
-    <position x="165065.448511" y="-2812" z="-181048.053588" pitch="0" roll="0" yaw="-115" />
+    <position x="-79564.887528" y="-2812" z="231720.583187" pitch="0" roll="0" yaw="-115" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_07']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_07']/position">
-    <position x="165065.448511" y="-2812" z="-181048.053588" pitch="0" roll="0" yaw="-115" />
+    <position x="137480.065112" y="-2812" z="202791.103594" pitch="0" roll="0" yaw="-115" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_08']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_08']/position">
-    <position x="148234.364118" y="-2453" z="-195068.124752" pitch="0" roll="0" yaw="-120" />
+    <position x="-218120.849302" y="-2453" z="-111571.927920" pitch="0" roll="0" yaw="-120" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_09']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_09']/position">
-    <position x="149662.320103" y="-3348" z="-193974.714696" pitch="0" roll="0" yaw="-135" />
+    <position x="-220995.860480" y="-3348" z="105763.082645" pitch="0" roll="0" yaw="-135" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_10']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_10']/position">
-    <position x="135451.610292" y="-3348" z="-204151.564455" pitch="0" roll="0" yaw="-70" />
+    <position x="233441.420226" y="-3348" z="-74364.664478" pitch="0" roll="0" yaw="-70" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_11']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_11']/position">
-    <position x="147393.375959" y="-3348" z="-195704.350292" pitch="0" roll="0" yaw="-10" />
+    <position x="94412.753612" y="-3348" z="-226077.933367" pitch="0" roll="0" yaw="-10" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_12']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_12']/position">
-    <position x="148705.057925" y="-3010" z="-194709.542004" pitch="0" roll="0" yaw="35" />
+    <position x="-122628.209378" y="-3010" z="-212102.150542" pitch="0" roll="0" yaw="35" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_13']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_13']/position">
-    <position x="169671.679736" y="-2912" z="-176738.567086" pitch="0" roll="0" yaw="-120" />
+    <position x="179832.051842" y="-2912" z="166389.402098" pitch="0" roll="0" yaw="-120" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_14']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_aqueduct_14']/position">
-    <position x="168129.694388" y="-2382" z="-178206.076958" pitch="0" roll="0" yaw="-35" />
+    <position x="240654.839523" y="-2382" z="-45937.438047" pitch="0" roll="0" yaw="-35" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_79B_asteroidbase_01']/position">
-    <position x="-68656.371094" y="0" z="-16858.122070" pitch="0" roll="0" />
+    <position x="61558.483880" y="0" z="34762.719024" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_tc_aqueduct_01']/position">
-    <position x="-46494.000000" y="-1859" z="-54678.000000" pitch="0" roll="0" yaw="-35" />
+    <position x="71025.994315" y="-1859" z="-10328.787519" pitch="0" roll="0" yaw="-35" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_tc_aqueduct_02']/position">
-    <position x="-10740.000000" y="-2400" z="64077" pitch="0" roll="0" yaw="-35" />
+    <position x="-63203.178891" y="-2400" z="-15052.166192" pitch="0" roll="0" yaw="-35" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_tc_aqueduct_03']/location">
     <location class="sector" macro="cluster_32_sector002_macro" />
   </replace>
   <replace sel="/god/objects/object[@id='xen_tc_aqueduct_03']/position">
-    <position x="-184425.311262" y="-1072" z="161283.305292" pitch="0" roll="0" yaw="-35" />
+    <position x="238740.743357" y="-1072" z="55025.970789" pitch="0" roll="0" yaw="-35" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_argon_01']/location">
     <location class="sector" macro="cluster_14_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_argon_01']/position">
-    <position x="-160922.131593" y="0" z="184740.541202" pitch="0" roll="0" yaw="315" />
+    <position x="-238087.769282" y="0" z="-57785.933569" pitch="0" roll="0" yaw="315" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_argon_01']/position">
-    <position x="211920.458360" y="0" z="122941.934784" pitch="0" roll="0" yaw="0" />
+    <position x="150599.690875" y="0" z="193247.854085" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tradestation_argon_01']/position">
-    <position x="-146400" y="0" z="83400" pitch="0" roll="0" />
+    <position x="40074.979048" y="0" z="-163653.646627" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tradestation_argon_02']/position">
-    <position x="42000" y="0" z="-79500" pitch="0" roll="0" />
+    <position x="65698.081367" y="0" z="61384.135611" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='arg_defence_cluster_08_sector001_02']/position">
-    <position x="-83400.000000" y="0" z="-56400.000000" pitch="0" roll="0" />
+    <position x="87188.238495" y="0" z="-50346.112742" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_antigone']/position">
-    <position x="-100800.000000" y="0" z="-82500" pitch="0" roll="0" yaw="0" />
+    <position x="99052.480531" y="0" z="-84590.165508" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_antigone']/position">
-    <position x="237880.268607" y="0" z="58634.271613" pitch="0" roll="0" yaw="90" />
+    <position x="-213703.453090" y="0" z="119815.834252" pitch="0" roll="0" yaw="90" />
   </replace>
   <replace sel="/god/stations/station[@id='equipmentdock_antigone']/position">
-    <position x="14697.800000" y="0" z="210600" pitch="0" roll="0" />
+    <position x="-150776.223324" y="0" z="-147033.637240" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tradestation_antigone_02']/position">
-    <position x="-101100.000000" y="0" z="142500.000000" pitch="0" roll="0" />
+    <position x="-50863.279090" y="0" z="167153.782010" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tradestation_hatikvah_01']/location">
     <location class="sector" macro="cluster_29_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='tradestation_hatikvah_01']/position">
-    <position x="41118.448242" y="0" z="101232.708984" pitch="0" roll="0" />
+    <position x="29774.641747" y="0" z="105129.723975" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_paranid']/position">
-    <position x="222900" y="0" z="-73500.000000" pitch="0" roll="0" yaw="0" />
+    <position x="220856.602875" y="0" z="79429.345752" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_paranid']/position">
-    <position x="-81600.000000" y="0" z="-112800.000000" pitch="0" roll="0" yaw="0" />
+    <position x="-73436.935874" y="0" z="-118276.863542" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='equipmentdock_paranid']/position">
-    <position x="216183.332950" y="0" z="-115281.249796" pitch="0" roll="0" yaw="0" />
+    <position x="244647.820655" y="0" z="-13131.787717" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tradestation_paranid']/position">
-    <position x="-115500" y="0" z="123000.000000" pitch="0" roll="0" yaw="0" />
+    <position x="-131927.750527" y="0" z="-105187.064988" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='par_defence_cluster_10_sector001']/position">
-    <position x="83100.000000" y="0" z="207000" pitch="0" roll="0" yaw="0" />
+    <position x="-186599.662986" y="0" z="122209.556802" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='par_defence_cluster_47_sector001']/position">
-    <position x="209470.641895" y="0" z="-127071.043847" pitch="0" roll="0" yaw="-333" />
+    <position x="197818.433280" y="0" z="144543.652420" pitch="0" roll="0" yaw="-333" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_holyorder']/position">
-    <position x="242685.430217" y="0" z="33597.350494" pitch="0" roll="0" yaw="180" />
+    <position x="244955.579041" y="0" z="-4665.222017" pitch="0" roll="0" yaw="180" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_holyorder']/position">
-    <position x="-4467.400000" y="0" z="-216000" pitch="0" roll="0" yaw="0" />
+    <position x="-203.575174" y="0" z="215999.904067" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='equipmentdock_holyorder']/position">
-    <position x="-9292.724309" y="0" z="-244823.702437" pitch="0" roll="0" yaw="0" />
+    <position x="-122935.234889" y="0" z="-211924.345045" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tradestation_holyorder']/position">
-    <position x="217500" y="0" z="71100.000000" pitch="0" roll="0" yaw="0" />
+    <position x="100991.547085" y="0" z="-205334.282129" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_alliance']/position">
     <position x="-5460.800000" y="0" z="-5460.400000" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_alliance']/position">
-    <position x="-82500.000000" y="0" z="-87900.000000" pitch="0" roll="0" />
+    <position x="72887.504940" y="0" z="-96021.204031" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_teladi_01']/position">
-    <position x="-148800" y="0" z="-177900.000000" pitch="0" roll="0" />
+    <position x="228180.324232" y="0" z="41516.137022" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_teladi_01']/position">
-    <position x="-32100.000000" y="0" z="34800.000000" pitch="0" roll="0" />
+    <position x="-9792.976291" y="0" z="46320.056297" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='equipmentdock_teladi_01']/position">
-    <position x="24600.000000" y="0" z="60000.000000" pitch="0" roll="0" />
+    <position x="59845.034940" y="0" z="-24974.622980" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='ringstation_01']/location">
     <location class="sector" macro="cluster_01_sector002_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='ringstation_01']/position">
-    <position x="-265171.535156" y="-24" z="-164770.620117" pitch="0" roll="0" />
+    <position x="-304736.261208" y="-24" z="-67831.492803" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='ringstation_02']/location">
     <location class="sector" macro="cluster_15_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='ringstation_02']/position">
-    <position x="192906.070312" y="-38" z="139042.760742" pitch="0" roll="0" />
+    <position x="190882.061254" y="-38" z="-141808.603299" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='ringstation_03']/position">
-    <position x="25408.081055" y="-24.8255729675" z="47338.564453" pitch="0" roll="0" />
+    <position x="1692.793486" y="-24.8255729675" z="-53699.578374" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tel_processing']/position">
-    <position x="222801" y="0" z="18654.000000" pitch="0" roll="0" yaw="80" />
+    <position x="-223569.300498" y="0" z="2241.693968" pitch="0" roll="0" yaw="80" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_ministry_01']/position">
-    <position x="-134400.000000" y="0" z="-72900.000000" pitch="0" roll="0" yaw="80" />
+    <position x="7097.241672" y="0" z="152733.097790" pitch="0" roll="0" yaw="80" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_ministry_01']/position">
-    <position x="90600" y="0" z="49500" pitch="0" roll="0" yaw="80" />
+    <position x="-87052.511477" y="0" z="-55501.984158" pitch="0" roll="0" yaw="80" />
   </replace>
   <replace sel="/god/stations/station[@id='equipmentdock_ministry_01']/position">
-    <position x="40800.000000" y="0" z="-72000.000000" pitch="0" roll="0" />
+    <position x="71336.911659" y="0" z="-41948.599916" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_xenon_cluster_17']/position">
-    <position x="-77704.307301" y="0" z="232351.114968" pitch="0" roll="0" />
+    <position x="-136671.376980" y="0" z="-203336.997898" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_xenon_cluster_26']/position">
-    <position x="286981.846847" y="0" z="-38846.081833" pitch="0" roll="0" />
+    <position x="-193576.853541" y="0" z="215396.379418" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_xenon_cluster_21']/position">
-    <position x="105000.000000" y="0" z="-133500" pitch="0" roll="0" />
+    <position x="-57958.149159" y="0" z="-159649.938760" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_xenon_cluster_21']/position">
-    <position x="283462.577407" y="0" z="-38369.710836" pitch="0" roll="0" />
+    <position x="252374.650913" y="0" z="-134648.813867" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_16_sector001']/position">
-    <position x="-180296.418499" y="0" z="-165886.109957" pitch="0" roll="0" />
+    <position x="-123671.888697" y="0" z="211495.304785" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_16_sector001_002']/position">
-    <position x="117988.476008" y="0" z="214717.767149" pitch="0" roll="0" />
+    <position x="47420.406618" y="0" z="-240367.021524" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_17_sector001_002']/position">
-    <position x="154747.679770" y="0" z="189942.506054" pitch="0" roll="0" />
+    <position x="-244753.118781" y="0" z="10995.946846" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_21_sector001']/position">
-    <position x="198389.987922" y="0" z="206069.600358" pitch="0" roll="0" />
+    <position x="-259946.203418" y="0" z="119378.552630" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_21_sector001_002']/position">
-    <position x="63600.000000" y="0" z="123000" pitch="0" roll="0" />
+    <position x="97959.718667" y="0" z="97866.508667" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_21_sector002']/position">
-    <position x="60851.960816" y="0" z="-237322.647181" pitch="0" roll="0" />
+    <position x="243910.025966" y="0" z="23084.610308" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_21_sector002_002']/position">
-    <position x="185823.404296" y="0" z="159670.480728" pitch="0" roll="0" />
+    <position x="-227108.950492" y="0" z="91904.975960" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_25_sector001_002']/position">
-    <position x="-140776.570184" y="0" z="200516.725704" pitch="0" roll="0" />
+    <position x="200423.806920" y="0" z="140908.827331" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_defence_cluster_26_sector001']/position">
-    <position x="174000" y="0" z="219000" pitch="0" roll="0" />
+    <position x="200124.623737" y="0" z="-195415.288486" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_01']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_01']/position">
-    <position x="155659.109166" y="-2611" z="-189196.304757" pitch="0" roll="0" yaw="-90" />
+    <position x="242155.884195" y="-2611" z="-37222.677896" pitch="0" roll="0" yaw="-90" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_02']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_02']/position">
-    <position x="170386.590052" y="0" z="-176049.453082" pitch="0" roll="0" yaw="0" />
+    <position x="132695.950563" y="0" z="-205953.355652" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_03']/position">
-    <position x="-22135.371094" y="34" z="-36280.122070" pitch="0" roll="0" />
+    <position x="-15173.604290" y="34" z="39698.660478" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_04']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_04']/position">
-    <position x="-243324.415697" y="0" z="-28604.697613" pitch="0" roll="0" />
+    <position x="86746.136592" y="0" z="229129.019957" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_05']/location">
     <location class="sector" macro="cluster_33_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_05']/position">
-    <position x="-240085.394531" y="0" z="24491.645508" pitch="0" roll="0" />
+    <position x="-202204.431241" y="0" z="-131735.361059" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_79B_smallstation_06']/position">
-    <position x="-57976.371094" y="0" z="-102751.122070" pitch="0" roll="0" />
+    <position x="101487.341542" y="0" z="-60161.218394" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidbase_01']/position">
-    <position x="24430.371094" y="0" z="53215.122070" pitch="0" roll="0" />
+    <position x="27904.871403" y="0" z="51478.251726" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidbase_02']/position">
-    <position x="-19657.371094" y="0" z="49771.122070" pitch="0" roll="0" />
+    <position x="-34329.515740" y="0" z="-41049.496702" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidbase_03']/location">
     <location class="sector" macro="cluster_32_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidbase_03']/position">
-    <position x="209557.354370" y="0" z="-178794.899049" pitch="0" roll="0" />
+    <position x="-194669.087322" y="0" z="194899.582190" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidbase_04']/position">
-    <position x="-19657.371094" y="0" z="49771.122070" pitch="0" roll="0" />
+    <position x="43411.915475" y="0" z="-31288.694848" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidturret_01']/position">
-    <position x="-70756.347656" y="0" z="95462.126953" pitch="0" roll="0" />
+    <position x="84977.027670" y="0" z="83056.505973" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidturret_02']/position">
-    <position x="29054.167969" y="0" z="32061.744141" pitch="0" roll="0" />
+    <position x="1539.523953" y="0" z="43240.374417" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidturret_03']/location">
     <location class="sector" macro="cluster_32_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidturret_03']/position">
-    <position x="239517.500962" y="0" z="136063.468386" pitch="0" roll="0" />
+    <position x="-198248.800240" y="0" z="191257.193067" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidturret_04']/location">
     <location class="sector" macro="cluster_32_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidturret_04']/position">
-    <position x="230923.258543" y="0" z="150187.713746" pitch="0" roll="0" />
+    <position x="17382.376860" y="0" z="274917.721639" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidturret_05']/location">
     <location class="sector" macro="cluster_32_sector001_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_asteroidturret_05']/position">
-    <position x="193903.257531" y="0" z="-195661.512351" pitch="0" roll="0" />
+    <position x="194780.302806" y="0" z="-194788.434809" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_smallstation_01']/position">
-    <position x="-79504.371094" y="0" z="83260.122070" pitch="0" roll="0" />
+    <position x="102473.511884" y="0" z="52463.056643" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_smallstation_02']/position">
-    <position x="-9019.371094" y="0" z="-82891.122070" pitch="0" roll="0" />
+    <position x="13858.009653" y="0" z="-82220.695336" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_smallstation_03']/position">
-    <position x="-44506.371094" y="0" z="30586.122070" pitch="0" roll="0" />
+    <position x="-36870.340409" y="0" z="39457.647286" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_smallstation_04']/location">
     <location class="sector" macro="cluster_32_sector002_macro" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_tc_smallstation_04']/position">
-    <position x="-152089.620236" y="34" z="192077.451609" pitch="0" roll="0" />
+    <position x="-93272.590519" y="34" z="-226550.709242" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01']/position">
-    <position x="8994.000000" y="4000" z="-21333" pitch="0" roll="0" />
+    <position x="-22970.712613" y="4000" z="2887.089721" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_01']/position">
-    <position x="-13942.758000" y="0" z="-23711.109000" />
+    <position x="-26215.220624" y="0" z="-8329.429651" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_02']/position">
-    <position x="7257.948000" y="5931.103" z="3530.214000" />
+    <position x="5786.243036" y="5931.103" z="-5626.687443" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_03']/position">
-    <position x="32252.400000" y="5730.248" z="-11935.968000" />
+    <position x="29196.705016" y="5730.248" z="18172.425651" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_04']/position">
-    <position x="24474.306000" y="0" z="-37303.806000" />
+    <position x="37525.657106" y="0" z="-24132.771391" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02']/position">
-    <position x="127842.000000" y="0" z="130146" pitch="0" roll="0" />
+    <position x="-40208.699857" y="0" z="-177946.111887" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_01']/position">
-    <position x="105690.375000" y="218.886" z="113839.089000" />
+    <position x="-8871.991677" y="218.886" z="155084.110455" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_02']/position">
-    <position x="103575.939000" y="0" z="135492.129000" />
+    <position x="56839.308414" y="0" z="160796.098148" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_03']/position">
-    <position x="132070.371000" y="18.207" z="147103.887000" />
+    <position x="-195594.073706" y="18.207" z="-28724.463402" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_04']/position">
-    <position x="142302.177000" y="9.43" z="112036.488000" />
+    <position x="-157267.033044" y="9.43" z="89828.528541" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_05']/position">
-    <position x="63761.343000" y="0" z="90555.552000" />
+    <position x="-83179.791558" y="0" z="73122.767560" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_03']/position">
-    <position x="9699.000000" y="0" z="-23802" pitch="0" roll="0" />
+    <position x="-11148.216504" y="0" z="23158.650085" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_03_static_defense_01']/position">
-    <position x="-6086.820000" y="-191.401" z="-35919.687000" />
+    <position x="29989.886198" y="-191.401" z="20685.260881" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_03_static_defense_02']/position">
-    <position x="28864.839000" y="-38.231" z="-38270.847000" />
+    <position x="28836.749862" y="-38.231" z="38292.016374" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_03_static_defense_03']/position">
-    <position x="28009.470000" y="-20.033" z="-9728.808000" />
+    <position x="-25887.267699" y="-20.033" z="-14457.852049" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_03_static_defense_04']/position">
-    <position x="2630.058000" y="21.167" z="15.057000" />
+    <position x="-2464.428593" y="21.167" z="-918.707519" />
   </replace>
   <replace sel="/god/stations/station[@id='anarchy_port_cluster_712']/position">
-    <position x="145314.400869" y="0" z="197252.946493" pitch="0" roll="0" yaw="0" />
+    <position x="-21564.975821" y="0" z="-244049.076658" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='par_defence_cluster_709_sector001_01']/position">
-    <position x="141082.160220" y="0" z="200301.832412" pitch="0" roll="0" yaw="0" />
+    <position x="27027.999446" y="0" z="243504.593891" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='par_defence_cluster_709_sector001_02']/position">
-    <position x="-86923.246804" y="0" z="-229061.889377" pitch="0" roll="0" yaw="0" />
+    <position x="186607.640696" y="0" z="158753.231255" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='par_palace_cluster_709_sector001']/position">
-    <position x="136800" y="0" z="87900.000000" pitch="0" roll="0" yaw="210" />
+    <position x="3074.162864" y="0" z="162576.749637" pitch="0" roll="0" yaw="210" />
   </replace>
   <replace sel="/god/stations/station[@id='tel_defence_cluster_713_sector001_01']/position">
-    <position x="-233571.923004" y="0" z="73953.747600" pitch="0" roll="0" yaw="0" />
+    <position x="93839.312507" y="0" z="-226316.555798" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tel_defence_cluster_713_sector001_02']/position">
-    <position x="99475.524343" y="0" z="-223896.449406" pitch="0" roll="0" yaw="0" />
+    <position x="198649.532648" y="0" z="143399.313732" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='tel_landmark_cluster_714_sector_001_01']/position">
-    <position x="-223619.575278" y="0" z="-100096.381315" pitch="0" roll="0" yaw="275" />
+    <position x="70159.998814" y="0" z="-234739.375833" pitch="0" roll="0" yaw="275" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_cluster_715_01']/position">
-    <position x="-102198.391008" y="4000" z="-222666.766437" pitch="0" roll="0" />
+    <position x="183198.951637" y="4000" z="162674.964635" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_715_01']/position">
-    <position x="-109526.567164" y="0" z="-219155.038923" />
+    <position x="217916.405494" y="0" z="-111970.711422" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_715_02']/position">
-    <position x="-106885.923606" y="5931" z="-220454.982559" />
+    <position x="141479.917390" y="5931" z="-200021.081328" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_715_03']/position">
-    <position x="-95410.012354" y="5730" z="-225658.878714" />
+    <position x="42541.482123" y="5730" z="-241278.308803" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_715_04']/position">
-    <position x="-94378.631105" y="0" z="-226092.180296" />
+    <position x="180328.534232" y="0" z="165851.197589" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_715_05']/position">
-    <position x="-100191.900008" y="9725" z="-223576.794799" />
+    <position x="238813.126736" y="9725" z="54710.972376" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_715_06']/position">
-    <position x="-102613.749777" y="14199" z="-222475.657897" />
+    <position x="-172105.285812" y="14199" z="174369.637826" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_715_07']/position">
-    <position x="-101536.961451" y="-4095" z="-222969.158090" />
+    <position x="-70330.256244" y="-4095" z="234688.421224" />
   </replace>
   <replace sel="/god/stations/station[@id='civilian_tradingstation_cluster_720_01']/position">
-    <position x="178736.615014" y="0" z="-167565.576576" pitch="0" roll="0" yaw="0" />
+    <position x="69641.199007" y="0" z="-234893.813032" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_power_array_cluster_721_01']/position">
-    <position x="-244013.737517" y="0" z="21961.236376" pitch="0" roll="0" yaw="60" />
+    <position x="88162.373320" y="0" z="228587.829795" pitch="0" roll="0" yaw="60" />
   </replace>
   <replace sel="/god/stations/station[@id='civilian_tradingstation_cluster_722_01']/position">
-    <position x="89700.455672" y="0" z="227988.658166" pitch="0" roll="0" yaw="0" />
+    <position x="-126001.048611" y="0" z="210116.005456" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_cluster_722_01']/position">
-    <position x="-165546" y="4000" z="-13575.000000" pitch="0" roll="0" />
+    <position x="164398.188514" y="4000" z="-23727.502069" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_722_01']/position">
-    <position x="-188478" y="0" z="-15951.000000" />
+    <position x="49077.394789" y="0" z="-182674.027179" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_722_02']/position">
-    <position x="-167280" y="5931" z="11286.000000" />
+    <position x="-62479.756219" y="5931" z="-155583.586084" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_722_03']/position">
-    <position x="-142287" y="5730" z="-4176.000000" />
+    <position x="-99877.895707" y="5730" z="-101426.994899" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_722_04']/position">
-    <position x="-150063" y="0" z="-29544.000000" />
+    <position x="152766.438847" y="0" z="-7359.827915" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_722_05']/position">
-    <position x="-169500" y="9725" z="-35304.000000" />
+    <position x="149408.611236" y="9725" z="-87485.366231" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_722_06']/position">
-    <position x="-163905" y="14199" z="-7410.000000" />
+    <position x="20517.334558" y="14199" z="162784.508193" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_01_static_defense_cluster_722_07']/position">
-    <position x="-161937" y="-4095" z="-9858.000000" />
+    <position x="91912.896549" y="-4095" z="133689.160297" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_cluster_722_02']/position">
-    <position x="242704.612649" y="4000" z="-33458.496660" pitch="0" roll="0" />
+    <position x="49240.872726" y="4000" z="-240000.700943" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_cluster_722_01']/position">
-    <position x="242058.852304" y="0" z="-37848.540545" />
+    <position x="-32905.693243" y="0" z="-242780.179076" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_cluster_722_02']/position">
-    <position x="244545.136164" y="5931" z="-14922.344944" />
+    <position x="-124509.364040" y="5931" z="-211003.360794" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_cluster_722_03']/position">
-    <position x="243750.920036" y="5730" z="-24708.075231" />
+    <position x="244990.816917" y="5730" z="-2121.232270" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_cluster_722_04']/position">
-    <position x="241174.034929" y="0" z="-43128.701302" />
+    <position x="205317.355190" y="0" z="-133677.910135" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_cluster_722_05']/position">
-    <position x="239873.279683" y="9725" z="-49857.895004" />
+    <position x="9943.371376" y="9725" z="244798.140037" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_cluster_722_06']/position">
-    <position x="243308.516299" y="14199" z="-28739.622412" />
+    <position x="105634.078431" y="14199" z="221057.552402" />
   </replace>
   <replace sel="/god/stations/station[@id='kha_station_02_static_defense_cluster_722_07']/position">
-    <position x="243110.455462" y="-4095" z="-30369.498594" />
+    <position x="198574.313838" y="-4095" z="143503.456000" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_data_sequencing_mainframe_cluster_723_01']/position">
-    <position x="133689.927002" y="0" z="-205309.530753" pitch="0" roll="0" yaw="-20" />
+    <position x="-110868.154915" y="0" z="218479.409158" pitch="0" roll="0" yaw="-20" />
   </replace>
   <replace sel="/god/stations/station[@id='civilian_tradingstation_cluster_725_01']/position">
-    <position x="123300.000000" y="2000" z="-148800" pitch="0" roll="0" yaw="45" />
+    <position x="-114169.488467" y="2000" z="155915.547343" pitch="0" roll="0" yaw="45" />
   </replace>
   <replace sel="/god/stations/station[@id='xen_asteroidbase_cluster_725_01']/position">
-    <position x="-63000.000000" y="0" z="189900.000000" pitch="0" roll="0" yaw="0" />
+    <position x="-199532.330783" y="0" z="-14760.046484" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='test_recycling_station']/position">
-    <position x="-10157.349000" y="-49.417" z="-42334.713000" pitch="0" roll="0" yaw="-60" />
+    <position x="23102.821937" y="-49.417" z="36900.667773" pitch="0" roll="0" yaw="-60" />
   </replace>
 </diff>

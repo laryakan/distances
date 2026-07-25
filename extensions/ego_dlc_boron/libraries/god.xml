@@ -2,18 +2,18 @@
 <!-- Distances Mod - GOD fixed-position scaling -->
 <diff>
   <replace sel="/god/stations/station[@id='boron_wharf_603_001']/position">
-    <position x="-167100" y="0" z="38100.000000" pitch="0" roll="0" />
+    <position x="-58985.479660" y="0" z="-160918.405377" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='boron_wharf_606_001']/position">
-    <position x="135843.810449" y="0" z="-203890.802055" pitch="0" roll="0" />
+    <position x="78414.722312" y="0" z="232112.324802" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='boron_shipyard_606_001']/position">
-    <position x="-79350" y="0" z="50100.000000" pitch="0" roll="0" />
+    <position x="-34686.571384" y="0" z="-87196.756050" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='gs_boron2_hq']/position">
-    <position x="-10005.000000" y="0" z="203712.000000" pitch="0" roll="0" yaw="0" />
+    <position x="138366.172427" y="0" z="149844.857425" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_boron_01']/position">
-    <position x="189841.930089" y="0" z="154871.048231" pitch="0" roll="0" />
+    <position x="33421.476168" y="0" z="-242709.713301" pitch="0" roll="0" />
   </replace>
 </diff>

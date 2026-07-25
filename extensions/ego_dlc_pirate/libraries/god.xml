@@ -2,33 +2,33 @@
 <!-- Distances Mod - GOD fixed-position scaling -->
 <diff>
   <replace sel="/god/objects/object[@id='S3_anomaly_01']/position">
-    <position x="-149879.871860" y="0" z="-233800.213335" />
+    <position x="-28603.643914" y="0" z="276239.655551" />
   </replace>
   <replace sel="/god/stations/station[@id='monument_s3station']/position">
     <position x="9470.929894" y="0" z="9471.383309" pitch="0" roll="0" yaw="90" />
   </replace>
   <replace sel="/god/stations/station[@id='pirate_landmark_02']/position">
-    <position x="125702.973000" y="-1999" z="145098" pitch="0" roll="0" yaw="180" />
+    <position x="-40882.199486" y="-1999" z="187572.153558" pitch="0" roll="0" yaw="180" />
   </replace>
   <replace sel="/god/stations/station[@id='pirate_gs_1_smuggling_station']/position">
-    <position x="-294999.523994" y="500" z="5646.668020" pitch="0" roll="0" yaw="0" />
+    <position x="-283033.034060" y="500" z="83360.096255" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='loanshark_grand_refinery']/position">
-    <position x="204118.179240" y="0" z="135501.914760" pitch="0" roll="0" yaw="0" />
+    <position x="-205707.372608" y="0" z="133076.958392" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='loanshark_shipyard_01']/position">
-    <position x="-213785.472537" y="0" z="119669.426890" pitch="0" roll="0" yaw="0" />
+    <position x="242791.304897" y="0" z="32823.501739" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='loanshark_wharf_01']/position">
-    <position x="-89430.288000" y="0" z="91629.246000" pitch="0" roll="0" yaw="0" />
+    <position x="64369.635121" y="0" z="-110680.825840" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='loanshark_defence_01']/position">
-    <position x="171450.552000" y="0" z="100457.577000" pitch="0" roll="0" yaw="0" />
+    <position x="181622.496650" y="0" z="-80624.346624" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='loanshark_defence_02']/position">
-    <position x="121639.173000" y="0" z="15186.681000" pitch="0" roll="0" yaw="0" />
+    <position x="30882.924050" y="0" z="-118629.543917" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='loanshark_defence_03']/position">
-    <position x="-13608.681000" y="0" z="2711.439000" pitch="0" roll="0" yaw="0" />
+    <position x="-12188.675780" y="0" z="-6632.064742" pitch="0" roll="0" yaw="0" />
   </replace>
 </diff>

@@ -2,30 +2,30 @@
 <!-- Distances Mod - GOD fixed-position scaling -->
 <diff>
   <replace sel="/god/stations/station[@id='spl_defence_cluster_400_sector001']/position">
-    <position x="10500.000000" y="0" z="-150000" pitch="0" roll="0" yaw="0" />
+    <position x="21488.322687" y="0" z="148823.727907" pitch="0" roll="0" yaw="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_split_02']/position">
-    <position x="-233695.578715" y="0" z="-73562.058760" pitch="0" roll="0" />
+    <position x="-103054.540836" y="0" z="222271.819206" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='spl_defence_cluster_403_sector001']/position">
-    <position x="-93600.000000" y="0" z="47400.000000" pitch="0" roll="0" />
+    <position x="-91190.568839" y="0" z="-51884.488576" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='equipmentdock_split_01']/position">
-    <position x="144034.899000" y="5000" z="36136.014000" pitch="0" roll="0" />
+    <position x="-144423.266408" y="5000" z="34551.175927" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_split_01']/position">
-    <position x="-233695.578715" y="0" z="-73562.058760" pitch="0" roll="0" />
+    <position x="242920.822828" y="0" z="-31850.805899" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_freesplit_01']/position">
-    <position x="-212459.378257" y="0" z="-122008.248044" pitch="0" roll="0" />
+    <position x="105616.056060" y="0" z="-221066.163630" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='wharf_freesplit_01']/position">
-    <position x="-94477.875000" y="0" z="69293.937000" pitch="0" roll="0" yaw="180" />
+    <position x="-44940.077878" y="0" z="-108204.010877" pitch="0" roll="0" yaw="180" />
   </replace>
   <replace sel="/god/stations/station[@id='tel_dlc_split_ringstation_01']/position">
-    <position x="78852" y="13920" z="53946.000000" pitch="0" roll="0" />
+    <position x="-46477.511673" y="13920" z="83472.448920" pitch="0" roll="0" />
   </replace>
   <replace sel="/god/stations/station[@id='shipyard_split_01']/position">
-    <position x="189841.930089" y="0" z="154871.048231" pitch="0" roll="0" />
+    <position x="-226502.701899" y="0" z="93389.110889" pitch="0" roll="0" />
   </replace>
 </diff>

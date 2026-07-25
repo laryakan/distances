@@ -2,24 +2,24 @@
 <!-- Distances Mod - Resource Zones Added -->
 <diff>
   <replace sel="/macros/macro[@name='Zone005_Cluster_01_Sector01_macro']/connections/connection[@name='asteroid_special_lm_01_macro2']/offset/position">
-    <position x="28386.474609" y="-301.4678955078" z="25680.266602" />
+    <position x="-15888.167916" y="-301.4678955078" z="34825.768531" />
   </replace>
   <replace sel="/macros/macro[@name='Zone005_Cluster_01_Sector01_macro']/connections/connection[@name='asteroid_special_lm_01_macro3']/offset/position">
-    <position x="-42471.313477" y="-301.4678955078" z="8380.462646" />
+    <position x="43206.195205" y="-301.4678955078" z="2696.167368" />
   </replace>
   <replace sel="/macros/macro[@name='Zone005_Cluster_01_Sector01_macro']/connections/connection[@name='asteroid_special_lm_01_macro']/offset/position">
-    <position x="12715.942383" y="-301.4678955078" z="-37048.737305" />
+    <position x="38618.625369" y="-301.4678955078" z="6550.259624" />
   </replace>
   <replace sel="/macros/macro[@name='Zone003_Cluster_04_Sector001_macro']/connections/connection[@name='connection_explorationtest_macro']/offset/position">
-    <position x="69125.519531" y="0" z="82172.976562" />
+    <position x="13097.636052" y="0" z="-106579.488915" />
   </replace>
   <replace sel="/macros/macro[@name='Zone004_Cluster_26_Sector001_macro']/connections/connection[@name='env_debris_xenon_xxl_02_macro']/offset/position">
-    <position x="-17115.005859" y="-9272.9990234375" z="141702" />
+    <position x="-139063.837629" y="-9272.9990234375" z="32150.105652" />
   </replace>
   <replace sel="/macros/macro[@name='Zone004_Cluster_26_Sector002_macro']/connections/connection[@name='env_debris_xenon_xxl_01_macro']/offset/position">
-    <position x="-17712.890625" y="25099" z="-119941.406250" />
+    <position x="33265.306256" y="25099" z="-116589.479917" />
   </replace>
   <replace sel="/macros/macro[@name='Zone003_Cluster_32_Sector001_macro']/connections/connection[@name='landmarks_xenon_crash_site_01_macro']/offset/position">
-    <position x="64940.531250" y="0" z="59040.492187" />
+    <position x="-8814.927421" y="0" z="87323.246454" />
   </replace>
 </diff>
