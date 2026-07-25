@@ -34,9 +34,11 @@ INPUT_DIR="$(cd "$INPUT_DIR" && pwd)"
 VANILLA_SECTORS="${INPUT_DIR}/maps/xu_ep2_universe/sectors.xml"
 VANILLA_ZONES="${INPUT_DIR}/maps/xu_ep2_universe/zones.xml"
 VANILLA_GOD="${INPUT_DIR}/libraries/god.xml"
+VANILLA_SECHIGHWAYS="${INPUT_DIR}/maps/xu_ep2_universe/sechighways.xml"
 OUTPUT_SECTORS="${SCRIPT_DIR}/maps/xu_ep2_universe/sectors.xml"
 OUTPUT_ZONES="${SCRIPT_DIR}/maps/xu_ep2_universe/zones.xml"
 OUTPUT_GOD="${SCRIPT_DIR}/libraries/god.xml"
+OUTPUT_SECHIGHWAYS="${SCRIPT_DIR}/maps/xu_ep2_universe/sechighways.xml"
 # CLI options
 NO_HIGHWAYS=0
 FACTOR_ARG=""
@@ -141,6 +143,16 @@ if [[ -f "$VANILLA_GOD" ]]; then
     echo "OK Base game GOD: $modified fixed positions"
 else
     echo "WARN Base game god.xml not found, skipping..."
+fi
+
+# Process base game sechighways
+if [[ -f "$VANILLA_SECHIGHWAYS" ]]; then
+    mkdir -p "$(dirname "$OUTPUT_SECHIGHWAYS")"
+    process_sechighways_file "$VANILLA_SECHIGHWAYS" "$OUTPUT_SECHIGHWAYS"
+    modified=$(awk '/<replace sel=/{c++} END{print c+0}' "$OUTPUT_SECHIGHWAYS")
+    echo "OK Base game sechighways: $modified entry/exit points"
+else
+    echo "WARN Base game sechighways.xml not found, skipping..."
 fi
 echo ""
 echo "Processing input extensions..."

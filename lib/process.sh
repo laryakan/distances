@@ -44,7 +44,6 @@ process_sectors_file() {
     } > "$output_file"
 }
 
-# process_zones_file <input zones.xml> <output diff>
 process_zones_file() {
     local input_file="$1"
     local output_file="$2"
@@ -95,3 +94,38 @@ process_god_file() {
         echo '</diff>'
     } > "$output_file"
 }
+
+# process_sechighways_file <input sechighways.xml> <output diff>
+
+
+
+# process_sechighways_file <input sechighways.xml> <output diff>
+process_sechighways_file() {
+    local input_file="$1"
+    local output_file="$2"
+
+    {
+        echo '<?xml version="1.0" encoding="utf-8"?>'
+        echo '<!-- Distances Mod - Superhighway entry/exit scaling -->'
+        echo '<diff>'
+        awk -f "$COMMON_AWK" -f "${AWK_DIR}/emit_sechighways.awk" \
+            -v factor="$FACTOR" \
+            "$input_file"
+        echo '</diff>'
+    } > "$output_file"
+}
+
+
+# process_sechighways_file - scales superhighway entry/exit points
+process_sechighways_file() {
+    local input_file="$1"
+    local output_file="$2"
+    {
+        echo '<?xml version="1.0" encoding="utf-8"?>'
+        echo '<!-- Distances Mod - Superhighway scaling -->'
+        echo '<diff>'
+        awk -f "$COMMON_AWK" -f "${AWK_DIR}/emit_sechighways.awk" -v factor="$FACTOR" "$input_file"
+        echo '</diff>'
+    } > "$output_file"
+}
+
