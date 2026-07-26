@@ -246,8 +246,15 @@ FILENAME == sectors_file && sectors_pass == 2 {
          # Extra logistics zones are controlled per-sector:
          # - sectors with resources: denser extras
          # - sectors without resources: 1-2 extras to make outskirts useful
+         # Gate/SHCon/travel zones must never be used as extra anchors.
+         # In default mode they are already filtered by protected_map above,
+         # but in --no-highways mode protected_map is empty for travel zones,
+         # so we guard here explicitly via is_gate_link (computed at line 194).
          emit_anchor = 0
-         if (sector_has_resource) {
+         if (is_gate_link) {
+             # Travel/gate zones: never use as extra anchor in any mode.
+             emit_anchor = 0
+         } else if (sector_has_resource) {
              if (sector_has_zone_resource) {
                  if (is_resource) emit_anchor = 1
              } else {
