@@ -15,26 +15,8 @@ EXCLUDE_SECTORS=(
 # Excludes story/tutorial/scenario-only content from god.xml (not open world).
 EXCLUDE_NON_OPEN_WORLD_REGEX='story|tutorial|scenario|gamestart'
 
-EXTRA_RESOURCE_ZONE_MULT=1.35
-EXTRA_RESOURCE_ZONE_MULT_2=1.7
-EXTRA_RESOURCE_ZONE_MULT_3=2.0
-EXTRA_RESOURCE_ZONE_MULT_4=2.3
-# Number of existing zone connections per sector used as anchors for extras.
-# "ANCHORS" = how many base connections are selected in that sector.
-# - with resources: spread extras from more anchors
-# - without resources: keep it lighter (usually 1-2 anchors)
-EXTRA_RESOURCE_ANCHORS_WITH_RESOURCE=1
-EXTRA_RESOURCE_ANCHORS_NO_RESOURCE=1
-# Number of extra zone copies emitted for each selected anchor connection.
-# "COUNT" = how many variants (_resourceextra_a/b/c/d) are generated per anchor.
-EXTRA_RESOURCE_COUNT_WITH_RESOURCE=1
-EXTRA_RESOURCE_COUNT_NO_RESOURCE=2
 MAX_SECTOR_RADIUS=250000
 CLAMP_MARGIN=0.98
-EXTRA_PHASE_A=0.04
-EXTRA_PHASE_B=-0.04
-EXTRA_PHASE_C=2.07
-EXTRA_PHASE_D=2.11
 
 
 # Some vanilla/DLC sectors already exceed MAX_SECTOR_RADIUS (e.g. Hatikvah's

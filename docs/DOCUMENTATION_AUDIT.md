@@ -33,7 +33,6 @@ All documentation is **complete, consistent, and accurate**. The project is well
 - [x] `--no-highways` mode with clear explanation
 - [x] Defense station behavior (both default and `--no-highways`)
 - [x] Travel network safeguards
-- [x] Extra resource zones (NEW - comprehensive section added)
 - [x] Hazard exclusions
 - [x] Update workflow
 - [x] Script architecture with file descriptions
@@ -64,7 +63,6 @@ All documentation is **complete, consistent, and accurate**. The project is well
 - [x] Common tasks (add DLC, debug, verify SHCon)
 - [x] File reference mapping
 - [x] Key variables
-- [x] Extra resource zones (NEW - added with comprehensive explanation)
 - [x] Updated date stamp
 
 **Excellent Details:**
@@ -88,7 +86,6 @@ All documentation is **complete, consistent, and accurate**. The project is well
 - [x] Code Quality (7 items)
 - [x] Functionality - Default Mode (7 items)
 - [x] Functionality - `--no-highways` Mode (5 items)
-- [x] Resource Extras (5 items)
 - [x] Documentation (4 items)
 - [x] Testing (4 items)
 - [x] Configuration (2 items)
@@ -135,8 +132,6 @@ export FACTOR NO_HIGHWAYS SCRIPT_DIR
   - Terran overlap (Cluster_113)
   - Terran Torus radiation belt (Cluster_104_Sector001)
 - [x] Open world exclusion regex documented
-- [x] Extra resource multipliers documented (1.35, 1.7, 2.0, 2.3)
-- [x] Anchor/count tuning parameters with explanation
 - [x] Radius safeguards documented:
   - MAX_SECTOR_RADIUS with comment on Hatikvah's Choice
   - NATURAL_RADIUS_HEADROOM explanation
@@ -144,18 +139,14 @@ export FACTOR NO_HIGHWAYS SCRIPT_DIR
 - [x] Jitter parameters documented
 - [x] Helper function with inline logic
 
-**All 11 Tuning Parameters Documented:**
+**All core tuning parameters documented:**
 1. ✅ EXCLUDE_SECTORS
 2. ✅ EXCLUDE_NON_OPEN_WORLD_REGEX
-3. ✅ EXTRA_RESOURCE_ZONE_MULT (a/b/c/d - 4 variants)
-4. ✅ EXTRA_RESOURCE_ANCHORS_WITH/WITHOUT_RESOURCE
-5. ✅ EXTRA_RESOURCE_COUNT_WITH/WITHOUT_RESOURCE
-6. ✅ MAX_SECTOR_RADIUS
-7. ✅ CLAMP_MARGIN
-8. ✅ EXTRA_PHASE (a/b/c/d)
-9. ✅ NATURAL_RADIUS_HEADROOM
-10. ✅ SAFETY_MAX_RADIUS
-11. ✅ JITTER_FRACTION / JITTER_MIN_ABS
+3. ✅ MAX_SECTOR_RADIUS
+4. ✅ CLAMP_MARGIN
+5. ✅ NATURAL_RADIUS_HEADROOM
+6. ✅ SAFETY_MAX_RADIUS
+7. ✅ JITTER_FRACTION / JITTER_MIN_ABS
 
 ### lib/dlc.sh ✅ (15 lines, 326 bytes)
 
@@ -184,17 +175,13 @@ export FACTOR NO_HIGHWAYS SCRIPT_DIR
 - [x] AWK file referencing clear
 
 **Functions Documented:**
-1. `process_sectors_file()` - with all 55 AWK variables
+1. `process_sectors_file()` - sector positioning pipeline
 2. `process_zones_file()` - with 8 AWK variables
 3. `process_god_file()` - with 10 AWK variables
 4. `process_sechighways_file()` - with 2 AWK variables (minimal, reserved)
 
-**All 55+ AWK Variables Passed Clearly:**
+**AWK variables passed clearly:**
 - factor, exclude, no_highways ✅
-- extra_mult_a/b/c/d ✅
-- extra_anchors_with/without_resource ✅
-- extra_count_with/without_resource ✅
-- phase_a/b/c/d ✅
 - radius_floor, radius_headroom, radius_safety ✅
 - clamp_margin, jitter_frac, jitter_minabs ✅
 - zones_file, clusters_file, sectors_file ✅
@@ -228,13 +215,11 @@ export FACTOR NO_HIGHWAYS SCRIPT_DIR
 - [x] Expected input format explained
 - [x] BEGIN section with variable defaults documented
 - [x] 3 helper functions documented:
-  1. `sector_macro_from_region_connection()` - vanilla pattern
-  2. `sector_macro_from_region_connection_dlc()` - DLC pattern
-  3. `emit_extra_connection()` - XML output format
+    2. (removed) legacy extras helpers
 - [x] Three major passes documented:
-  - Pass 1: clusters.xml resource profiling
-  - Pass 2: zones.xml resource/protected mapping
-  - Pass 3: sectors.xml scaling + extra generation
+  - Pass 1: zones.xml protected mapping
+  - Pass 2: sectors.xml natural radius scan
+  - Pass 3: sectors.xml scaling emission
 - [x] Key variables explained inline
 
 **Core Logic Comments:**
@@ -278,25 +263,6 @@ export FACTOR NO_HIGHWAYS SCRIPT_DIR
 ---
 
 ## 3. FEATURE DOCUMENTATION COMPLETENESS
-
-### Extra Resource Zones ✅
-
-**README.md Coverage:**
-- [x] Section title and introduction
-- [x] Tuning parameters mentioned (lib/config.sh reference)
-- [x] Density configuration (1 extra for rich, 2 for poor)
-- [x] How to tune via config.sh
-
-**AGENTS.md Coverage:**
-- [x] Dedicated "Extra Resource Zones" section
-- [x] How it works explained
-- [x] Resource determination explained (static macros, not runtime)
-- [x] Clamp behavior and phase offsets
-- [x] Why profiling matters (no_resource_profile)
-
-**Missing (Minor):**
-- Resource type breakdown audit (resourceextra_by_type.tsv is detailed but not in docs)
-  - **Recommendation:** Add to README appendix or link from AGENTS.md
 
 ### `--no-highways` Mode ✅
 
@@ -410,11 +376,7 @@ _default/ → generate.sh → maps/
 **Current:** Parameters described conceptually  
 **Recommendation:** Add real-world impact numbers:
 ```
-EXTRA_RESOURCE_ANCHORS_WITH_RESOURCE=1 means:
-  → Vanilla (152 sectors) with resources: ~1 extra zone each
-EXTRA_RESOURCE_ANCHORS_NO_RESOURCE=1 means:
-  → Vanilla (70 sectors) without resources: ~2 extra zones each (1 anchor × 2 count)
-Result: ~210 total extra zones across vanilla + DLC
+MAX_SECTOR_RADIUS and clamp values control how far scaled content can spread.
 ```
 **Priority:** Medium (helps users understand impact)
 
@@ -425,9 +387,8 @@ Result: ~210 total extra zones across vanilla + DLC
 ### Testing Generation
 
 1. Regenerate from scratch: rm -rf maps/ && generate.sh 3
-2. Verify no hazard keywords in extras: grep radiation maps/*/sectors.xml
-3. Verify gates are not resourceextras: grep -E "_resourceextra_" maps/*/sectors.xml | grep -i gate
-4. Count extras by type: awk -F'\t' '$1~/^[a-z_]+$/ {c[$1]++} END {for(t in c) print t": " c[t]}' resourceextra_by_type.tsv
+2. Verify no hazard keywords in generated sectors
+3. Verify gate/SHCon entries remain present and valid
 ```
 **Priority:** Medium (helps agents validate changes)
 
@@ -438,7 +399,6 @@ Result: ~210 total extra zones across vanilla + DLC
 ## v1.0.0 (2026-07-25)
 - Initial release
 - Full DLC support (7 DLCs)
-- Extra resource zones
 - Hazard sector exclusions
 - Defense station special handling
 ```
@@ -477,8 +437,8 @@ Result: ~210 total extra zones across vanilla + DLC
 ## 7. RECOMMENDATIONS
 
 ### High Priority (Do Before Release)
-1. ✅ Already done: Update README with Extra Resource Zones section
-2. ✅ Already done: Update AGENTS.md with Extra Resource Zones section
+1. ✅ Already done: Update README with current feature set
+2. ✅ Already done: Update AGENTS.md with current architecture
 3. ✅ Already done: Add RELEASE_CHECKLIST.md
 4. ✅ Already done: Verify all 7 DLCs are covered
 
@@ -486,7 +446,7 @@ Result: ~210 total extra zones across vanilla + DLC
 1. Add numeric tuning impact examples to config.sh comments
 2. Add testing instructions to AGENTS.md
 3. Create CHANGELOG.md for future releases
-4. Add resourceextra_by_type.tsv audit link in README
+4. Add quick validation snippets in README
 
 ### Low Priority (Nice-to-Have)
 1. Create ASCII architecture diagram
@@ -511,7 +471,6 @@ Result: ~210 total extra zones across vanilla + DLC
 - [x] All AWK files - Purpose and logic well-documented
 
 ### Feature Documentation
-- [x] Extra Resource Zones - Both user & agent docs
 - [x] `--no-highways` Mode - Complete explanation
 - [x] Hazard Exclusions - Listed with reasons
 - [x] Defense Stations - Both modes documented

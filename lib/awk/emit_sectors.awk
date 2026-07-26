@@ -15,67 +15,11 @@ BEGIN {
     current_zone_ref = ""
     sectors_pass = 0
     if (no_highways == "") no_highways = 0
-    if (extra_anchors_with_resource == "") extra_anchors_with_resource = 2
-    if (extra_anchors_without_resource == "") extra_anchors_without_resource = 1
-    if (extra_count_with_resource == "") extra_count_with_resource = 4
-    if (extra_count_without_resource == "") extra_count_without_resource = 2
 }
 
-function sector_macro_from_region_connection(conn_name,    arr, cluster_id, sector_id) {
-    if (!match(conn_name, /^C([0-9]+)S([0-9]+)_Region[0-9]+_connection$/, arr)) return ""
-    cluster_id = arr[1]
-    sector_id = arr[2] + 0
-    return "Cluster_" cluster_id "_Sector" sprintf("%03d", sector_id) "_macro"
-}
 
-function sector_macro_from_region_connection_dlc(conn_name,    arr, cluster_id, sector_id) {
-    if (!match(conn_name, /^Cluster_?([0-9]+)_Sector([0-9]+)_Region[0-9]+_connection$/, arr)) return ""
-    cluster_id = arr[1]
-    sector_id = arr[2] + 0
-    return "Cluster_" cluster_id "_Sector" sprintf("%03d", sector_id) "_macro"
-}
-
-function emit_extra_connection(add_sel, conn_name, zone_ref, yv, xv, zv) {
-    printf("  <add sel=\"%s\">\n", add_sel)
-    printf("    <connection name=\"%s\" ref=\"zones\">\n", conn_name)
-    printf("      <offset>\n        <position x=\"%s\" y=\"%s\" z=\"%s\" />\n      </offset>\n", xv, yv, zv)
-    printf("      <macro ref=\"%s\" connection=\"sector\" />\n", zone_ref)
-    printf("    </connection>\n  </add>\n")
-}
-
-# --- clusters.xml pass (optional): mark sectors that contain collectable
-#     resource regions. This is the most reliable source of sector resource
-#     presence in vanilla.
-FILENAME == clusters_file {
-    line = strip_comments($0)
-    if (line == "") next
-
-    if (line ~ /<connection name="C[0-9]+S[0-9]+_Region[0-9]+_connection" ref="regions">/) {
-        match(line, /name="([^"]+)"/, c_arr)
-        current_cluster_sector_macro = sector_macro_from_region_connection(c_arr[1])
-        in_cluster_region_connection = 1
-    } else if (line ~ /<connection name="Cluster_?[0-9]+_Sector[0-9]+_Region[0-9]+_connection" ref="regions">/) {
-        match(line, /name="([^"]+)"/, c_arr)
-        current_cluster_sector_macro = sector_macro_from_region_connection_dlc(c_arr[1])
-        in_cluster_region_connection = 1
-    }
-
-    if (in_cluster_region_connection && line ~ /<region ref="[^"]*"/) {
-        match(line, /ref="([^"]*)"/, region_arr)
-        if (current_cluster_sector_macro != "" && is_collectable_resource_region(region_arr[1])) {
-            sector_resource_from_clusters[current_cluster_sector_macro] = 1
-        }
-    }
-
-    if (in_cluster_region_connection && line ~ /<\/connection>/) {
-        in_cluster_region_connection = 0
-        current_cluster_sector_macro = ""
-    }
-    next
-}
-
-# --- zones.xml pass: protected zones (gates/SHCon), "resource" zones,
-#     and the list of all valid zones (as opposed to highway macros). ---
+# --- zones.xml pass: protected zones (gates/SHCon) and the list of all
+#     valid zones (as opposed to highway macros). ---
 FILENAME == zones_file {
     line = strip_comments($0)
     if (line == "") next
@@ -84,7 +28,6 @@ FILENAME == zones_file {
         match(line, /name="([^"]*)"/, arr)
         current_zone = arr[1]
         zone_map[current_zone] = 1
-        is_resource_zone = 0
         if ((no_highways + 0) == 0 && index(current_zone, "SHCon") > 0) {
             protected_map[current_zone] = 1
         }
@@ -99,13 +42,8 @@ FILENAME == zones_file {
         if (index(lower_line, "clustergate") > 0) is_travel_conn = 1
         if (is_travel_conn) travel_zone_map[current_zone] = 1
         if ((no_highways + 0) == 0 && is_travel_conn) protected_map[current_zone] = 1
-        if (is_resource_keyword(lower_line)) is_resource_zone = 1
-    }
-    if (current_zone != "" && line ~ /<macro ref="[^"]*"/) {
-        if (is_resource_keyword(tolower(line))) is_resource_zone = 1
     }
     if (current_zone != "" && line ~ /<\/macro>/) {
-        if (is_resource_zone) resource_map[current_zone] = 1
         current_zone = ""
     }
     next
@@ -132,10 +70,6 @@ FILENAME == sectors_file && sectors_pass == 1 {
             nr = sqrt((nx_arr[1] * nx_arr[1]) + (nz_arr[1] * nz_arr[1]))
             if (nr > sector_natural_radius[sector_macro]) sector_natural_radius[sector_macro] = nr
         }
-    }
-    if (sector_macro != "" && line ~ /<macro ref="[^"]*" connection="sector"/) {
-        match(line, /ref="([^"]*)"/, zref_arr)
-        if (zref_arr[1] in resource_map) sector_resource_from_zones[sector_macro] = 1
     }
     next
 }
@@ -208,9 +142,6 @@ FILENAME == sectors_file && sectors_pass == 2 {
         if (current_zone_ref in protected_map) next
         if (pending_x == "" || pending_y == "" || pending_z == "") next
 
-        is_resource = (current_zone_ref in resource_map) ? 1 : 0
-        sector_has_resource = ((current_macro in sector_resource_from_zones) || (current_macro in sector_resource_from_clusters)) ? 1 : 0
-        sector_has_zone_resource = (current_macro in sector_resource_from_zones) ? 1 : 0
         natural_radius = (current_macro in sector_natural_radius) ? sector_natural_radius[current_macro] : 0
 
         effective_factor = factor
@@ -242,70 +173,5 @@ FILENAME == sectors_file && sectors_pass == 2 {
 
         sel = "/macros/macro[@name='" current_macro "']/connections/connection[@name='" current_connection "']/offset/position"
         printf("  <replace sel=\"%s\">\n    <position x=\"%s\" y=\"%s\" z=\"%s\" />\n  </replace>\n", sel, new_x, pending_y, new_z)
-
-         # Extra logistics zones are controlled per-sector:
-         # - sectors with resources: denser extras
-         # - sectors without resources: 1-2 extras to make outskirts useful
-         # Gate/SHCon/travel zones must never be used as extra anchors.
-         # In default mode they are already filtered by protected_map above,
-         # but in --no-highways mode protected_map is empty for travel zones,
-         # so we guard here explicitly via is_gate_link (computed at line 194).
-         emit_anchor = 0
-         if (is_gate_link) {
-             # Travel/gate zones: never use as extra anchor in any mode.
-             emit_anchor = 0
-         } else if (sector_has_resource) {
-             if (sector_has_zone_resource) {
-                 if (is_resource) emit_anchor = 1
-             } else {
-                 emit_anchor = 1
-             }
-             anchor_limit = extra_anchors_with_resource + 0
-             extra_count = extra_count_with_resource + 0
-         } else {
-             emit_anchor = 1
-             anchor_limit = extra_anchors_without_resource + 0
-             extra_count = extra_count_without_resource + 0
-         }
-
-         if (emit_anchor && sector_extra_anchor_count[current_macro] < anchor_limit && extra_count > 0) {
-             sector_extra_anchor_count[current_macro]++
-
-             extra_x = new_x * extra_mult_a
-             extra_z = new_z * extra_mult_a
-             extra_x2 = new_x * extra_mult_b
-             extra_z2 = new_z * extra_mult_b
-             extra_x3 = new_x * extra_mult_c
-             extra_z3 = new_z * extra_mult_c
-             extra_x4 = new_x * extra_mult_d
-             extra_z4 = new_z * extra_mult_d
-
-             clamp_xz(extra_x, extra_z, phase_a, effective_maxr, 1.0)
-             extra_x = CLAMP_X
-             extra_z = CLAMP_Z
-             clamp_xz(extra_x2, extra_z2, phase_b, effective_maxr, 1.0)
-             extra_x2 = CLAMP_X
-             extra_z2 = CLAMP_Z
-             clamp_xz(extra_x3, extra_z3, phase_c, effective_maxr, 1.0)
-             extra_x3 = CLAMP_X
-             extra_z3 = CLAMP_Z
-             clamp_xz(extra_x4, extra_z4, phase_d, effective_maxr, 1.0)
-             extra_x4 = CLAMP_X
-             extra_z4 = CLAMP_Z
-
-             add_sel = "/macros/macro[@name='" current_macro "']/connections"
-
-             extra_conn = current_connection "_resourceextra_a"
-             if (extra_count >= 1) emit_extra_connection(add_sel, extra_conn, current_zone_ref, pending_y, extra_x, extra_z)
-
-             extra_conn2 = current_connection "_resourceextra_b"
-             if (extra_count >= 2) emit_extra_connection(add_sel, extra_conn2, current_zone_ref, pending_y, extra_x2, extra_z2)
-
-             extra_conn3 = current_connection "_resourceextra_c"
-             if (extra_count >= 3) emit_extra_connection(add_sel, extra_conn3, current_zone_ref, pending_y, extra_x3, extra_z3)
-
-             extra_conn4 = current_connection "_resourceextra_d"
-             if (extra_count >= 4) emit_extra_connection(add_sel, extra_conn4, current_zone_ref, pending_y, extra_x4, extra_z4)
-         }
     }
 }

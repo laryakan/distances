@@ -95,10 +95,8 @@ fi
 if [[ -f "${VANILLA_SRC}/sectors.xml" ]]; then
     echo "  - sectors.xml"
     zones_ref=""
-    clusters_ref=""
     [[ -f "${VANILLA_SRC}/zones.xml" ]] && zones_ref="${VANILLA_SRC}/zones.xml"
-    [[ -f "${VANILLA_SRC}/clusters.xml" ]] && clusters_ref="${VANILLA_SRC}/clusters.xml"
-    process_sectors_file "${VANILLA_SRC}/sectors.xml" "${VANILLA_OUT}/sectors.xml" "$zones_ref" "$clusters_ref"
+    process_sectors_file "${VANILLA_SRC}/sectors.xml" "${VANILLA_OUT}/sectors.xml" "$zones_ref"
 fi
 
 if [[ -f "${VANILLA_SRC}/sechighways.xml" ]]; then
@@ -148,10 +146,8 @@ for dlc_name in "${DLC_NAMES[@]}"; do
     if [[ -f "$dlc_sectors_file" ]]; then
         echo "  - ${dlc_prefix}_sectors.xml"
         zones_ref=""
-        clusters_ref=""
         [[ -f "$dlc_zones_file" ]] && zones_ref="$dlc_zones_file"
-        [[ -f "${DLC_SRC}/${dlc_prefix}_clusters.xml" ]] && clusters_ref="${DLC_SRC}/${dlc_prefix}_clusters.xml"
-        process_sectors_file "$dlc_sectors_file" "${DLC_OUT}/${dlc_prefix}_sectors.xml" "$zones_ref" "$clusters_ref"
+        process_sectors_file "$dlc_sectors_file" "${DLC_OUT}/${dlc_prefix}_sectors.xml" "$zones_ref"
         dlc_file_count=$((dlc_file_count + 1))
     fi
 

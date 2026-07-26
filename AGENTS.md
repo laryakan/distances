@@ -86,26 +86,6 @@ This creates a more dispersed, natural distribution without sacrificing reproduc
 - SHCon gates must stay present (zones + sectors + clusters stay in sync)
 - Accelerators are not removed by `--no-highways`
 
-### Extra Resource Zones
-
-The generator adds mineable resource zones to balance gameplay:
-
-**How it works:**
-- Identifies sectors with and without resources from `clusters.xml` + `zones.xml` profiling
-- **Rich sectors** (with resources): 1 extra zone added per anchor
-- **Poor sectors** (no resources): 2 extra zones added per anchor
-- Extras are **replicated from existing zone macros** (not created dynamically at runtime)
-- Each extra gets a unique name suffix (`_resourceextra_a/b/c/d`) and placed at outer sector radius
-
-**Resource determination:**
-- Extras classified by their source macro: `ore`, `ice`, `hydrogen`, `helium`, `methane`, `asteroid`, etc.
-- For DLC sectors without clear profiling (`no_resource_profile`): extras still use valid macros copied from profiled sectors
-- The game does NOT assign resource types at runtime — the zone macro is static in XML
-
-**Clamp behavior:**
-- All extras respect `MAX_SECTOR_RADIUS` with `NATURAL_RADIUS_HEADROOM` (never flatten sectors that exceed vanilla extent)
-- Phase offsets ensure tangential spreading of variants so they don't overlap
-
 ### SHCon (SuperHighway Connection)
 
 Special gate zones with three synchronized components:
@@ -198,36 +178,19 @@ SHCon zone macros must still exist in source/generated data. Do not delete them 
 
 After running `./generate.sh`, use these checks to validate output quality:
 
-**1. Quick health check (should see > 100 extras)**
-
-    grep -c "_resourceextra_" maps/xu_ep2_universe/sectors.xml
-
-**2. Verify no inactive gates (should return 0)**
-
-    grep -E "_resourceextra_.*gate|_resourceextra_.*shcon" maps/xu_ep2_universe/sectors.xml | wc -l
-
-**3. Verify no hazard zones (should return 0)**
-
-    grep -iE "_resourceextra_.*radiation|_resourceextra_.*hazard|_resourceextra_.*void|_resourceextra_.*tide" maps/xu_ep2_universe/sectors.xml | wc -l
-
-**4. Check file sizes are reasonable (should be 10-50 KB each)**
-
-    ls -lh maps/xu_ep2_universe/*.xml | awk '{printf "%8s  %s\n", $5, $9}'
-
-**5. Verify all output files exist (should list 3 vanilla + DLC files)**
+**1. Verify all output files exist (should list vanilla + DLC files)**
 
     find maps extensions libraries -name "*.xml" -type f | sort
 
-**6. Count extras by resource type**
+**2. Check file sizes are reasonable (should be 10-50 KB each)**
 
-    awk -F'\t' 'NR>1 {c[$1]++} END {for(t in c) print t": " c[t]}' resourceextra_by_type.tsv 2>/dev/null || echo "(audit file not present)"
+    ls -lh maps/xu_ep2_universe/*.xml | awk '{printf "%8s  %s\n", $5, $9}'
 
-**7. Spot-check a sector for valid structure**
+**3. Spot-check a sector connection patch**
 
-    grep -A5 "_resourceextra_a" maps/xu_ep2_universe/sectors.xml | head -10
-    # Should see: connection name, offset with position x/y/z, macro ref
+    grep -A4 "<replace sel=\"/macros/macro\[@name='Cluster_" maps/xu_ep2_universe/sectors.xml | head -10
 
-**8. Verify XML is well-formed (if xmllint available)**
+**4. Verify XML is well-formed (if xmllint available)**
 
     for f in maps/xu_ep2_universe/*.xml; do 
       xmllint --noout "$f" 2>/dev/null && echo "✓ $f" || echo "✗ $f INVALID"
