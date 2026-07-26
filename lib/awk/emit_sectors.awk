@@ -15,8 +15,6 @@ BEGIN {
     current_zone_ref = ""
     sectors_pass = 0
     if (no_highways == "") no_highways = 0
-    if (extra_anchors_with_resource == "" && extra_links_with_resource != "") extra_anchors_with_resource = extra_links_with_resource
-    if (extra_anchors_without_resource == "" && extra_links_without_resource != "") extra_anchors_without_resource = extra_links_without_resource
     if (extra_anchors_with_resource == "") extra_anchors_with_resource = 2
     if (extra_anchors_without_resource == "") extra_anchors_without_resource = 1
     if (extra_count_with_resource == "") extra_count_with_resource = 4

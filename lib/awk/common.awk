@@ -45,13 +45,14 @@ function is_resource_keyword(lower_line) {
     if (index(lower_line, "scenario") > 0) return 0
     if (index(lower_line, "test") > 0) return 0
 
-    return (index(lower_line, "asteroid") > 0 || has_token(lower_line, "ore") || \
-            index(lower_line, "silicon") > 0 || has_token(lower_line, "ice") || \
-            has_token(lower_line, "gas") || index(lower_line, "hydrogen") > 0 || \
-            index(lower_line, "helium") > 0 || index(lower_line, "methane") > 0 || \
-            index(lower_line, "nividium") > 0 || index(lower_line, "nebula") > 0 || \
-            has_token(lower_line, "fog") || index(lower_line, "sunlight") > 0 || \
-            index(lower_line, "resource") > 0)
+    return (has_token(lower_line, "ore")  \
+            || has_token(lower_line, "ice") \
+            || has_token(lower_line, "gas") \
+            || index(lower_line, "silicon") > 0 \
+            || index(lower_line, "hydrogen") > 0 \
+            || index(lower_line, "helium") > 0 \
+            || index(lower_line, "methane") > 0 \
+            || index(lower_line, "nividium") > 0 )
 }
 
 # True if a clusters.xml <region ref="..."> value should be considered a
