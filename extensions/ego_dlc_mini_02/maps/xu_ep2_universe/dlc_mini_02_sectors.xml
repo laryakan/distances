@@ -4,14 +4,6 @@
   <replace sel="/macros/macro[@name='Cluster_740_Sector001_macro']/connections/connection[@name='Zone004_Cluster_740_Sector001_connection']/offset/position">
     <position x="-196252.166821" y="0" z="146663.175398" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_740_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_740_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-206081.784443" y="0" z="141528.435732" />
-      </offset>
-      <macro ref="Zone004_Cluster_740_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_740_Sector001_macro']/connections/connection[@name='Zone001_Cluster_740_Sector001_connection']/offset/position">
     <position x="-21687.853983" y="0" z="244038.187564" />
   </replace>

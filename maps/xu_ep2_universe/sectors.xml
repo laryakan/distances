@@ -10,25 +10,9 @@
   <replace sel="/macros/macro[@name='Cluster_01_Sector001_macro']/connections/connection[@name='Zone005_Cluster_01_Sector01_connection']/offset/position">
     <position x="721417.773379" y="-65343.75" z="-378227.925374" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_01_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_01_Sector01_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="750985.509198" y="-65343.75" z="-356200.374437" />
-      </offset>
-      <macro ref="Zone005_Cluster_01_Sector01_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_01_Sector002_macro']/connections/connection[@name='Zone003_Cluster_01_Sector002_connection']/offset/position">
     <position x="357459.523867" y="0" z="112031.299662" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_01_Sector002_macro']/connections">
-    <connection name="Zone003_Cluster_01_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="383730.339596" y="0" z="137344.963407" />
-      </offset>
-      <macro ref="Zone003_Cluster_01_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_01_Sector002_macro']/connections/connection[@name='Zone005_Cluster_01_Sector002_connection']/offset/position">
     <position x="7139.746218" y="0" z="279263.881628" />
   </replace>
@@ -38,28 +22,12 @@
   <replace sel="/macros/macro[@name='Cluster_01_Sector003_macro']/connections/connection[@name='Zone002_Cluster_01_Sector003_connection']/offset/position">
     <position x="281868.922961" y="0" z="-90411.214733" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_01_Sector003_macro']/connections">
-    <connection name="Zone002_Cluster_01_Sector003_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="291080.553232" y="0" z="-80680.760048" />
-      </offset>
-      <macro ref="Zone002_Cluster_01_Sector003_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_01_Sector003_macro']/connections/connection[@name='Zone001_Cluster_01_Sector003_connection']/offset/position">
     <position x="95509.916703" y="0" z="280182.321520" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_04_Sector001_macro']/connections/connection[@name='Zone003_Cluster_04_Sector001_connection']/offset/position">
     <position x="257041.823033" y="0" z="-86511.155899" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_04_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_04_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="351399.249695" y="0" z="-102820.083534" />
-      </offset>
-      <macro ref="Zone003_Cluster_04_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_04_Sector001_macro']/connections/connection[@name='Zone002_Cluster_04_Sector001_connection']/offset/position">
     <position x="-505344.340227" y="0" z="-163900.215469" />
   </replace>
@@ -114,187 +82,51 @@
   <replace sel="/macros/macro[@name='Cluster_04_Sector002_macro']/connections/connection[@name='Zone002_Cluster_04_Sector002_connection']/offset/position">
     <position x="198863.971697" y="0" z="143101.784618" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_04_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_04_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="196920.772084" y="0" z="154020.159465" />
-      </offset>
-      <macro ref="Zone002_Cluster_04_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_04_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_04_Sector002_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="208599.435529" y="0" z="137790.694523" />
-      </offset>
-      <macro ref="Zone002_Cluster_04_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_05_Sector001_macro']/connections/connection[@name='Zone003_Cluster_05_Sector001_connection']/offset/position">
     <position x="-30081.088722" y="0" z="243146.310071" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_05_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_05_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-40592.128683" y="0" z="246682.547192" />
-      </offset>
-      <macro ref="Zone003_Cluster_05_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_05_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_05_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-20748.742867" y="0" z="249137.491497" />
-      </offset>
-      <macro ref="Zone003_Cluster_05_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_05_Sector001_macro']/connections/connection[@name='Zone002_Cluster_05_Sector001_connection']/offset/position">
     <position x="138747.213185" y="0" z="-158476.455704" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_06_Sector001_macro']/connections/connection[@name='Zone001_Cluster_06_Sector001_connection']/offset/position">
     <position x="171777.193186" y="0" z="174692.861621" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_06_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_06_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="168014.222990" y="0" z="185124.879131" />
-      </offset>
-      <macro ref="Zone001_Cluster_06_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_06_Sector001_macro']/connections/connection[@name='Zone002_Cluster_06_Sector001_connection']/offset/position">
     <position x="199565.630464" y="0" z="-142121.635008" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_06_Sector002_macro']/connections/connection[@name='Zone002_Cluster_06_Sector002_connection']/offset/position">
     <position x="-142893.096113" y="0" z="216159.146438" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_06_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_06_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-154513.119614" y="0" z="214563.308575" />
-      </offset>
-      <macro ref="Zone002_Cluster_06_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_07_Sector001_macro']/connections/connection[@name='Zone002_Cluster_07_Sector001_connection']/offset/position">
     <position x="-181501.268285" y="0" z="-164566.976065" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_07_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_07_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-178342.002885" y="0" z="-175197.402969" />
-      </offset>
-      <macro ref="Zone002_Cluster_07_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_07_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_07_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-191772.459623" y="0" z="-160384.923637" />
-      </offset>
-      <macro ref="Zone002_Cluster_07_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_07_Sector001_macro']/connections/connection[@name='Zone001_Cluster_07_Sector001_connection']/offset/position">
     <position x="159693.042780" y="0" z="185804.015262" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_08_Sector001_macro']/connections/connection[@name='Zone005_Cluster_08_Sector001_connection']/offset/position">
     <position x="-122301.311766" y="0" z="-41169.923447" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_08_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_08_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-162752.120011" y="0" z="-62137.448902" />
-      </offset>
-      <macro ref="Zone005_Cluster_08_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_08_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_08_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-210544.730700" y="0" z="-61618.614583" />
-      </offset>
-      <macro ref="Zone005_Cluster_08_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_09_Sector001_macro']/connections/connection[@name='Zone005_Cluster_09_Sector001_connection']/offset/position">
     <position x="205004.285533" y="0" z="-134157.530214" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_09_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_09_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="214495.075796" y="0" z="-128420.646546" />
-      </offset>
-      <macro ref="Zone005_Cluster_09_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_09_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_09_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="203546.360879" y="0" z="-145151.227942" />
-      </offset>
-      <macro ref="Zone005_Cluster_09_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_09_Sector001_macro']/connections/connection[@name='Zone006_Cluster_09_Sector001_connection']/offset/position">
     <position x="-49829.964359" y="0" z="-31631.252461" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_10_Sector001_macro']/connections/connection[@name='Zone003_Cluster_10_Sector001_connection']/offset/position">
     <position x="-104066.334760" y="0" z="-221799.905252" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_10_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_10_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-97054.553325" y="0" z="-230391.869820" />
-      </offset>
-      <macro ref="Zone003_Cluster_10_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_10_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_10_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-115155.840128" y="0" z="-221898.924027" />
-      </offset>
-      <macro ref="Zone003_Cluster_10_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_10_Sector001_macro']/connections/connection[@name='Zone004_Cluster_10_Sector001_connection']/offset/position">
     <position x="130190.515750" y="0" z="24569.262817" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_11_Sector001_macro']/connections/connection[@name='Zone003_Cluster_11_Sector001_connection']/offset/position">
     <position x="221626.495527" y="0" z="-104435.130490" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_11_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_11_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="230230.111534" y="0" z="-97437.650541" />
-      </offset>
-      <macro ref="Zone003_Cluster_11_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_11_Sector001_macro']/connections/connection[@name='Zone002_Cluster_11_Sector001_connection']/offset/position">
     <position x="115752.867024" y="0" z="215931.178332" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_12_Sector001_macro']/connections/connection[@name='Zone002_Cluster_12_Sector001_connection']/offset/position">
     <position x="63827.316237" y="0" z="-236539.793062" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_12_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_12_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="74729.928597" y="0" z="-238569.565896" />
-      </offset>
-      <macro ref="Zone002_Cluster_12_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_12_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_12_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="55425.706488" y="0" z="-243778.569731" />
-      </offset>
-      <macro ref="Zone002_Cluster_12_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_12_Sector001_macro']/connections/connection[@name='Zone004_Cluster_12_Sector001_connection']/offset/position">
     <position x="-140687.553162" y="0" z="-200579.192304" />
   </replace>
@@ -304,74 +136,18 @@
   <replace sel="/macros/macro[@name='Cluster_14_Sector001_macro']/connections/connection[@name='Zone004_Cluster_14_Sector001_connection']/offset/position">
     <position x="69507.220408" y="0" z="-136581.781539" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_14_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_14_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="101133.139344" y="0" z="-180485.527343" />
-      </offset>
-      <macro ref="Zone004_Cluster_14_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_14_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_14_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="104387.331066" y="0" z="-227163.564669" />
-      </offset>
-      <macro ref="Zone004_Cluster_14_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_15_Sector002_macro']/connections/connection[@name='Zone003_Cluster_15_Sector002_connection']/offset/position">
     <position x="238293.358176" y="0" z="-56932.200461" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_15_Sector002_macro']/connections">
-    <connection name="Zone003_Cluster_15_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="245285.132343" y="0" z="-48323.946978" />
-      </offset>
-      <macro ref="Zone003_Cluster_15_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_15_Sector002_macro']/connections/connection[@name='Zone002_Cluster_15_Sector002_connection']/offset/position">
     <position x="80822.710702" y="0" z="-231284.866420" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_16_Sector001_macro']/connections/connection[@name='Zone002_Cluster_16_Sector001_connection']/offset/position">
     <position x="-163142.289646" y="0" z="-182782.913121" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_16_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_16_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-158880.026754" y="0" z="-193021.079416" />
-      </offset>
-      <macro ref="Zone002_Cluster_16_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_16_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_16_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-173797.102256" y="0" z="-179706.892598" />
-      </offset>
-      <macro ref="Zone002_Cluster_16_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_17_Sector001_macro']/connections/connection[@name='Zone003_Cluster_17_Sector001_connection']/offset/position">
     <position x="219545.298058" y="0" z="108742.181792" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_17_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_17_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="219409.344682" y="0" z="119831.295855" />
-      </offset>
-      <macro ref="Zone003_Cluster_17_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_17_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_17_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="228283.890494" y="0" z="101914.009543" />
-      </offset>
-      <macro ref="Zone003_Cluster_17_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_17_Sector001_macro']/connections/connection[@name='Zone002_Cluster_17_Sector001_connection']/offset/position">
     <position x="-60143.539202" y="0" z="-237503.167752" />
   </replace>
@@ -381,14 +157,6 @@
   <replace sel="/macros/macro[@name='Cluster_18_Sector001_macro']/connections/connection[@name='Zone001_Cluster_18_Sector001_connection']/offset/position">
     <position x="-53874.065065" y="0" z="239003.316114" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_18_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_18_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-64682.199019" y="0" z="241487.500981" />
-      </offset>
-      <macro ref="Zone001_Cluster_18_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_18_Sector001_macro']/connections/connection[@name='Zone004_Cluster_18_Sector001_connection']/offset/position">
     <position x="-35857.746022" y="0" z="-242361.758638" />
   </replace>
@@ -398,107 +166,27 @@
   <replace sel="/macros/macro[@name='Cluster_19_Sector002_macro']/connections/connection[@name='Zone001_Cluster_19_Sector002_connection']/offset/position">
     <position x="242399.996037" y="0" z="-35598.341552" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_19_Sector002_macro']/connections">
-    <connection name="Zone001_Cluster_19_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="248601.689665" y="0" z="-26404.543089" />
-      </offset>
-      <macro ref="Zone001_Cluster_19_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_19_Sector002_macro']/connections/connection[@name='Zone002_Cluster_19_Sector002_connection']/offset/position">
     <position x="-16916.619855" y="0" z="244415.277699" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_20_Sector001_macro']/connections/connection[@name='Zone005_Cluster_20_Sector001_connection']/offset/position">
     <position x="-132322.449933" y="0" z="-206193.523768" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_20_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_20_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-126501.086079" y="0" z="-215632.732258" />
-      </offset>
-      <macro ref="Zone005_Cluster_20_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_20_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_20_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-143328.722261" y="0" z="-204833.779868" />
-      </offset>
-      <macro ref="Zone005_Cluster_20_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_21_Sector001_macro']/connections/connection[@name='Zone002_Cluster_21_Sector001_connection']/offset/position">
     <position x="-176929.588078" y="0" z="-34767.374158" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_21_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_21_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-236786.947833" y="0" z="-56450.061529" />
-      </offset>
-      <macro ref="Zone002_Cluster_21_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_21_Sector002_macro']/connections/connection[@name='Zone001_Cluster_21_Sector002_connection']/offset/position">
     <position x="-17147.247020" y="0" z="-244399.206054" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_21_Sector002_macro']/connections">
-    <connection name="Zone001_Cluster_21_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-7510.377067" y="0" z="-249887.163008" />
-      </offset>
-      <macro ref="Zone001_Cluster_21_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_21_Sector002_macro']/connections">
-    <connection name="Zone001_Cluster_21_Sector002_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-27456.012834" y="0" z="-248487.760985" />
-      </offset>
-      <macro ref="Zone001_Cluster_21_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_21_Sector002_macro']/connections/connection[@name='Zone002_Cluster_21_Sector002_connection']/offset/position">
     <position x="-80973.078293" y="0" z="231232.265464" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_22_Sector001_macro']/connections/connection[@name='Zone005_Cluster_22_Sector001_connection']/offset/position">
     <position x="6058.416116" y="0" z="43098.797851" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_22_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_22_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="5845.605029" y="0" z="58463.903839" />
-      </offset>
-      <macro ref="Zone005_Cluster_22_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_22_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_22_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="13221.005841" y="0" z="72797.487351" />
-      </offset>
-      <macro ref="Zone005_Cluster_22_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_23_Sector001_macro']/connections/connection[@name='Zone003_Cluster_23_Sector001_connection']/offset/position">
     <position x="-40608.797200" y="0" z="-241611.104029" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_23_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_23_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-31545.354399" y="0" z="-248001.795590" />
-      </offset>
-      <macro ref="Zone003_Cluster_23_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_23_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_23_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-51263.450690" y="0" z="-244687.675667" />
-      </offset>
-      <macro ref="Zone003_Cluster_23_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_23_Sector001_macro']/connections/connection[@name='Zone001_Cluster_23_Sector001_connection']/offset/position">
     <position x="-219953.353619" y="0" z="107914.420871" />
   </replace>
@@ -508,55 +196,15 @@
   <replace sel="/macros/macro[@name='Cluster_24_Sector001_macro']/connections/connection[@name='Zone005_Cluster_24_Sector001_connection']/offset/position">
     <position x="172312.605445" y="0" z="77952.052117" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_24_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_24_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="223473.603627" y="0" z="112069.391369" />
-      </offset>
-      <macro ref="Zone005_Cluster_24_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_25_Sector002_macro']/connections/connection[@name='Zone002_Cluster_25_Sector002_connection']/offset/position">
     <position x="-28205.966091" y="0" z="203803.738824" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_25_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_25_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-49050.063199" y="0" z="273392.252685" />
-      </offset>
-      <macro ref="Zone002_Cluster_25_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_25_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_25_Sector002_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-27595.350080" y="0" z="282061.691473" />
-      </offset>
-      <macro ref="Zone002_Cluster_25_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_25_Sector002_macro']/connections/connection[@name='Zone004_Cluster_25_Sector002_connection']/offset/position">
     <position x="-175874.772075" y="0" z="214959.721262" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_26_Sector001_macro']/connections/connection[@name='Zone001_Cluster_26_Sector001_connection']/offset/position">
     <position x="267389.844386" y="0" z="3712.511376" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_26_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_26_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="295080.325265" y="0" z="15915.329053" />
-      </offset>
-      <macro ref="Zone001_Cluster_26_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_26_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_26_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="295408.440371" y="0" z="-7716.826733" />
-      </offset>
-      <macro ref="Zone001_Cluster_26_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_26_Sector001_macro']/connections/connection[@name='Zone002_Cluster_26_Sector001_connection']/offset/position">
     <position x="-27313.888428" y="0" z="288308.081733" />
   </replace>
@@ -566,22 +214,6 @@
   <replace sel="/macros/macro[@name='Cluster_26_Sector002_macro']/connections/connection[@name='Zone004_Cluster_26_Sector002_connection']/offset/position">
     <position x="130593.655140" y="0" z="207292.781440" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_26_Sector002_macro']/connections">
-    <connection name="Zone004_Cluster_26_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="124693.565136" y="0" z="216682.982289" />
-      </offset>
-      <macro ref="Zone004_Cluster_26_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_26_Sector002_macro']/connections">
-    <connection name="Zone004_Cluster_26_Sector002_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="141610.912711" y="0" z="206025.118375" />
-      </offset>
-      <macro ref="Zone004_Cluster_26_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_26_Sector002_macro']/connections/connection[@name='Zone001_Cluster_26_Sector002_connection']/offset/position">
     <position x="-89739.548742" y="0" z="-227973.273415" />
   </replace>
@@ -591,36 +223,12 @@
   <replace sel="/macros/macro[@name='Cluster_28_Sector001_macro']/connections/connection[@name='Zone003_Cluster_28_Sector001_connection']/offset/position">
     <position x="-57857.071375" y="0" z="238070.492275" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_28_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_28_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-68705.175882" y="0" z="240373.872971" />
-      </offset>
-      <macro ref="Zone003_Cluster_28_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_28_Sector001_macro']/connections/connection[@name='Zone002_Cluster_28_Sector001_connection']/offset/position">
     <position x="-244998.698340" y="0" z="798.631021" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_29_Sector001_macro']/connections/connection[@name='Zone004_Cluster_29_Sector001_connection']/offset/position">
     <position x="-283505.494479" y="0" z="-79870.415895" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_29_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_29_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-285800.770989" y="0" z="-93003.800045" />
-      </offset>
-      <macro ref="Zone004_Cluster_29_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_29_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_29_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-292319.066403" y="0" z="-69866.665428" />
-      </offset>
-      <macro ref="Zone004_Cluster_29_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_29_Sector001_macro']/connections/connection[@name='Zone005_Cluster_29_Sector001_connection']/offset/position">
     <position x="146286.345346" y="0" z="-255646.149786" />
   </replace>
@@ -630,14 +238,6 @@
   <replace sel="/macros/macro[@name='Cluster_29_Sector002_macro']/connections/connection[@name='Zone001_Cluster_29_Sector002_connection']/offset/position">
     <position x="198537.937851" y="0" z="-143553.778195" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_29_Sector002_macro']/connections">
-    <connection name="Zone001_Cluster_29_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="208285.457844" y="0" z="-138264.847488" />
-      </offset>
-      <macro ref="Zone001_Cluster_29_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_29_Sector002_macro']/connections/connection[@name='Zone002_Cluster_29_Sector002_connection']/offset/position">
     <position x="151585.723722" y="0" z="-192475.370797" />
   </replace>
@@ -647,126 +247,30 @@
   <replace sel="/macros/macro[@name='Cluster_31_Sector001_macro']/connections/connection[@name='Zone003_Cluster_31_Sector001_connection']/offset/position">
     <position x="237072.308595" y="0" z="61820.065492" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_31_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_31_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="239194.421200" y="0" z="72705.081437" />
-      </offset>
-      <macro ref="Zone003_Cluster_31_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_31_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_31_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="244239.611523" y="0" z="53357.400264" />
-      </offset>
-      <macro ref="Zone003_Cluster_31_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_31_Sector001_macro']/connections/connection[@name='Zone004_Cluster_31_Sector001_connection']/offset/position">
     <position x="119587.924325" y="0" z="213831.074345" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_32_Sector001_macro']/connections/connection[@name='Zone002_Cluster_32_Sector001_connection']/offset/position">
     <position x="-169780.679579" y="0" z="216924.921432" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_32_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_32_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-181958.730940" y="0" z="214246.926835" />
-      </offset>
-      <macro ref="Zone002_Cluster_32_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_32_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_32_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-164255.295885" y="0" z="228102.878537" />
-      </offset>
-      <macro ref="Zone002_Cluster_32_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_32_Sector002_macro']/connections/connection[@name='Zone004_Cluster_32_Sector002_connection']/offset/position">
     <position x="-148204.604041" y="0" z="-195090.736174" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_32_Sector002_macro']/connections">
-    <connection name="Zone004_Cluster_32_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-143147.456653" y="0" z="-204960.497789" />
-      </offset>
-      <macro ref="Zone004_Cluster_32_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_32_Sector002_macro']/connections">
-    <connection name="Zone004_Cluster_32_Sector002_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-159068.984501" y="0" z="-192865.388729" />
-      </offset>
-      <macro ref="Zone004_Cluster_32_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_33_Sector001_macro']/connections/connection[@name='Zone004_Cluster_33_Sector001_connection']/offset/position">
     <position x="-185189.771151" y="0" z="160404.952109" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_33_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_33_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-195363.394206" y="0" z="155990.846540" />
-      </offset>
-      <macro ref="Zone004_Cluster_33_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_33_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_33_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-182272.603930" y="0" z="171104.347860" />
-      </offset>
-      <macro ref="Zone004_Cluster_33_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_33_Sector001_macro']/connections/connection[@name='Zone002_Cluster_33_Sector001_connection']/offset/position">
     <position x="-206139.601094" y="0" z="-127146.717801" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_34_Sector001_macro']/connections/connection[@name='Zone001_Cluster_34_Sector001_connection']/offset/position">
     <position x="-151661.961254" y="0" z="40601.535839" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_34_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_34_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-206771.772932" y="0" z="46580.667421" />
-      </offset>
-      <macro ref="Zone001_Cluster_34_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_34_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_34_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-238717.324292" y="0" z="74256.576026" />
-      </offset>
-      <macro ref="Zone001_Cluster_34_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_34_Sector001_macro']/connections/connection[@name='Zone002_Cluster_34_Sector001_connection']/offset/position">
     <position x="-154667.544999" y="0" z="144459.542455" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_35_Sector001_macro']/connections/connection[@name='Zone002_Cluster_35_Sector001_connection']/offset/position">
     <position x="15398.625476" y="0" z="244515.607546" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_35_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_35_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="5722.746811" y="0" z="249934.491755" />
-      </offset>
-      <macro ref="Zone002_Cluster_35_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_35_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_35_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="25677.882207" y="0" z="248677.796285" />
-      </offset>
-      <macro ref="Zone002_Cluster_35_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_35_Sector001_macro']/connections/connection[@name='Zone003_Cluster_35_Sector001_connection']/offset/position">
     <position x="-157407.668921" y="0" z="-187744.043221" />
   </replace>
@@ -779,44 +283,12 @@
   <replace sel="/macros/macro[@name='Cluster_36_Sector001_macro']/connections/connection[@name='Zone003_Cluster_36_Sector001_connection']/offset/position">
     <position x="201044.351439" y="0" z="140022.029532" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_36_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_36_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="199269.540479" y="0" z="150969.037346" />
-      </offset>
-      <macro ref="Zone003_Cluster_36_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_36_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_36_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="210696.862382" y="0" z="134561.629681" />
-      </offset>
-      <macro ref="Zone003_Cluster_36_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_36_Sector001_macro']/connections/connection[@name='Zone001_Cluster_36_Sector001_connection']/offset/position">
     <position x="76779.210837" y="0" z="-232658.446619" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_37_Sector001_macro']/connections/connection[@name='Zone002_Cluster_37_Sector001_connection']/offset/position">
     <position x="-244146.495750" y="0" z="20432.538095" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_37_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_37_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-249763.559376" y="0" z="10870.345342" />
-      </offset>
-      <macro ref="Zone002_Cluster_37_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_37_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_37_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-248096.041837" y="0" z="30795.357197" />
-      </offset>
-      <macro ref="Zone002_Cluster_37_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_37_Sector001_macro']/connections/connection[@name='Zone004_Cluster_37_Sector001_connection']/offset/position">
     <position x="-229346.495300" y="0" z="-86169.513713" />
   </replace>
@@ -826,22 +298,6 @@
   <replace sel="/macros/macro[@name='Cluster_38_Sector001_macro']/connections/connection[@name='Zone003_Cluster_38_Sector001_connection']/offset/position">
     <position x="-128711.031654" y="0" z="208466.952610" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_38_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_38_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-139739.317543" y="0" z="207299.115127" />
-      </offset>
-      <macro ref="Zone003_Cluster_38_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_38_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_38_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-122726.144819" y="0" z="217803.336471" />
-      </offset>
-      <macro ref="Zone003_Cluster_38_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_38_Sector001_macro']/connections/connection[@name='Zone001_Cluster_38_Sector001_connection']/offset/position">
     <position x="111944.203044" y="0" z="217930.024101" />
   </replace>
@@ -851,22 +307,6 @@
   <replace sel="/macros/macro[@name='Cluster_39_Sector001_macro']/connections/connection[@name='Zone002_Cluster_39_Sector001_connection']/offset/position">
     <position x="226618.788029" y="0" z="93107.061560" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_39_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_39_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="227259.416092" y="0" z="104178.490090" />
-      </offset>
-      <macro ref="Zone002_Cluster_39_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_39_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_39_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="234857.965888" y="0" z="85683.929994" />
-      </offset>
-      <macro ref="Zone002_Cluster_39_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_39_Sector001_macro']/connections/connection[@name='Zone004_Cluster_39_Sector001_connection']/offset/position">
     <position x="230669.099585" y="0" z="82563.711742" />
   </replace>
@@ -876,22 +316,6 @@
   <replace sel="/macros/macro[@name='Cluster_40_Sector001_macro']/connections/connection[@name='Zone002_Cluster_40_Sector001_connection']/offset/position">
     <position x="-170511.174103" y="0" z="175928.791009" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_40_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_40_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-181030.672008" y="0" z="172417.794303" />
-      </offset>
-      <macro ref="Zone002_Cluster_40_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_40_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_40_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-166672.967484" y="0" z="186333.362311" />
-      </offset>
-      <macro ref="Zone002_Cluster_40_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_40_Sector001_macro']/connections/connection[@name='Zone003_Cluster_40_Sector001_connection']/offset/position">
     <position x="22651.479904" y="0" z="-243950.631190" />
   </replace>
@@ -901,22 +325,6 @@
   <replace sel="/macros/macro[@name='Cluster_41_Sector001_macro']/connections/connection[@name='Zone002_Cluster_41_Sector001_connection']/offset/position">
     <position x="-244988.250683" y="0" z="2399.380624" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_41_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_41_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-249885.954945" y="0" z="-7550.464952" />
-      </offset>
-      <macro ref="Zone002_Cluster_41_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_41_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_41_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-249690.139367" y="0" z="12443.243270" />
-      </offset>
-      <macro ref="Zone002_Cluster_41_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_41_Sector001_macro']/connections/connection[@name='Zone003_Cluster_41_Sector001_connection']/offset/position">
     <position x="-83933.371948" y="0" z="230174.258060" />
   </replace>
@@ -929,44 +337,12 @@
   <replace sel="/macros/macro[@name='Cluster_42_Sector001_macro']/connections/connection[@name='Zone002_Cluster_42_Sector001_connection']/offset/position">
     <position x="167732.379560" y="0" z="-178580.090847" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_42_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_42_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="178305.622938" y="0" z="-175234.428206" />
-      </offset>
-      <macro ref="Zone002_Cluster_42_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_42_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_42_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="163731.543485" y="0" z="-188923.216329" />
-      </offset>
-      <macro ref="Zone002_Cluster_42_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_42_Sector001_macro']/connections/connection[@name='Zone004_Cluster_42_Sector001_connection']/offset/position">
     <position x="228080.396574" y="0" z="-89466.936344" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_42_Sector002_macro']/connections/connection[@name='Zone002_Cluster_42_Sector002_connection']/offset/position">
     <position x="26994.688768" y="0" z="-243508.288931" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_42_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_42_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="37460.030856" y="0" z="-247177.559840" />
-      </offset>
-      <macro ref="Zone002_Cluster_42_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_42_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_42_Sector002_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="17587.103625" y="0" z="-249380.620310" />
-      </offset>
-      <macro ref="Zone002_Cluster_42_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_42_Sector002_macro']/connections/connection[@name='Zone003_Cluster_42_Sector002_connection']/offset/position">
     <position x="244637.203827" y="0" z="-13328.109539" />
   </replace>
@@ -982,22 +358,6 @@
   <replace sel="/macros/macro[@name='Cluster_43_Sector001_macro']/connections/connection[@name='Zone002_Cluster_43_Sector001_connection']/offset/position">
     <position x="241284.542911" y="0" z="-42506.109589" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_43_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_43_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="247746.257177" y="0" z="-33493.164301" />
-      </offset>
-      <macro ref="Zone002_Cluster_43_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_43_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_43_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="244277.295909" y="0" z="-53184.609649" />
-      </offset>
-      <macro ref="Zone002_Cluster_43_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_43_Sector001_macro']/connections/connection[@name='Zone001_Cluster_43_Sector001_connection']/offset/position">
     <position x="-229029.897422" y="0" z="-87007.505921" />
   </replace>
@@ -1007,22 +367,6 @@
   <replace sel="/macros/macro[@name='Cluster_44_Sector001_macro']/connections/connection[@name='Zone002_Cluster_44_Sector001_connection']/offset/position">
     <position x="-164912.364935" y="0" z="181187.504789" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_44_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_44_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-175536.755421" y="0" z="178007.998406" />
-      </offset>
-      <macro ref="Zone002_Cluster_44_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_44_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_44_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-160749.882605" y="0" z="191466.642636" />
-      </offset>
-      <macro ref="Zone002_Cluster_44_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_44_Sector001_macro']/connections/connection[@name='Zone003_Cluster_44_Sector001_connection']/offset/position">
     <position x="-125058.641154" y="0" z="-188436.734975" />
   </replace>
@@ -1032,22 +376,6 @@
   <replace sel="/macros/macro[@name='Cluster_45_Sector001_macro']/connections/connection[@name='Zone002_Cluster_45_Sector001_connection']/offset/position">
     <position x="111764.100955" y="0" z="-218022.443197" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_45_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_45_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="122850.279527" y="0" z="-217733.343382" />
-      </offset>
-      <macro ref="Zone002_Cluster_45_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_45_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_45_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="105057.274749" y="0" z="-226854.510694" />
-      </offset>
-      <macro ref="Zone002_Cluster_45_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_45_Sector001_macro']/connections/connection[@name='Zone001_Cluster_45_Sector001_connection']/offset/position">
     <position x="230365.676896" y="0" z="83406.563941" />
   </replace>
@@ -1060,14 +388,6 @@
   <replace sel="/macros/macro[@name='Cluster_46_Sector001_macro']/connections/connection[@name='Zone002_Cluster_46_Sector001_connection']/offset/position">
     <position x="-4303.072077" y="0" z="-244962.208454" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_46_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_46_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="5608.413815" y="0" z="-249937.083472" />
-      </offset>
-      <macro ref="Zone002_Cluster_46_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_46_Sector001_macro']/connections/connection[@name='Zone001_Cluster_46_Sector001_connection']/offset/position">
     <position x="-159461.694001" y="0" z="-186002.602526" />
   </replace>
@@ -1080,14 +400,6 @@
   <replace sel="/macros/macro[@name='Cluster_47_Sector001_macro']/connections/connection[@name='Zone003_Cluster_47_Sector001_connection']/offset/position">
     <position x="-186254.008190" y="0" z="-159167.975526" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_47_Sector001_macro']/connections">
-    <connection name="Zone003_Cluster_47_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-183408.166821" y="0" z="-169886.563163" />
-      </offset>
-      <macro ref="Zone003_Cluster_47_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_47_Sector001_macro']/connections/connection[@name='Zone001_Cluster_47_Sector001_connection']/offset/position">
     <position x="-231644.844210" y="0" z="-79785.124872" />
   </replace>
@@ -1100,55 +412,15 @@
   <replace sel="/macros/macro[@name='Cluster_49_Sector001_macro']/connections/connection[@name='Zone004_Cluster_49_Sector001_connection']/offset/position">
     <position x="-103581.716448" y="0" z="112945.406082" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_49_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_49_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-145820.889511" y="0" z="146762.412205" />
-      </offset>
-      <macro ref="Zone004_Cluster_49_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_48_Sector001_macro']/connections/connection[@name='Zone002_Cluster_48_Sector001_connection']/offset/position">
     <position x="-380573.945190" y="0" z="-158512.324359" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_48_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_48_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-381561.963587" y="0" z="-177147.377636" />
-      </offset>
-      <macro ref="Zone002_Cluster_48_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_48_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_48_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-394498.294835" y="0" z="-146088.400744" />
-      </offset>
-      <macro ref="Zone002_Cluster_48_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_48_Sector001_macro']/connections/connection[@name='Zone005_Cluster_48_Sector01_connection']/offset/position">
     <position x="-408385.910460" y="-65343.75" z="56423.690671" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_50_Sector001_macro']/connections/connection[@name='Zone004_Cluster_50_Sector001_connection']/offset/position">
     <position x="-270797.001027" y="0" z="102647.857882" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_50_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_50_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-280291.032452" y="0" z="93608.937524" />
-      </offset>
-      <macro ref="Zone004_Cluster_50_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_50_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_50_Sector001_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-271913.849814" y="0" z="115708.920730" />
-      </offset>
-      <macro ref="Zone004_Cluster_50_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_50_Sector001_macro']/connections/connection[@name='Zone001_Cluster_50_Sector001_connection']/offset/position">
     <position x="-216329.350515" y="0" z="-157202.810812" />
   </replace>
@@ -1161,58 +433,18 @@
   <replace sel="/macros/macro[@name='Cluster_50_Sector002_macro']/connections/connection[@name='Zone002_Cluster_50_Sector002_connection']/offset/position">
     <position x="-157205.069072" y="0" z="-187913.720250" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_50_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_50_Sector002_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-152617.119619" y="0" z="-198010.138122" />
-      </offset>
-      <macro ref="Zone002_Cluster_50_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
-  <add sel="/macros/macro[@name='Cluster_50_Sector002_macro']/connections">
-    <connection name="Zone002_Cluster_50_Sector002_connection_resourceextra_b" ref="zones">
-      <offset>
-        <position x="-167952.924838" y="0" z="-185180.493137" />
-      </offset>
-      <macro ref="Zone002_Cluster_50_Sector002_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_709_Sector001_macro']/connections/connection[@name='Zone005_Cluster_709_Sector001_connection']/offset/position">
     <position x="175188.919651" y="0" z="-171271.253955" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_709_Sector001_macro']/connections">
-    <connection name="Zone005_Cluster_709_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="185610.010829" y="0" z="-167478.129558" />
-      </offset>
-      <macro ref="Zone005_Cluster_709_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_710_Sector001_macro']/connections/connection[@name='Zone004_Cluster_710_Sector001_connection']/offset/position">
     <position x="-186256.414012" y="0" z="159165.160257" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_710_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_710_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-196400.344419" y="0" z="154683.239919" />
-      </offset>
-      <macro ref="Zone004_Cluster_710_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_710_Sector001_macro']/connections/connection[@name='Zone003_Cluster_710_Sector001_connection']/offset/position">
     <position x="-111926.501218" y="0" z="-217939.116097" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_711_Sector001_macro']/connections/connection[@name='Zone001_Cluster_711_Sector001_connection']/offset/position">
     <position x="-29847.904600" y="0" z="-243175.045165" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_711_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_711_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-20509.817666" y="0" z="-249157.274386" />
-      </offset>
-      <macro ref="Zone001_Cluster_711_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_711_Sector001_macro']/connections/connection[@name='Zone002_Cluster_711_Sector001_connection']/offset/position">
     <position x="-44478.825084" y="0" z="-240928.690942" />
   </replace>
@@ -1222,14 +454,6 @@
   <replace sel="/macros/macro[@name='Cluster_712_Sector001_macro']/connections/connection[@name='Zone001_Cluster_712_Sector001_connection']/offset/position">
     <position x="-172529.833302" y="0" z="-173949.580685" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_712_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_712_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-168811.938698" y="0" z="-184397.747689" />
-      </offset>
-      <macro ref="Zone001_Cluster_712_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_712_Sector001_macro']/connections/connection[@name='Zone002_Cluster_712_Sector001_connection']/offset/position">
     <position x="78922.856861" y="0" z="231940.041099" />
   </replace>
@@ -1239,28 +463,12 @@
   <replace sel="/macros/macro[@name='Cluster_713_Sector001_macro']/connections/connection[@name='Zone002_Cluster_713_Sector001_connection']/offset/position">
     <position x="204442.663448" y="0" z="135011.841563" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_713_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_713_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="202938.874972" y="0" z="145999.359674" />
-      </offset>
-      <macro ref="Zone002_Cluster_713_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_713_Sector001_macro']/connections/connection[@name='Zone005_Cluster_713_Sector001_connection']/offset/position">
     <position x="-243763.061154" y="0" z="-24588.005547" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_714_Sector001_macro']/connections/connection[@name='Zone004_Cluster_714_Sector001_connection']/offset/position">
     <position x="-56277.700395" y="0" z="-238448.779486" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_714_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_714_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-47650.281948" y="0" z="-245416.891493" />
-      </offset>
-      <macro ref="Zone004_Cluster_714_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_714_Sector001_macro']/connections/connection[@name='Zone002_Cluster_714_Sector001_connection']/offset/position">
     <position x="-221849.544808" y="0" z="-103960.470701" />
   </replace>
@@ -1273,14 +481,6 @@
   <replace sel="/macros/macro[@name='Cluster_715_Sector001_macro']/connections/connection[@name='Zone004_Cluster_715_Sector001_connection']/offset/position">
     <position x="-190527.976601" y="0" z="-154026.264423" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_715_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_715_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-187975.680388" y="0" z="-164818.517111" />
-      </offset>
-      <macro ref="Zone004_Cluster_715_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_715_Sector001_macro']/connections/connection[@name='Zone002_Cluster_715_Sector001_connection']/offset/position">
     <position x="234572.962734" y="0" z="70714.391423" />
   </replace>
@@ -1293,64 +493,24 @@
   <replace sel="/macros/macro[@name='Cluster_720_Sector001_macro']/connections/connection[@name='Zone004_Cluster_720_Sector001_connection']/offset/position">
     <position x="73289.293578" y="0" z="-233781.264106" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_720_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_720_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="84264.721487" y="0" z="-235370.891813" />
-      </offset>
-      <macro ref="Zone004_Cluster_720_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_721_Sector001_macro']/connections/connection[@name='Zone004_Cluster_721_Sector001_connection']/offset/position">
     <position x="74079.394676" y="0" z="233532.103327" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_721_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_721_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="66001.373203" y="0" z="241130.294105" />
-      </offset>
-      <macro ref="Zone004_Cluster_721_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_721_Sector001_macro']/connections/connection[@name='Zone002_Cluster_721_Sector001_connection']/offset/position">
     <position x="229050.258283" y="0" z="86953.891117" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_722_Sector001_macro']/connections/connection[@name='Zone002_Cluster_722_Sector001_connection']/offset/position">
     <position x="-239233.206761" y="0" z="-52843.852838" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_722_Sector001_macro']/connections">
-    <connection name="Zone002_Cluster_722_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-241763.933900" y="0" z="-63641.183720" />
-      </offset>
-      <macro ref="Zone002_Cluster_722_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_723_Sector001_macro']/connections/connection[@name='Zone001_Cluster_723_Sector001_connection']/offset/position">
     <position x="-227400.458272" y="0" z="91181.311559" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_723_Sector001_macro']/connections">
-    <connection name="Zone001_Cluster_723_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-235576.369490" y="0" z="83688.554403" />
-      </offset>
-      <macro ref="Zone001_Cluster_723_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_723_Sector001_macro']/connections/connection[@name='Zone005_Cluster_723_Sector001_connection']/offset/position">
     <position x="147471.506047" y="0" z="-195645.482709" />
   </replace>
   <replace sel="/macros/macro[@name='Cluster_724_Sector001_macro']/connections/connection[@name='Zone004_Cluster_724_Sector001_connection']/offset/position">
     <position x="-5072.600000" y="0" z="-5072.200000" />
   </replace>
-  <add sel="/macros/macro[@name='Cluster_724_Sector001_macro']/connections">
-    <connection name="Zone004_Cluster_724_Sector001_connection_resourceextra_a" ref="zones">
-      <offset>
-        <position x="-6568.706556" y="0" z="-7115.840115" />
-      </offset>
-      <macro ref="Zone004_Cluster_724_Sector001_macro" connection="sector" />
-    </connection>
-  </add>
   <replace sel="/macros/macro[@name='Cluster_724_Sector001_macro']/connections/connection[@name='Zone002_Cluster_724_Sector001_connection']/offset/position">
     <position x="203961.913673" y="0" z="-135737.016951" />
   </replace>
