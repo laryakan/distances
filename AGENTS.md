@@ -46,13 +46,14 @@ The Distances Mod is a scaling enhancement for X4: Foundations that multiplies d
 ### Parameters
 
 - <factor>: Scaling multiplier (integer: 2, 3, 5, 10)
-- --no-highways: Remove sector-level Highway links (`ref="zonehighways"`), while keeping SHCon/SuperHighway structures
+- --no-highways, --no-highway: Remove sector-level Highway links (`ref="zonehighways"`), while keeping SHCon/SuperHighway structures
 - --help, -h: Show usage information
 
 ### Examples
 
     ./generate.sh 2
     ./generate.sh 5 --no-highways
+    ./generate.sh 5 --no-highway   # alias accepted
     ./generate.sh --help
 
 ## Critical Architecture
@@ -95,9 +96,9 @@ Special gate zones with three synchronized components:
 
 Even with `--no-highways`, these three parts must remain intact. Only sector-level `zonehighways` links are removed.
 
-With `--no-highways`, gate/SHCon offsets in sector connections may be moved by scaling.
-For those travel anchors, use scale-only transforms (no angular rotation / jitter / clamp)
-to keep them aligned with superhighway entry/exit scaling.
+With `--no-highways`, gate/accelerator/superhighway/SHCon travel anchors are moved by
+scaling only (no angular rotation / jitter / clamp) so they keep their sector-relative
+direction and stay numerically aligned with superhighway entry/exit scaling.
 
 ### Defense Stations Behavior
 
@@ -117,7 +118,7 @@ This keeps defense placements coherent in stretched sectors without breaking gat
 
 The help output explains:
 - Factor scaling multiplier (must be integer)
-- --no-highways option (removes sector links to `zonehighways` only)
+- --no-highways / --no-highway option (removes sector links to `zonehighways` only)
 - File input/output locations
 
 ### "Highway superhighway005 could not find a map zone"
@@ -127,8 +128,8 @@ Check that all three SHCon components are in sync:
 - sectors.xml has the ref
 - clusters.xml has the connection
 
-If using `--no-highways`, ensure SHCon was not removed by another patch.
-Also ensure gate/SHCon anchors are not rotated/jittered relative to `sechighways`.
+If using `--no-highways` (or `--no-highway`), ensure SHCon was not removed by another patch.
+Also ensure gate/accelerator/superhighway/SHCon anchors are only scaled (not rotated/jittered) relative to `sechighways`.
 
 ### Defense Stations Far from Their Gates (--no-highways)
 

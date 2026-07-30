@@ -29,16 +29,28 @@ line ~ /<position x=/ && current_macro != "" {
     # Excluded sectors (hazard/special mechanics): leave untouched.
     if (exclude != "" && match(current_macro, exclude)) next
 
-    # In default mode, preserve travel-critical links (gates/highways/SHCon).
-    # With --no-highways, allow moving them to keep spread consistent.
-    if ((no_highways + 0) == 0) {
-        if (index(current_macro, "SHCon") > 0) next
-        if (index(current_conn_name, "Highway") > 0) next
-        if (index(current_conn_ref, "Highway") > 0) next
-        if (current_conn_ref == "gates") next
-        if (index(current_conn_name, "Gate") > 0) next
-        if (index(current_conn_ref, "gate") > 0) next
-    }
+    lower_macro = tolower(current_macro)
+    lower_conn_name = tolower(current_conn_name)
+    lower_conn_ref = tolower(current_conn_ref)
+
+    is_travel_link = 0
+    if (index(lower_macro, "shcon") > 0) is_travel_link = 1
+    if (index(lower_conn_name, "shcon") > 0) is_travel_link = 1
+    if (index(lower_conn_ref, "shcon") > 0) is_travel_link = 1
+    if (index(lower_conn_name, "superhighway") > 0) is_travel_link = 1
+    if (index(lower_conn_ref, "superhighway") > 0) is_travel_link = 1
+    if (index(lower_conn_name, "highway") > 0) is_travel_link = 1
+    if (index(lower_conn_ref, "highway") > 0) is_travel_link = 1
+    if (index(lower_conn_name, "accelerator") > 0) is_travel_link = 1
+    if (index(lower_conn_ref, "accelerator") > 0) is_travel_link = 1
+    if (lower_conn_ref == "gates") is_travel_link = 1
+    if (index(lower_conn_name, "gate") > 0) is_travel_link = 1
+    if (index(lower_conn_ref, "gate") > 0) is_travel_link = 1
+
+    # In default mode, preserve travel-critical links
+    # (gates/accelerators/superhighways/SHCon).
+    # With --no-highways, move them in scale-only mode.
+    if ((no_highways + 0) == 0 && is_travel_link) next
 
     match(line, /x="([^"]*)"/, x_arr)
     match(line, /y="([^"]*)"/, y_arr)
@@ -52,14 +64,6 @@ line ~ /<position x=/ && current_macro != "" {
     new_z = z * factor
 
     seed = current_macro "|" (current_conn_name != "" ? current_conn_name : current_conn_ref)
-
-    is_travel_link = 0
-    if (index(current_macro, "SHCon") > 0) is_travel_link = 1
-    if (index(current_conn_name, "Highway") > 0) is_travel_link = 1
-    if (index(current_conn_ref, "Highway") > 0) is_travel_link = 1
-    if (current_conn_ref == "gates") is_travel_link = 1
-    if (index(current_conn_name, "Gate") > 0) is_travel_link = 1
-    if (index(current_conn_ref, "gate") > 0) is_travel_link = 1
 
     if ((no_highways + 0) != 0 && is_travel_link) {
         # Keep travel anchors aligned with superhighway scaling.

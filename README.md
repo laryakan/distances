@@ -102,7 +102,7 @@ In this mode:
 - **SuperHighways are preserved**
 - **Accelerators are preserved** (not explicitly removed by this mode)
 - gate/SHCon-related sector offsets can be moved by scaling to follow the stretched layout
-- gate/SHCon travel anchors are moved in **scale-only** mode (no angular rotation / jitter / clamp) so they stay numerically aligned with superhighway entry/exit scaling
+- gate/accelerator/superhighway/SHCon travel anchors are moved in **scale-only** mode (no angular rotation / jitter / clamp) so they keep their sector-relative direction and stay numerically aligned with superhighway entry/exit scaling
 
 Note: `zonehighways.xml` is used as input reference data from `_default`, but no output diff file is generated for it.
 

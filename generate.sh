@@ -18,7 +18,8 @@ Arguments:
                     Examples: 2, 3, 5, 10
 
 Options:
-  --no-highways     Remove sector-level Highway connections
+  --no-highways, --no-highway
+                    Remove sector-level Highway connections
                     - Keeps SHCon gate zones and SuperHighways intact
                     - Keeps Accelerators intact
                     - Removes only sector links that reference zonehighways
@@ -47,7 +48,7 @@ fi
 
 if [[ -z "$FACTOR" ]]; then
     echo "Error: Missing factor argument"
-    echo "Usage: $0 <factor> [--no-highways]"
+    echo "Usage: $0 <factor> [--no-highways|--no-highway]"
     echo "Run '$0 --help' for more information"
     exit 1
 fi
@@ -57,7 +58,7 @@ if ! [[ "$FACTOR" =~ ^[0-9]+$ ]] || (( FACTOR < 1 )); then
     exit 1
 fi
 
-if [[ "$2" == "--no-highways" ]]; then
+if [[ "$2" == "--no-highways" ]] || [[ "$2" == "--no-highway" ]]; then
     NO_HIGHWAYS=1
 fi
 
